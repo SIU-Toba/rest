@@ -1,8 +1,8 @@
 <?php
 
-namespace rest\tests\docs;
+namespace SIUToba\rest\tests\docs;
 
-use rest\docs\anotaciones_docs;
+use SIUToba\rest\docs\anotaciones_docs;
 
 class annotaciones_docsTest extends \PHPUnit_Framework_TestCase
 {
@@ -69,7 +69,7 @@ class annotaciones_docsTest extends \PHPUnit_Framework_TestCase
 	{
 		$a = $this->getInstancia();
 		$metodos = $a->get_metodos();
-		$errores = $a->get_errores_metodo($metodos[0]);
+		$errores = $a->get_respuestas_metodo($metodos[0]);
 
 		$this->assertEquals(2, count($errores));
 		$this->assertEquals('404', $errores[0]['code']);

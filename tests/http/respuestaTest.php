@@ -1,15 +1,15 @@
 <?php
 
-namespace rest\tests\http;
+namespace SIUToba\rest\tests\http;
 
-use rest\http\respuesta;
+use SIUToba\rest\http\respuesta;
 
 class respuestaTest extends \PHPUnit_Framework_TestCase
 {
 
 
 	/**
-	 * @expectedException rest\lib\rest_error_interno
+	 * @expectedException SIUToba\rest\lib\rest_error_interno
 	 */
 	public function testFinalizarError()
 	{

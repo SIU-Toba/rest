@@ -1,10 +1,10 @@
 <?php
 
-namespace rest\tests\lib;
+namespace SIUToba\rest\tests\lib;
 
 use PHPUnit_Framework_MockObject_Mock;
 use PHPUnit_Framework_TestCase;
-use rest\lib\ruteador;
+use SIUToba\rest\lib\ruteador;
 
 class ruteadorTest extends PHPUnit_Framework_TestCase
 {
@@ -24,11 +24,11 @@ class ruteadorTest extends PHPUnit_Framework_TestCase
 	function setUp()
 	{
 		$this->instanciador =
-			$this->getMockBuilder('rest\lib\rest_instanciador')
+			$this->getMockBuilder('SIUToba\rest\lib\rest_instanciador')
 				->disableOriginalConstructor()
 				->getMock();
 		$this->lector_recursos =
-			$this->getMockBuilder('rest\lib\lector_recursos_archivo')
+			$this->getMockBuilder('SIUToba\rest\lib\lector_recursos_archivo')
 				->disableOriginalConstructor()
 				->getMock();
 		$this->ruteador = new ruteador($this->lector_recursos, $this->instanciador);

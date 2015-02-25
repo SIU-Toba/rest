@@ -1,6 +1,6 @@
 {
     "name": "siu-toba/rest",
-    "description": "Framework para servicios REST",
+    "description": "Libreria para servicios REST",
     "homepage": "http://toba.siu.edu.ar",
     "license": "SIU",
     "require": {
@@ -8,8 +8,8 @@
         "doctrine/cache": "~1.4"
     },
     "autoload": {
-        "psr-0": {
-            "rest\\": ""
+        "psr-4": {
+            "SIUToba\\rest\\": "src/SIUToba/rest"
         }
     }
 }

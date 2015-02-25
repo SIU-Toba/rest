@@ -6,10 +6,10 @@
  * Time: 5:14 PM
  */
 
-namespace rest\tests\seguridad\autenticacion\oauth2;
+namespace SIUToba\rest\tests\seguridad\autenticacion\oauth2;
 
 
-use rest\seguridad\autenticacion\oauth2\oauth_token_decoder_web;
+use SIUToba\rest\seguridad\autenticacion\oauth2\oauth_token_decoder_web;
 
 class token_decoder_webTest extends \PHPUnit_Framework_TestCase
 {

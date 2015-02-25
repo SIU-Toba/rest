@@ -1,9 +1,9 @@
 <?php
 
-namespace rest\tests\lib;
+namespace SIUToba\rest\tests\lib;
 
-use rest\http\respuesta_rest;
-use rest\lib\rest_error;
+use SIUToba\rest\http\respuesta_rest;
+use SIUToba\rest\lib\rest_error;
 
 class rest_errorTest extends \PHPUnit_Framework_TestCase
 {

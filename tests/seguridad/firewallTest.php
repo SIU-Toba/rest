@@ -1,8 +1,8 @@
 <?php
 
-namespace rest\tests\seguridad;
+namespace SIUToba\rest\tests\seguridad;
 
-use rest\seguridad\firewall;
+use SIUToba\rest\seguridad\firewall;
 
 class firewallTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,10 +18,10 @@ class firewallTest extends \PHPUnit_Framework_TestCase
 
 	protected function get_instancia_ruta($pattern = '#.*#')
 	{
-		$this->autenticador = $this->getMockBuilder('rest\seguridad\proveedor_autenticacion')
+		$this->autenticador = $this->getMockBuilder('SIUToba\rest\seguridad\proveedor_autenticacion')
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
-		$this->autorizador = $this->getMockBuilder('rest\seguridad\proveedor_autorizacion')
+		$this->autorizador = $this->getMockBuilder('SIUToba\rest\seguridad\proveedor_autorizacion')
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -69,7 +69,7 @@ class firewallTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException rest\seguridad\autenticacion\rest_error_autenticacion
+	 * @expectedException SIUToba\rest\seguridad\autenticacion\rest_error_autenticacion
 	 */
 	public function atestAutenticarError()
 	{
@@ -79,7 +79,7 @@ class firewallTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException rest\seguridad\autorizacion\rest_error_autorizacion
+	 * @expectedException SIUToba\rest\seguridad\autorizacion\rest_error_autorizacion
 	 */
 	public function testAutorizarError()
 	{

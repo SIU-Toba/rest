@@ -6,10 +6,10 @@
  * Time: 4:48 PM
  */
 
-namespace rest\tests\http;
+namespace SIUToba\rest\tests\http;
 
-use rest\http\respuesta_rest;
-use rest\http\vista_json;
+use SIUToba\rest\http\respuesta_rest;
+use SIUToba\rest\http\vista_json;
 
 class vista_jsonTest extends \PHPUnit_Framework_TestCase
 {

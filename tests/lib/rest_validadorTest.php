@@ -1,9 +1,9 @@
 <?php
 
-namespace rest\tests\lib;
+namespace SIUToba\rest\tests\lib;
 
-use rest\lib\rest_error;
-use rest\lib\rest_validador;
+use SIUToba\rest\lib\rest_error;
+use SIUToba\rest\lib\rest_validador;
 
 class rest_validadorTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,7 +37,7 @@ class rest_validadorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException rest\lib\rest_error
+	 * @expectedException SIUToba\rest\lib\rest_error
 	 */
 	public function testLongitudError()
 	{
@@ -48,7 +48,7 @@ class rest_validadorTest extends \PHPUnit_Framework_TestCase
 		rest_validador::validar($dato, $regla);
 	}
 	/**
-	 * @expectedException rest\lib\rest_error
+	 * @expectedException SIUToba\rest\lib\rest_error
 	 */
 	public function testLongitudError2()
 	{

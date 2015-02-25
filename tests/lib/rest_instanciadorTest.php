@@ -1,8 +1,8 @@
 <?php
 
-namespace rest\tests\lib;
+namespace SIUToba\rest\tests\lib;
 
-use rest\lib\rest_instanciador;
+use SIUToba\rest\lib\rest_instanciador;
 
 class rest_instanciadorTest extends \PHPUnit_Framework_TestCase
 {

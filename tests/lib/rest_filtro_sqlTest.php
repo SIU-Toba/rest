@@ -1,9 +1,9 @@
 <?php
 
-namespace rest\tests\lib;
+namespace SIUToba\rest\tests\lib;
 
-use rest\lib\rest_filtro_sql;
-use rest\rest;
+use SIUToba\rest\lib\rest_filtro_sql;
+use SIUToba\rest\rest;
 
 class rest_filtro_sqlTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +23,7 @@ class rest_filtro_sqlTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException rest\lib\rest_error
+	 * @expectedException SIUToba\rest\lib\rest_error
 	 */
 	public function testParametroIncorrecto()
 	{
@@ -117,7 +117,7 @@ class rest_filtro_sqlTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException rest\lib\rest_error
+	 * @expectedException SIUToba\rest\lib\rest_error
 	 */
 	public function testOrderByInvalido()
 	{
@@ -131,7 +131,7 @@ class rest_filtro_sqlTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException rest\lib\rest_error
+	 * @expectedException SIUToba\rest\lib\rest_error
 	 */
 	public function testLimitError()
 	{
@@ -328,12 +328,12 @@ class rest_filtro_sqlTest extends \PHPUnit_Framework_TestCase
 	{
 		$r = new rest(array());
 
-		$this->filtro = $this->getMockBuilder('rest\lib\rest_filtro_sql')
+		$this->filtro = $this->getMockBuilder('SIUToba\rest\lib\rest_filtro_sql')
 			->disableOriginalConstructor()
 			->setMethods(array('quote'))
 			->getMock();
 
-		$request = $this->getMockBuilder('rest\http\respuesta_rest')
+		$request = $this->getMockBuilder('SIUToba\rest\http\respuesta_rest')
 			->disableOriginalConstructor()
 			->getMock();
 		$r->container['request'] = $request;

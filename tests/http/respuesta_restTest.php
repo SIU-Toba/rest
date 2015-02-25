@@ -6,9 +6,9 @@
  * Time: 12:39 PM
  */
 
-namespace rest\tests\http;
+namespace SIUToba\rest\tests\http;
 
-use rest\http\respuesta_rest;
+use SIUToba\rest\http\respuesta_rest;
 
 class respuesta_restTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +25,7 @@ class respuesta_restTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException rest\lib\rest_error
+	 * @expectedException SIUToba\rest\lib\rest_error
 	 */
 	public function testGetNotFound()
 	{
@@ -35,7 +35,7 @@ class respuesta_restTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException rest\lib\rest_error
+	 * @expectedException SIUToba\rest\lib\rest_error
 	 */
 	public function testNotFound()
 	{

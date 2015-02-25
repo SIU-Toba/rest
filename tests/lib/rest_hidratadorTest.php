@@ -1,8 +1,8 @@
 <?php
 
-namespace rest\tests\lib;
+namespace SIUToba\rest\tests\lib;
 
-use rest\lib\rest_hidratador;
+use SIUToba\rest\lib\rest_hidratador;
 
 class rest_hidratadorTest extends \PHPUnit_Framework_TestCase
 {
