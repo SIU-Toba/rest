@@ -10,6 +10,10 @@ use SIUToba\rest\lib\rest_instanciador;
 use SIUToba\rest\lib\ruteador;
 use SIUToba\rest\rest;
 
+/**
+ * @TODO: refactorizar esto - no es critico, pero se fue extendiendo, y no tiene tests (ups)
+ *
+ */
 class controlador_docs
 {
     protected $api_root;
@@ -96,6 +100,9 @@ class controlador_docs
         $reflexion = $this->get_annotaciones_de_path($path);
         $metodos = $reflexion->get_metodos();
 
+        $montaje = $this->get_montaje_de_path($path);
+        $prefijo_montaje = $montaje ? '/' . $montaje : '';
+
         foreach ($metodos as $metodo) {
             $parametros = $metodo['parametros'];
             $nombre_metodo = $metodo['nombre'];
@@ -117,30 +124,35 @@ class controlador_docs
             $params_path = array();
             $partes_path = explode('/', $path);
 
+            if ($montaje) {
+                array_shift($partes_path);
+            }
+
             foreach ($partes_nombre as $parte) {
                 $partes_path[] = $parte;
             }
 
             $nro_parametro = 0;
-            $api_path = ''; // $path;
+            $api_path = $prefijo_montaje; // $path;
 
             foreach ($partes_path as $parte) {
-                $api_path .= "/".$parte;
+                $parte = str_replace('_', '-', $parte); //no permito '_' en las colecciones
+                $api_path .= "/" . $parte;
                 if (isset($parametros[$nro_parametro])) {
                     $param_name = $parametros[$nro_parametro++];
-                    $api_path .= "/{".$param_name."}";
+                    $api_path .= "/{" . $param_name . "}";
                     $params_path[] = $this->get_parametro_path($param_name, $parte);
                 }
             }
             if ($alias) {
-                $api_path .= '/'.$alias;
+                $api_path .= '/' . $alias;
             }
             ////--------------------------------------------------------
             $params_query = $reflexion->get_parametros_metodo($metodo, 'query');
             $params_body = $reflexion->get_parametros_metodo($metodo, 'body');
 
             $operation = array();
-            $operation['tags'] = array($path);
+            $operation['tags'] = array( str_replace('_', '-', $path)); //cambio el _ para mostrarlo
             $operation['method'] = strtolower($prefijo_metodo);
             $operation['summary'] = $reflexion->get_summary_metodo($metodo);
             $operation['description'] = $reflexion->get_notes_metodo($metodo);
@@ -176,7 +188,7 @@ class controlador_docs
         $orden_ops = array();
         foreach ($paths as $metodo => $detalle) {
             //3GET,3PUT,6DELETE,6UPDATE
-            $orden_ops[] = strlen($metodo).$metodo;
+            $orden_ops[] = strlen($metodo) . $metodo;
         }
         array_multisort($orden_ops, SORT_ASC, $paths);
     }
@@ -211,10 +223,10 @@ class controlador_docs
         $recurso = substr($clase_recurso, strlen($prefijo)); //padre
         if ($this->termina_con($recurso, dirname($path_relativo))) {
             // /rest/padre/hijo/recurso_hijo.php  => /padre/hijo
-            $url = substr($path_relativo, 0, -strlen($clase_recurso.'.php') - 1);
+            $url = substr($path_relativo, 0, -strlen($clase_recurso . '.php') - 1);
         } else {
             // /rest/padre/recurso_hijo.php => /padre/hijo
-            $url = substr($path_relativo, 0, -strlen($clase_recurso.'.php'));
+            $url = substr($path_relativo, 0, -strlen($clase_recurso . '.php'));
             $url .= $recurso;
         }
 
@@ -233,6 +245,22 @@ class controlador_docs
 
         return new anotaciones_docs($archivo['archivo']);
     }
+
+    protected function get_montaje_de_path($path)
+    {
+        $lector = rest::app()->lector_recursos; //new lector_recursos_archivo($this->api_root);
+
+        $partes_url = explode('/', $path);
+
+        if ($es_montaje = $lector->es_montaje($partes_url[0])) {
+            $montaje = $partes_url[0];
+        } else {
+            $montaje = "";
+        }
+
+        return $montaje;
+    }
+
 
     /**
      * @param $path
@@ -253,7 +281,7 @@ class controlador_docs
             $specs = $modelo->to_swagger($objeto->_get_modelos());
             $this->list['definitions'] = array_merge($this->list['definitions'], $specs);
         } else {
-            rest::app()->logger->debug('El objeto no tiene el metodo _get_modelos. Clase: '.get_class($objeto));
+            rest::app()->logger->debug('El objeto no tiene el metodo _get_modelos. Clase: ' . get_class($objeto));
 
             return array();
         }

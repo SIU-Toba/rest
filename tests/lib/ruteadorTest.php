@@ -155,6 +155,7 @@ class ruteadorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($parametros, $rec->parametros);
     }
 
+
     public function testAliases()
     {
         $path = 'padre/alias';

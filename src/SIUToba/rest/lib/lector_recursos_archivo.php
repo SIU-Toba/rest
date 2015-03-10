@@ -25,11 +25,14 @@ class lector_recursos_archivo
      */
     public function get_recurso($path, $montaje = '')
     {
+        $prefijo_montaje =!empty($montaje)? DIRECTORY_SEPARATOR.$montaje: '';
+
+
         //Busco del mas especifico al mas general
         while (!empty($path)) {
             $recurso = array_pop($path);
             if (!empty($path)) {
-                $ruta_padres = $montaje.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $path);
+                $ruta_padres = $prefijo_montaje.implode(DIRECTORY_SEPARATOR, $path);
             } else {
                 $ruta_padres = $montaje;
             }
@@ -72,9 +75,11 @@ class lector_recursos_archivo
         $como_carpeta_archivo = $directorio.$name.DIRECTORY_SEPARATOR.$nombre_recurso;
 
         if ($file = $this->obtener_archivo($como_archivo)) {
+
             return $file;
         }
         if ($file = $this->obtener_archivo($como_carpeta_archivo)) {
+//            echo $file . "- $directorio - Path:$path - Name: $name\n";
             return $file;
         }
 

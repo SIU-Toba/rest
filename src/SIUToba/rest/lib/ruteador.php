@@ -42,6 +42,8 @@ class ruteador
             if ($key % 2) {
                 $parametros[] = $valor;
             } else {
+                $valor = str_replace('_', ' ', $valor); //no permito '_' en las colecciones
+                $valor = str_replace('-', '_', $valor); //paso todos los - de la url a '_'
                 $colecciones[] = $valor;
             }
         }
