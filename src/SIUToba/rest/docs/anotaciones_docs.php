@@ -103,7 +103,7 @@ class anotaciones_docs
         if (isset($this->anotaciones_clase['description'])) {
             $desc = $this->anotaciones_clase['description'][0];
         } else {
-            $desc = "[@description de la clase]";
+            $desc = "[@descripcion de la clase]";
         }
 
         return $desc;
@@ -171,7 +171,6 @@ class anotaciones_docs
                     $api_parameters[] = $param;
                 }
             }
-//            unset($anotaciones['param_'. $type]);
         }
 
         return $api_parameters;
@@ -227,9 +226,10 @@ class anotaciones_docs
             foreach ($metodo['anotaciones']['responses'] as $respuesta) {
                 $matches = array();
                 //200 [array] $tipo descripcion
-                if (0 === preg_match('#(\d\d\d)\s+(array)?\s*(\$\w*)?\s*(.*)#', $respuesta, $matches)) {
-                    continue;
-                };
+                $resultado = preg_match("/(\d{3})?\s*([ary]*)\s*(\{[\":\w\$\s]+\})?\s*(.*)/i", $respuesta, $matches);
+                 if (0 === $resultado || false === $resultado) {    
+                        continue;
+                }
 
                 $status = $matches[1];
 
@@ -244,10 +244,10 @@ class anotaciones_docs
                 }
                 $mje = $matches[4];
 
-                $resObj = array(
-                    'schema' => $schema,
-                    'description' => $mje,
-                );
+                $resObj = array('description' => $mje);
+                if (schema != '') {
+                    $resObj['schema'] = $schema;
+                }
 
                 $respuestas[$status] = $resObj;
             }
@@ -268,18 +268,21 @@ class anotaciones_docs
      */
     protected function get_tipo_datos($tipo)
     {
-        if (empty($tipo)) {
+        $tipo = preg_replace("#[\{\}\"\s]#",'', $tipo);
+        if (trim($tipo) == '') {
             return;
         }
-        if ($tipo[0] == '$') {
-            $tipo = ltrim($tipo, '$');
-            $tipoRef = array('$ref' => "#/definitions/".$tipo);
 
-            return $tipoRef;
+        $refs = explode(':', $tipo);        
+        if (false === $refs) {
+            $tipoRef = array('type' => trim($tipo));                            //Basic type - no name
         } else {
-            $tipo = array('type' => $tipo);
-
-            return $tipo;
-        }
+            if (substr($refs[0], 0, 1) == '$') {
+                $tipoRef = array('$ref' => "#/definitions/". trim($refs[1]));   //Referred type {"$ref": "Defined@Model"}
+            } else {
+                $tipoRef = array('type' => trim($refs[1]));                     //Basic type - named {"id" : "integer"} 
+            }       
+        }   
+        return $tipoRef;        
     }
 }

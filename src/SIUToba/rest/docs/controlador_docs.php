@@ -47,11 +47,9 @@ class controlador_docs
         $list = array();
         $this->list = & $list;
         $list['swagger'] = "2.0";
-        $list['info'] = array();
+        $list['info'] = array('title' => 'API Title', 'version' => '1.0');                               //TODO: Read from settings
         $list['basePath'] = $this->api_url;
         $list['produces'] = array("application/json");
-        $list['apiVersion'] = '1.0';
-        $list['paths'] = array();
 
         $this->list['paths'] = array();
         $this->list['definitions'] = array();
@@ -73,7 +71,7 @@ class controlador_docs
         $path = realpath($this->api_root);
         $archivos_api = $this->obtener_clases_directorio($path);
 
-        foreach ($archivos_api as $nombre => $objeto) {
+        foreach (array_keys($archivos_api) as $nombre) {
             if ('php' !== pathinfo($nombre, PATHINFO_EXTENSION)) {
                 continue;
             }
@@ -152,7 +150,7 @@ class controlador_docs
             $params_body = $reflexion->get_parametros_metodo($metodo, 'body');
 
             $operation = array();
-            $operation['tags'] = array( str_replace('_', '-', $path)); //cambio el _ para mostrarlo
+            $operation['tags'] = array(str_replace('_', '-', $path)); //cambio el _ para mostrarlo
             $operation['method'] = strtolower($prefijo_metodo);
             $operation['summary'] = $reflexion->get_summary_metodo($metodo);
             $operation['description'] = $reflexion->get_notes_metodo($metodo);
