@@ -73,7 +73,7 @@ class annotaciones_docsTest extends \PHPUnit_Framework_TestCase
         $respuestas = $a->get_respuestas_metodo($metodos[0]);
 
         $schema = array('type' => 'array',
-            'items' => array('$ref' => '#/definitions/Persona'), );
+                        'items' => array('$ref' => '#/definitions/Persona'), );
 
         $this->assertEquals(3, count($respuestas));
 

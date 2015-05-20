@@ -245,7 +245,7 @@ class anotaciones_docs
                 $mje = $matches[4];
 
                 $resObj = array('description' => $mje);
-                if (schema != '') {
+                if ($schema != '') {
                     $resObj['schema'] = $schema;
                 }
 
