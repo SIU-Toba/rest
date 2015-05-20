@@ -26,48 +26,47 @@ interface modelable
 //		Ejemplos
 //
 //	  		'Curso' => array(
-//	 				'id_curso_externo'=> array('_mapeo' => 'curso'),
-//	 				'nombre' => array(),
-//	 				'estado' => array('enum' => array('A', 'B')),
-//	 				'id_plataforma' => array('_mapeo' => 'sistema'),
+//	 				'id_curso_externo'=> array('type' => 'string', _mapeo' => 'curso'),
+//	 				'nombre' => array('type' => 'string'),
+//	 				'estado' => array('type' => 'string','enum' => array('A', 'B')),
+//	 				'id_plataforma' => array('type' => 'string','_mapeo' => 'sistema'),
 //	 				'comisiones' => array('type'=> 'array', 'items'=> array('type'=> 'Comision')),
 //	 		),
 //
 //			'Comision' => array(
-//				"comision"          => array('type' => 'integer'),
-//				"nombre",
-//				"catedra"    => array('_mapeo' => "nombre_catedra"),
+//				"comision"	=> array('type' => 'integer'),
+//				"nombre" 	=> array ('type' => 'string') ,
+//				"catedra"    	=> array('type' => 'string','_mapeo' => "nombre_catedra"),
 //
-//				"modalidades"  => array('_mapeo' => "nombre_modalidad",
-//				                        "type"   => "array", "items" => array("\$ref" => "string")
+//				"modalidades"  	=> array('_mapeo' => "nombre_modalidad", "type"   => "array", "items" => array("\$ref" => "string")),
+//				
+//				"turno"		=> array('_compuesto' =>
+//					                             array('turno'        => array('type' => 'string',),
+//					                                   "nombre" => array('type' => 'string','_mapeo' => "nombre_turno"))
 //				),
-//				"turno"             => array('_compuesto' =>
-//					                             array('turno'        => array(),
-//					                                   "nombre" => array('_mapeo' => "nombre_turno"))
+//				'ubicacion'	=> array('_compuesto' =>
+//					                             array('ubicacion'        => array('type' => 'string',),
+//					                                   'nombre_ubicacion' => array('type' => 'string','_mapeo' => "nombre"))
 //				),
-//				'ubicacion'         => array('_compuesto' =>
-//					                             array('ubicacion'        => array(),
-//					                                   'nombre_ubicacion' => array('_mapeo' => "nombre"))
-//				),
-//				'actividad'         => array('_compuesto' => array(
-//					'codigo' => array('_mapeo' => "codigo_actividad"),
-//					'nombre' => array('_mapeo' => "nombre_actividad"))
+//				'actividad'	=> array('_compuesto' => array(
+//								'codigo' => array('type' => 'string','_mapeo' => "codigo_actividad"),
+//								'nombre' => array('type' => 'string','_mapeo' => "nombre_actividad"))
 //				),
 //
 //				'periodo_lectivo'   => array('_compuesto' => array(
-//					'periodo_lectivo',
-//					'nombre' => array('_mapeo' => "nombre_periodo"),
-//				)
+//								'periodo_lectivo' => array('type' => 'string'),
+//								'nombre' => array('type' => 'string','_mapeo' => "nombre_periodo"))
 //				),
 //			),
 //		);
 //
-//     'Agrupacion' => array(
-//			'comision' ,
-//			'horarios' => array('_agrupado_por' => 'comision', '_compuesto' =>
-//								array('dia'    => array('_mapeo' => 'horario_dia'),
-//									  'inicio' => array('_mapeo' => 'horario_inicio'),
-//									  'fin'    => array('_mapeo' => 'horario_fin')
+//  		'Agrupacion' => array(
+//					'comision' => array('type' => 'Comision') ,
+//					'horarios' => array('_agrupado_por' => 'comision',
+//							    '_compuesto' =>
+//								array('dia'    => array('type' => 'date','_mapeo' => 'horario_dia'),
+//									  'inicio' => array('type' => 'string','_mapeo' => 'horario_inicio'),
+//									  'fin'    => array('type' => 'string','_mapeo' => 'horario_fin')
 //								),
 //							)
 //			)

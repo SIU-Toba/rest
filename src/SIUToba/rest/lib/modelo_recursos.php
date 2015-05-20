@@ -17,7 +17,6 @@ class modelo_recursos
         $out = array();
         foreach ($models as $id_modelo => $m) {
             $nuevo = $this->to_swagger_modelo($id_modelo, $m);
-
             $out[$id_modelo] = $nuevo;
         }
 
@@ -30,10 +29,12 @@ class modelo_recursos
         $properties = array();
 
         foreach ($modelo_in as $campo => $def) {
-            $this->get_property($properties, $campo, $def);
+            $this->get_property($properties, $campo, $def);                 //$properties is an in/out parameter...... Damocles sword is over our neck!!
+            if (isset($properties[$campo]['required'])) {
+                $required[] = $campo;
+            }
         }
-
-//		$required[] = $campo;
+		
         return $nuevo = array(
             'id' => $id,
             'required' => array_values($required),
@@ -44,19 +45,12 @@ class modelo_recursos
     protected function get_property(&$properties, $campo, $def)
     {
         $property = array();
-        if (is_numeric($campo)) { //solo el campo  0=> nombre
-            $campo = $def;
-            $def = array();
-        }
-
-        //TODO, hacer mas modelos para representar estos subrecursos?
+        //TODO, hacer mas modelos para representar estos subrecursos? eso impacta en definiciones y herencia entre ellas?
         if (isset($def['_compuesto'])) {
-            $def = array('type' => $campo); //lo muestro asi por ahora
-        }
-
-        //	Defaults para los campos
-        if (!isset($def['type'])) {
-            $def['type'] = 'string';
+            //$def = array('type' => $campo); //lo muestro asi por ahora
+            $aux = array();
+            $this->get_property($aux, $campo, $def['_compuesto']);
+            $def = array('type' => $aux);
         }
 
         //paso derecho los campos no especiales
