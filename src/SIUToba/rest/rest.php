@@ -99,6 +99,8 @@ class rest
             'debug' => false,
             // HTTP
             'http.version' => '1.1',
+            // API version
+            'api_version' => '1.0.0',
         );
     }
 
@@ -122,6 +124,7 @@ class rest
         $this->container->singleton('response', function ($c) {
             $respuesta = new respuesta_rest();
             $respuesta->set_encoding_datos($c['settings']['encoding']);
+            $respuesta->set_api_version($c['settings']['api_version']);
 
             return $respuesta;
         });
