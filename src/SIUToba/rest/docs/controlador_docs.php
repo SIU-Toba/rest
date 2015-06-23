@@ -71,7 +71,7 @@ class controlador_docs
         $path = realpath($this->api_root);
         $archivos_api = $this->obtener_clases_directorio($path);
 
-        foreach (array_keys($archivos_api) as $nombre) {
+        foreach ($archivos_api as $nombre => $objeto) {
             if ('php' !== pathinfo($nombre, PATHINFO_EXTENSION)) {
                 continue;
             }
