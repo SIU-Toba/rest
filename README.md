@@ -1,52 +1,100 @@
 
 [![Build Status](https://travis-ci.org/SIU-Toba/rest.svg?branch=master)](https://travis-ci.org/SIU-Toba/rest)
 
-## rest
-Esta librerÃ­a permite servir APIs rest de forma simple pero estructurada. Se toman algunas decisiones en pos de eliminar el mayor boilerplate posible.
+# REST
 
+Esta librería permite servir APIs rest de forma simple pero estructurada. La misma no posee requisitos específicos de Toba y puede utilizarse de manera standalone en otros sistemas. Para las versiones de Toba 2.5 y 2.6 se encuentra ubicada en [_php/lib/rest_](https://repositorio.siu.edu.ar/svn/toba/trunk_versiones/2.6/php/lib/rest). En cambio, a partir de la versión 2.7 de Toba, la misma se encuentra dentro de la carpeta _php/vendor/siu-toba/rest_, haciendo referencia a [SIU-Toba/rest](https://github.com/SIU-Toba/rest) mediante el esquema de composer.
 
-### Instalacion
+## Creación de una API REST
 
-composer require siu-toba/rest
+La definición de una API REST se basa en convenciones y no requiere especificar metadatos.
 
-Se deben proveer algunas dependencias para configurar y adaptar la librerÃ­a. Por ejemplo:
+###Definición de Recursos
 
-```php
-	$settings = array(
-	    'path_controladores' => $path_controladores,
-	    'url_api' => $url_base,
-	    'prefijo_api_docs' => 'api-docs',
-	    'debug' => !$es_produccion,
-	        'encoding' => 'latin1'
-	);
-	$app = new SIUToba\rest\rest($settings);
-	
-	$app->container->singleton('logger', function () {
-	    return new toba_rest_logger();
-	});
-	//ver otros mecanismos de autenticacion, aca usamo 'oauth2' que es el mas complejo:
-	$app->container->singleton('autenticador', function () use ($conf) {
-	    $conf_auth = $conf->get('oauth2');
-	    $cliente = new \GuzzleHttp\Client(array('base_url' => $conf_auth['endpoint_decodificador_url']));
-	    $decoder = new oauth_token_decoder_web($cliente);
-	    $decoder->set_cache_manager(new \Doctrine\Common\Cache\ApcCache());
-	    $decoder->set_tokeninfo_translation_helper(new autenticacion\oauth2\tokeninfo_translation_helper_arai());
-	}
-	$app->container->singleton('autorizador', function () use ($conf) {
-	    $conf_auth = $conf->get('oauth2');
-	    if (!isset($conf_auth['scopes'])) {
-	        die("es necesario definir el parÃ¡metro 'scopes' en el bloque oauth2 de la configuraciÃ³n");
-	    }
-	    $auth = new autorizacion_scopes();
-	    $auth->set_scopes_requeridos(array_map('trim', explode(',', $conf_auth['scopes'])));
-	    return $auth;
-	});
-	
-	$app->container->singleton('db', function () {
-	    return toba::db();
-	});
-	
-	
-	$app->run(); //le damos control
+Toda información que pueda ser nombrada es un Recurso, por ejemplo: documentos, imagenes, colecciones de otros recursos, tablas definidas en una base de datos, etc.
+Los recursos a publicar/compartir para un determinado proyecto deben indicarse mediante una clase PHP dentro de la carpeta _/proyectos/nombre_proyecto/php/rest/_. Por Ejemplo:
 
+    php/rest/recurso_personas.php: se publica en  http://../rest/personas
+    php/rest/personas/recurso_personas.php: se publica en  http://../rest/personas
+    php/rest/recurso_deportes.php: se publica en  http://../rest/deportes 
+
+Las clases de los recursos deben tener el prefijo 'recurso_', por ejemplo, para el recurso 'personas', se debe definir la clase recurso_personas.php. Cualquier otra clase definida sin dicho prefijo, no será interpretada como recurso.
+
+Cada acceso al recurso tiene asociado un método en la clase del mismo, recibiendo como parámetros la parte dinámica de la URL. Por ejemplo, para el siguiente recurso se utiliza el parametro id como identificador:
+
+    function get($id) equivale a GET /rest/{id}: retorna un recurso puntual
+    function delete($id) equivale a DELETE /rest/{id}: elimina un recurso puntual
+    function put($id) equivale a PUT /rest/{id}: modifica parte de los atributos del recuso 
+
+``` php
+<?php
+class recurso_personas
+{
+
+    function get($id_persona)
+    {
+        $modelo = new modelo_persona($id_persona);
+        $fila = $modelo->get_datos();
+        rest::response()->get($fila);        
+    }
+
+    function delete($id_persona)
+    {
+        $modelo = new modelo_persona($id_persona);
+        $ok = $modelo->delete();
+        $errores = array();
+        if (!$ok) {
+            rest::response()->not_found();
+        } else {
+            rest::response()->delete($errores);
+        }
+    }
+
+    function put($id_persona)
+    {
+        $datos = rest::request()->get_body_json();
+        $modelo = new modelo_persona($id_persona);
+        $ok = $modelo->update($datos);
+        if (!$ok) {
+            rest::response()->not_found();
+        } else {
+            rest::response()->put();
+        }
+    }
+}
 ```
+Para los casos en los que se requiera recuperar un conjunto de recursos o dar de alta un recurso en particular, se utiliza el sufijo list (para hacer referencia que es sobre la lista de valores y no sobre uno puntual):
+
+    function get_list() equivale a GET /rest: retorna el recurso como un conjunto
+    function post_list($id) equivale a POST /rest: da de alta un nuevo recurso
+
+``` php
+<?php
+class recurso_personas
+{
+
+    function post_list()
+    {
+        $datos = rest::request()->get_body_json();
+        $nuevo = modelo_persona::insert($datos);
+        $fila = array('id' => $nuevo);
+        rest::response()->post($fila);
+    }
+
+    function get_list()
+    {
+        $personas = modelo_persona::get_personas($where);
+        rest::response()->get($personas);
+    }
+```
+###Sub APIs
+
+A partir de Toba 2.7 es posible agrupar recursos en subcarpetas dentro de _/rest/_, con **hasta dos niveles** de profundidad, permitiendo asi, definir sub APIs y lograr una mejor división semántica que facilite la aplicación de distintas configuraciones según el caso. Además estas subcarpetas sirven de prefijo de acceso en la URL, por ejemplo _/personas/deportes/_. 
+
+Por ejemplo, una API que brinda servicios al usuario actual, puede tener las subdivisiones 'admin' y 'me'. Para esto se deberá crear una carpeta _/rest/me_ y _/rest/admin_ sin ningún recurso dentro. Si se quieren conocer las mascotas del usuario actual, se debe crear un recurso 'mascotas' en _/rest/me/mascotas/recurso_mascotas.php_ y luego, se podrá acceder por medio de la url _/rest/me/mascotas_. La alternativa, mas compleja, sin utilizar sub APIs, es accediendo a _/rest/usuarios/{usuario_actual}/mascotas_.
+
+##Links relacionados
+* [**Testing de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Testing)
+* [**Documentación de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Documentación)
+* [**Convenciones en la creación de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Convenciones)
+* [**Uso de la libreria REST standalone**](https://github.com/SIU-Toba/rest/wiki/Uso-standalone)
