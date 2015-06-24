@@ -1,3 +1,4 @@
 vendor
 *.iml
-
+.log.git
+composer.lock
