@@ -210,7 +210,7 @@ class rest
         } catch (rest_error_autenticacion $ex) {
             $ex->configurar_respuesta($this->response);
             $this->logger->info("Excepcion de Autenticacion. Autenticar y reintentar");
-            $this->logger->var_dump($this->response);
+            $this->logger->info(var_export($this->response, true));
         } catch (rest_error_autorizacion $ex) {
             $ex->configurar_respuesta($this->response);
             $this->logger->info("Error de Autorizacion.");
@@ -218,7 +218,7 @@ class rest
             // Excepciones controladas, partel del flujo normal de la API
             $ex->configurar_respuesta($this->response);
             $this->logger->info("La api retornó un error. Status: ".$this->response->get_status());
-            $this->logger->var_dump($this->response->get_data());
+            $this->logger->info(var_export($this->response->get_data(), true));
         } catch (Exception $ex) {
             // Excepcion del codigo del proyecto - Error de programación, no tiene que entrar aca en el flujo normal
             $this->logger->error("Error al ejecutar el pedido. ".$ex->getMessage());
@@ -230,9 +230,11 @@ class rest
         $this->vista->escribir();
         $this->logger->debug("Pedido finalizado");
         if ($this->config('debug')) {
-            $this->logger->var_dump($this->response);
+            $this->logger->debug(var_export($this->response, true));
         }
-        $this->logger->guardar();
+        if (method_exists($this->logger, 'guardar')) { // es el logger de toba
+            $this->logger->guardar();
+        }
     }
 
     /**
