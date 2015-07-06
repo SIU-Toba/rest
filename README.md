@@ -3,28 +3,36 @@
 
 # REST
 
-Esta librerÌa permite servir APIs rest de forma simple pero estructurada. La misma no posee requisitos especÌficos de Toba y puede utilizarse de manera standalone en otros sistemas. Para las versiones de Toba 2.5 y 2.6 se encuentra ubicada en [_php/lib/rest_](https://repositorio.siu.edu.ar/svn/toba/trunk_versiones/2.6/php/lib/rest). En cambio, a partir de la versiÛn 2.7 de Toba, la misma se encuentra dentro de la carpeta _php/vendor/siu-toba/rest_, haciendo referencia a [SIU-Toba/rest](https://github.com/SIU-Toba/rest) mediante el esquema de composer.
+Esta librer√≠a permite servir APIs rest de forma simple pero estructurada. La misma no posee requisitos espec√≠ficos de Toba y puede utilizarse de manera standalone en otros sistemas. Para las versiones de Toba 2.5 y 2.6 se encuentra ubicada en [_php/lib/rest_](https://repositorio.siu.edu.ar/svn/toba/trunk_versiones/2.6/php/lib/rest). En cambio, a partir de la versi√≥n 2.7 de Toba, la misma se encuentra dentro de la carpeta _php/vendor/siu-toba/rest_, haciendo referencia a [SIU-Toba/rest](https://github.com/SIU-Toba/rest) mediante el esquema de composer.
 
-## CreaciÛn de una API REST
+## Creaci√≥n de una API REST
 
-La definiciÛn de una API REST se basa en convenciones y no requiere especificar metadatos.
+La definici√≥n de una API REST se basa en convenciones y no requiere especificar metadatos.
 
-###DefiniciÛn de Recursos
+###Definici√≥n de Recursos
 
-Toda informaciÛn que pueda ser nombrada es un Recurso, por ejemplo: documentos, imagenes, colecciones de otros recursos, tablas definidas en una base de datos, etc.
+Toda informaci√≥n que pueda ser nombrada es un Recurso, por ejemplo: documentos, imagenes, colecciones de otros recursos, tablas definidas en una base de datos, etc.
 Los recursos a publicar/compartir para un determinado proyecto deben indicarse mediante una clase PHP dentro de la carpeta _/proyectos/nombre_proyecto/php/rest/_. Por Ejemplo:
 
-    php/rest/recurso_personas.php: se publica en  http://../rest/personas
-    php/rest/personas/recurso_personas.php: se publica en  http://../rest/personas
-    php/rest/recurso_deportes.php: se publica en  http://../rest/deportes 
+* `php/rest/recurso_personas.php` se publica en  `http://../rest/personas`
+* `php/rest/personas/recurso_personas.php` se publica en `http://../rest/personas`
+* `php/rest/recurso_deportes.php` se publica en `http://../rest/deportes`
 
-Las clases de los recursos deben tener el prefijo 'recurso_', por ejemplo, para el recurso 'personas', se debe definir la clase recurso_personas.php. Cualquier otra clase definida sin dicho prefijo, no ser· interpretada como recurso.
+Las clases de los recursos deben tener el prefijo `recurso_`, por ejemplo, para el recurso `personas`, se debe definir la clase `recurso_personas.php`. Cualquier otra clase definida sin dicho prefijo, no ser√° interpretada como recurso.
 
-Cada acceso al recurso tiene asociado un mÈtodo en la clase del mismo, recibiendo como par·metros la parte din·mica de la URL. Por ejemplo, para el siguiente recurso se utiliza el parametro id como identificador:
+Cada acceso al recurso tiene asociado un m√©todo en la clase del mismo, recibiendo como par√°metros la parte din√°mica de la URL. Por ejemplo, para el siguiente recurso se utiliza el parametro `id` como identificador:
+```  php
+    //Equivale a GET /rest/{id}: retorna un recurso puntual
+    function get($id) ...
+    
+    //Equivale a DELETE /rest/{id}: elimina un recurso puntual
+    function delete($id) ...
+    
+    //Equivale a PUT /rest/{id}: modifica parte de los atributos del recuso 
+    function put($id) ...    
+```    
 
-    function get($id) equivale a GET /rest/{id}: retorna un recurso puntual
-    function delete($id) equivale a DELETE /rest/{id}: elimina un recurso puntual
-    function put($id) equivale a PUT /rest/{id}: modifica parte de los atributos del recuso 
+Aqu√≠ un ejemplo completo de recurso `personas`:
 
 ``` php
 <?php
@@ -89,12 +97,12 @@ class recurso_personas
 ```
 ###Sub APIs
 
-A partir de Toba 2.7 es posible agrupar recursos en subcarpetas dentro de _/rest/_, con **hasta dos niveles** de profundidad, permitiendo asi, definir sub APIs y lograr una mejor divisiÛn sem·ntica que facilite la aplicaciÛn de distintas configuraciones seg˙n el caso. Adem·s estas subcarpetas sirven de prefijo de acceso en la URL, por ejemplo _/personas/deportes/_. 
+A partir de Toba 2.7 es posible agrupar recursos en subcarpetas dentro de _/rest/_, con **hasta dos niveles** de profundidad, permitiendo asi, definir sub APIs y lograr una mejor divisi√≥n sem√°ntica que facilite la aplicaci√≥n de distintas configuraciones seg√∫n el caso. Adem√°s estas subcarpetas sirven de prefijo de acceso en la URL, por ejemplo _/personas/deportes/_. 
 
-Por ejemplo, una API que brinda servicios al usuario actual, puede tener las subdivisiones 'admin' y 'me'. Para esto se deber· crear una carpeta _/rest/me_ y _/rest/admin_ sin ning˙n recurso dentro. Si se quieren conocer las mascotas del usuario actual, se debe crear un recurso 'mascotas' en _/rest/me/mascotas/recurso_mascotas.php_ y luego, se podr· acceder por medio de la url _/rest/me/mascotas_. La alternativa, mas compleja, sin utilizar sub APIs, es accediendo a _/rest/usuarios/{usuario_actual}/mascotas_.
+Por ejemplo, una API que brinda servicios al usuario actual, puede tener las subdivisiones 'admin' y 'me'. Para esto se deber√° crear una carpeta _/rest/me_ y _/rest/admin_ sin ning√∫n recurso dentro. Si se quieren conocer las mascotas del usuario actual, se debe crear un recurso 'mascotas' en _/rest/me/mascotas/recurso_mascotas.php_ y luego, se podr√° acceder por medio de la url _/rest/me/mascotas_. La alternativa, mas compleja, sin utilizar sub APIs, es accediendo a _/rest/usuarios/{usuario_actual}/mascotas_.
 
 ##Links relacionados
 * [**Testing de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Testing)
-* [**DocumentaciÛn de APIs REST**](https://github.com/SIU-Toba/rest/wiki/DocumentaciÛn)
-* [**Convenciones en la creaciÛn de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Convenciones)
+* [**Documentaci√≥n de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Documentaci√≥n)
+* [**Convenciones en la creaci√≥n de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Convenciones)
 * [**Uso de la libreria REST standalone**](https://github.com/SIU-Toba/rest/wiki/Uso-standalone)
