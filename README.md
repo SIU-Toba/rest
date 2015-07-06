@@ -3,7 +3,7 @@
 
 # REST
 
-Esta librería permite servir APIs rest de forma simple pero estructurada. La misma no posee requisitos específicos de Toba y puede utilizarse de manera standalone en otros sistemas. Para las versiones de Toba 2.5 y 2.6 se encuentra ubicada en [_php/lib/rest_](https://repositorio.siu.edu.ar/svn/toba/trunk_versiones/2.6/php/lib/rest). En cambio, a partir de la versión 2.7 de Toba, la misma se encuentra dentro de la carpeta _php/vendor/siu-toba/rest_, haciendo referencia a [SIU-Toba/rest](https://github.com/SIU-Toba/rest) mediante el esquema de composer.
+Esta librería permite servir APIs rest de forma simple pero estructurada. La misma no posee requisitos específicos de Toba y puede utilizarse de manera standalone en otros sistemas.
 
 ## Creación de una API REST
 
@@ -73,8 +73,13 @@ class recurso_personas
 ```
 Para los casos en los que se requiera recuperar un conjunto de recursos o dar de alta un recurso en particular, se utiliza el sufijo list (para hacer referencia que es sobre la lista de valores y no sobre uno puntual):
 
-    function get_list() equivale a GET /rest: retorna el recurso como un conjunto
-    function post_list($id) equivale a POST /rest: da de alta un nuevo recurso
+``` php
+    // Equivale a GET /rest: retorna el recurso como un conjunto
+    function get_list() ...
+    
+    // Equivale a POST /rest: da de alta un nuevo recurso
+    function post_list($id) ...
+```
 
 ``` php
 <?php
@@ -97,9 +102,9 @@ class recurso_personas
 ```
 ###Sub APIs
 
-A partir de Toba 2.7 es posible agrupar recursos en subcarpetas dentro de _/rest/_, con **hasta dos niveles** de profundidad, permitiendo asi, definir sub APIs y lograr una mejor división semántica que facilite la aplicación de distintas configuraciones según el caso. Además estas subcarpetas sirven de prefijo de acceso en la URL, por ejemplo _/personas/deportes/_. 
+La librería permite agrupar recursos en subcarpetas, con **hasta dos niveles** de profundidad, permitiendo asi, definir sub APIs y lograr una mejor división semántica que facilite la aplicación de distintas configuraciones según el caso. Además estas subcarpetas sirven de prefijo de acceso en la URL, por ejemplo _/personas/deportes/_. 
 
-Por ejemplo, una API que brinda servicios al usuario actual, puede tener las subdivisiones 'admin' y 'me'. Para esto se deberá crear una carpeta _/rest/me_ y _/rest/admin_ sin ningún recurso dentro. Si se quieren conocer las mascotas del usuario actual, se debe crear un recurso 'mascotas' en _/rest/me/mascotas/recurso_mascotas.php_ y luego, se podrá acceder por medio de la url _/rest/me/mascotas_. La alternativa, mas compleja, sin utilizar sub APIs, es accediendo a _/rest/usuarios/{usuario_actual}/mascotas_.
+Por ejemplo, una API que brinda servicios al usuario actual, puede tener las subdivisiones `admin` y `me`. Para esto se deberá crear una carpeta _/rest/me_ y _/rest/admin_ sin ningún recurso dentro. Si se quieren conocer las `mascotas` del usuario actual, se debe crear un recurso `mascotas` en _/rest/me/mascotas/recurso_mascotas.php_ y luego, se podrá acceder por medio de la url _/rest/me/mascotas_. La alternativa, mas compleja, sin utilizar sub APIs, es accediendo a _/rest/usuarios/{usuario_actual}/mascotas_.
 
 ##Links relacionados
 * [**Testing de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Testing)
