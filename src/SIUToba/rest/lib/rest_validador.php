@@ -15,6 +15,7 @@ class rest_validador
         self::TIPO_ENUM => "El campo '%s' no pertenece a la lista de opciones válidas. Se recibió '%s'.%s",
         self::TIPO_MAIL => "El campo '%s' debe ser un mail. Se recibió '%s'.%s",
         self::TIPO_CUSTOM => "El campo '%s' no es válido. Se recibió '%s'.%s",
+        self::TIPO_ARREGLO => "El campo '%s' debe ser un arreglo. Se recibió '%s'.%s",
         'campos_no_permitidos' => "Se encontraron campos no permitidos: %s.",
 
     );
@@ -30,6 +31,7 @@ class rest_validador
     const TIPO_CUSTOM = 'custom';
     const TIPO_MAIL = 'mail';
     const TIPO_ENUM = 'enum'; //Parametros: array(opc1, opc2 ..)
+    const TIPO_ARREGLO = 'arreglo';
 
     const MAIL_MAX_LENGTH = 127;
 
@@ -205,6 +207,19 @@ class rest_validador
                 return (false === $min || $l >= $min) && (false === $max || $l <= $max);
             case self::TIPO_ENUM:
                 return in_array($valor, $options);
+            case self::TIPO_ARREGLO:
+                if (is_array($valor)) {
+                    $cant_items = count($valor);
+                    if (isset($options['min']) && $cant_items < $options['min']) {
+                        return false;
+                    }
+                    if (isset($options['max']) && $cant_items > $options['max']) {
+                        return false;
+                    }
+
+                    return true;
+                }
+                return false;                
             case self::TIPO_CUSTOM:
                 $filter = FILTER_VALIDATE_REGEXP;
                 $format = $options['format'];
