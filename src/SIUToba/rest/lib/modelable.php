@@ -15,7 +15,7 @@ interface modelable
     public static function _get_modelos();
 
 //	El modelo se construye con los campos del lado izquiero.
-//	Por defecto son de type=> string y se obtienen de la columna con el mismo nombre
+//	Se obtienen de la columna con el mismo nombre
 //
 //   Los campos especiales son
 //      -- _mapeo: el valor del campo se toma de la columna _mapeo.

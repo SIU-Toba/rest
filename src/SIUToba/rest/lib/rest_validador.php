@@ -56,8 +56,16 @@ class rest_validador
      */
     public static function validar($data, $reglas_spec, $relajar_ocultos = false)
     {
-        $errores = array();
+        $errores = self::validar_recursivo($data, $reglas_spec, $relajar_ocultos);
+        if (!empty($errores)) {
+            throw new rest_error(400, "Error en la validación del recurso", $errores);
+        }
+        return $errores;
+    }
 
+    protected static function validar_recursivo($data, $reglas_spec, $relajar_ocultos)
+    {
+        $errores = array();
         foreach ($reglas_spec as $nombre_campo => $spec_campo) {
             if (is_array($spec_campo) && isset($spec_campo['_validar'])) {
                 $reglas = $spec_campo['_validar'];
@@ -76,18 +84,23 @@ class rest_validador
             $valor_campo = (isset($data[$nombre_campo])) ? $data[$nombre_campo] : null;
             unset($data[$nombre_campo]);
 
-            self::aplicar_reglas($reglas, $nombre_campo, $valor_campo, $errores); //&errores
+            if (is_array($spec_campo) && isset($spec_campo['_compuesto'])) {        //Es un objeto con reglas propias                
+                $result = self::validar_recursivo($valor_campo, $spec_campo['_compuesto'], $relajar_ocultos);
+            } else {
+                $result = self::aplicar_reglas($reglas, $nombre_campo, $valor_campo);
+            }
+            if (! is_null($result)){
+                $errores = array_merge_recursive($errores, $result);    
+            }            
         }
+
         if (!empty($data)) {
             $errores['campos_no_permitidos'][] = sprintf(self::$mensajes['campos_no_permitidos'], implode(', ', array_keys($data)));
         }
-
-        if (!empty($errores)) {
-            throw new rest_error(400, "Error en la validación del recurso", $errores);
-        }
+        return $errores;
     }
 
-    protected static function aplicar_reglas($reglas, $nombre_campo, $valor_campo, &$errores)
+    protected static function aplicar_reglas($reglas, $nombre_campo, $valor_campo)
     {
         if (!is_array($reglas)) { //es valido, es solo un campo permitido
             return;
@@ -109,6 +122,7 @@ class rest_validador
                 $errores[$nombre_campo][] = sprintf(self::$mensajes[$nombre_regla], $nombre_campo, $valor_campo, $args);
             }
         }
+        return $errores;
     }
 
     /*
@@ -200,11 +214,15 @@ class rest_validador
 
                 return false;
             case self::TIPO_LONGITUD:
-                $l = strlen($valor);
-                $min = isset($options['min']) ? $options['min'] : false;
-                $max = isset($options['max']) ? $options['max'] : false;
+                $l = strlen($valor);   
+                if (isset($options['min']) && $l < $options['min']) {
+                        return false;
+                }
+                if (isset($options['max']) && $l > $options['max']) {
+                        return false;
+                }
 
-                return (false === $min || $l >= $min) && (false === $max || $l <= $max);
+                return true;
             case self::TIPO_ENUM:
                 return in_array($valor, $options);
             case self::TIPO_ARREGLO:
