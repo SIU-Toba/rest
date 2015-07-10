@@ -89,7 +89,7 @@ class rest_validador
             } else {
                 $result = self::aplicar_reglas($reglas, $nombre_campo, $valor_campo);
             }
-            if (! is_null($result)){
+            if (is_array($result) && ! empty($result)) {
                 $errores = array_merge_recursive($errores, $result);    
             }            
         }
@@ -106,6 +106,7 @@ class rest_validador
             return;
         }
 
+        $errores = array();
         foreach ($reglas as $regla_key => $regla) { //para todas las reglas del campo
             if (is_numeric($regla_key)) {
                 $nombre_regla = $regla;
