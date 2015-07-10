@@ -120,6 +120,7 @@ class rest_validador
                 $args = $regla_params ?
                     " Parámetros: ".implode(', ', array_keys($regla_params))." => ".implode(', ', $regla_params)
                     : '';
+                $valor_campo = (is_array($valor_campo)) ? var_export($valor_campo, true) : $valor_campo;
                 $errores[$nombre_campo][] = sprintf(self::$mensajes[$nombre_regla], $nombre_campo, $valor_campo, $args);
             }
         }
