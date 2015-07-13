@@ -55,10 +55,14 @@ class rest_instanciador
     {
         $src = file_get_contents($archivo, 'r');
 
+        //-- Caso con namespace
         if (preg_match('#\s*namespace\s+(.+?)\s*;.*class\s+(\w+).+;$#sm', $src, $m)) {
             return $m[1].'\\'.$m[2];
         }
-
+        //-- Caso sin namespace
+        if (preg_match('/class[\s\n]+([a-zA-Z0-9_]+)[\s\na-zA-Z0-9_]+\{/', $src, $m)) {
+            return $m[1];
+        }
         return $class = basename($archivo, '.php');
     }
 }

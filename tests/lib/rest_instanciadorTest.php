@@ -32,6 +32,15 @@ class rest_instanciadorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($objeto instanceof rest_instanciador);
     }
 
+    public function test_instanciacion_distinto_class_name()
+    {
+        $recurso = new rest_instanciador();
+        $recurso->archivo = realpath(__DIR__."/ClassB.php");
+
+        $objeto = $recurso->get_instancia(true);
+        $this->assertEquals(get_class($objeto), "ClassB_otro_nombre_clase");
+    }
+
     /**
      * @depends test_instanciacion_global
      */
