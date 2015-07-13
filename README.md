@@ -18,7 +18,7 @@ Los recursos a publicar/compartir para un determinado proyecto deben indicarse m
 * `php/rest/personas/recurso_personas.php` se publica en `http://../rest/personas`
 * `php/rest/recurso_deportes.php` se publica en `http://../rest/deportes`
 
-Las clases de los recursos deben tener el prefijo `recurso_`, por ejemplo, para el recurso `personas`, se debe definir la clase `recurso_personas.php`. Cualquier otra clase definida sin dicho prefijo, no será interpretada como recurso.
+Los archivos de los recursos deben tener el prefijo `recurso_`, por ejemplo, para el recurso `personas`, se debe definir el archivo `recurso_personas.php`. Cualquier otro archivo definido sin dicho prefijo, no será interpretada como recurso. El nombre en sí de la clase puede diferir del del archivo, no será tomado en cuenta por nada de la librería, simplemente instancia la clase que encuentre en el archivo.
 
 Cada acceso al recurso tiene asociado un método en la clase del mismo, recibiendo como parámetros la parte dinámica de la URL. Por ejemplo, para el siguiente recurso se utiliza el parametro `id` como identificador:
 ```  php
