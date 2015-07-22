@@ -70,7 +70,6 @@ class respuesta_rest extends respuesta
      * Retorna un 204 si es exitoso.
      * Si el recurso no existía, enviar un not_found().
      *
-     * @internal param $exito
      */
     public function delete()
     {
