@@ -23,7 +23,7 @@ class controlador_docs
 
     public function __construct($api_root, $api_url)
     {
-        $this->api_root = $api_root;
+        $this->api_root = (! is_array($api_root)) ? array($api_root) : $api_root;
         $this->api_url = $api_url;
     }
 
@@ -68,26 +68,27 @@ class controlador_docs
     protected function get_lista_apis()
     {
         $list = array();
-        $path = realpath($this->api_root);
-        $archivos_api = $this->obtener_clases_directorio($path);
+        foreach ($this->api_root as $root) {
+            $path = realpath($root);
+            $archivos_api = $this->obtener_clases_directorio($path);
 
-        foreach ($archivos_api as $nombre => $objeto) {
-            if ('php' !== pathinfo($nombre, PATHINFO_EXTENSION)) {
-                continue;
+            foreach ($archivos_api as $nombre => $objeto) {
+                if ('php' !== pathinfo($nombre, PATHINFO_EXTENSION)) {
+                    continue;
+                }
+                $prefijo = rest::app()->config('prefijo_controladores');
+
+                if (!$this->empieza_con($prefijo, pathinfo($nombre, PATHINFO_BASENAME))) {
+                    continue;
+                }
+                $nombre = str_replace('\\', '/', $nombre); // windows! ...
+
+                $path = $this->get_url_de_clase($nombre);
+                $path = ltrim($path, '/');
+
+                $list[] = $path;
             }
-            $prefijo = rest::app()->config('prefijo_controladores');
-
-            if (!$this->empieza_con($prefijo, pathinfo($nombre, PATHINFO_BASENAME))) {
-                continue;
-            }
-            $nombre = str_replace('\\', '/', $nombre); // windows! ...
-
-            $path = $this->get_url_de_clase($nombre);
-            $path = ltrim($path, '/');
-
-            $list[] = $path;
         }
-
         return $list;
     }
 
