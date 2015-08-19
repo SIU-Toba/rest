@@ -146,6 +146,19 @@ class ruteador_ejemploTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->instanciador->parametros);
     }
 
+    public function testAgregoDir()
+    {
+        $dir = realpath(__DIR__ . '/../_ejemplo/rest_dinamico');
+        $this->lector_recursos->add_directorio_recursos($dir);
+
+        $this->ruteador->buscar_controlador('GET', 'h/id');
+        $this->assertEquals($dir . '/recurso_h.php', $this->instanciador->archivo);
+        $this->assertEquals('get', $this->instanciador->accion);
+        $this->assertEquals(array('id'), $this->instanciador->parametros);
+
+    }
+
+
     /*
         public function testQueryString()
         {

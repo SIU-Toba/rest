@@ -28,6 +28,19 @@ class controlador_docs
     }
 
     /**
+    * Permite agregar un nuevo punto de partida para la generación de la documentación.
+    * Atencion!, requiere que el localizador sea capaz de encontrar los recursos.
+    * @param $path string
+    */
+    public function add_punto_partida($path)
+    {
+        if (! is_array($path) && ! in_array($path, $this->api_root)) {
+            $this->api_root[] = $path;
+        }
+    }
+
+
+    /**
      * Retorna la documentacion en formato swagger para el path. Si el path
      * es nulo retorna la delcaracion de recursos, sino retorna la api para el path.
      */

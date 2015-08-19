@@ -19,6 +19,17 @@ class lector_recursos_archivo
     }
 
     /**
+    * Permite agregar una fuente de recursos
+    * @param $path string  
+    */
+    public function add_directorio_recursos($path)
+    {
+        if (! is_array($path) && ! in_array($path, $this->directorios_recursos)) {
+            $this->directorios_recursos[] = $path;
+        }
+    }
+
+    /**
      * @param array $path la sucesion de recursos anidados. El recurso es el ultimo que exista
      *
      * @return array recurso => clase-que-lo-implementa
