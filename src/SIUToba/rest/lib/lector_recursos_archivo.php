@@ -36,8 +36,7 @@ class lector_recursos_archivo
      */
     public function get_recurso($path, $montaje = '')
     {
-        $prefijo_montaje =!empty($montaje)? DIRECTORY_SEPARATOR.$montaje: '';
-
+        $prefijo_montaje = (!empty($montaje))? $montaje.DIRECTORY_SEPARATOR: '';
 
         //Busco del mas especifico al mas general
         while (!empty($path)) {

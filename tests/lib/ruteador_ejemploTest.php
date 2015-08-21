@@ -108,6 +108,15 @@ class ruteador_ejemploTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array('id_d', 'id_b'), $this->instanciador->parametros);
     }
 
+    public function testGetMontajeSubrecAlterno()
+    {
+        $this->ruteador->buscar_controlador('GET', 'montaje/d/id_d/e');
+
+        $this->assertEquals($this->BASE_DIR[0] . '/montaje/d/e/recurso_e.php', $this->instanciador->archivo);
+        $this->assertEquals('get_list', $this->instanciador->accion);
+        $this->assertEquals(array('id_d'), $this->instanciador->parametros);        
+    }
+
     public function testAliases()
     {
 
