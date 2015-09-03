@@ -55,14 +55,19 @@ class respuesta_rest extends respuesta
     }
 
     /**
-     * PUT a un recurso. Retorna 204 sin contenido en caso de exito,
+     * PUT a un recurso. Retorna 204 (sin contenido) o 200 (con contenido) en caso de exito,
      * Si el recurso no existía, enviar un not_found().
      *
      * @return $this
      */
-    public function put()
+    public function put($data = null)
     {
-        $this->status = 204; //sin contenido
+        if (! isset($data)) {
+            $this->status = 204; //sin contenido
+        } else {
+            $this->data = $data;
+            $this->status = 200; //Ok
+        }
         return $this;
     }
 
