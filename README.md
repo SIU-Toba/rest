@@ -101,7 +101,7 @@ class recurso_personas
     }
 ```
 
-Si se quiere enviar respuestas que no sean JSON o con headers especificos, se puede hacer cambiando la **vista** 
+Si se quiere enviar respuestas que no sean JSON o con headers especificos, se puede hacer cambiando la **vista** y configurando la respuesta de la siguiente manera:
 ``` php
 <?php
 class recurso_documento
