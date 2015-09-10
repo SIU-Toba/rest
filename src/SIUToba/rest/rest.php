@@ -186,6 +186,11 @@ class rest
         });
     }
 
+    public function set_vista($vista)
+    {
+        $this->vista = $vista;
+    }
+
     public function procesar()
     {
         $this->logger->debug("Iniciando el pedido");

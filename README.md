@@ -100,6 +100,30 @@ class recurso_personas
         rest::response()->get($personas);
     }
 ```
+
+Si se quiere enviar respuestas que no sean JSON o con headers especificos, se puede hacer cambiando la **vista** 
+``` php
+<?php
+class recurso_documento
+{
+
+    function get_list()
+    {
+        $pdf = documentos::get_pdf();
+
+        $vista_pdf = new \SIUToba\rest\http\vista_raw(rest::response());
+        $vista_pdf->set_content_type("application/pdf");
+        rest::app()->set_vista($vista_pdf);
+
+        rest::response()->set_data($pdf);
+        rest::response()->set_status(200);
+        rest::response()->add_headers(array(
+            "Content-Disposition" => "attachment; filename=Mi_documento.pdf"
+        ));
+    }
+```
+
+
 ###Sub APIs
 
 La librería permite agrupar recursos en subcarpetas, con **hasta dos niveles** de profundidad, permitiendo asi, definir sub APIs y lograr una mejor división semántica que facilite la aplicación de distintas configuraciones según el caso. Además estas subcarpetas sirven de prefijo de acceso en la URL, por ejemplo _/personas/deportes/_. 
