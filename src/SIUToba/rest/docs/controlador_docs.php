@@ -69,8 +69,8 @@ class controlador_docs
 
         $lista_apis = $this->get_lista_apis();
         foreach ($lista_apis as $path) {
-            $this->add_apis($path);
             $this->add_modelos($path);
+            $this->add_apis($path);            
         }
 
         $this->reordenar_lista_apis($list['paths']);
@@ -162,6 +162,9 @@ class controlador_docs
             ////--------------------------------------------------------
             $params_query = $reflexion->get_parametros_metodo($metodo, 'query');
             $params_body = $reflexion->get_parametros_metodo($metodo, 'body');
+            if (! empty($params_body)) {                                        //Agrego los schemas para los tipos locales
+                $params_body = $this->add_tipos_en_modelo($params_body);
+            }
 
             $operation = array();
             $operation['tags'] = array(str_replace('_', '-', $path)); //cambio el _ para mostrarlo
@@ -297,6 +300,23 @@ class controlador_docs
 
             return array();
         }
+    }
+
+    /**
+    * @param $params List of body params
+    * @return array  List of body params with schema definitions
+    */
+    protected function add_tipos_en_modelo($params)  
+    {
+        $non_predefined_types = array_keys($this->list['definitions']);
+        $param_keys = array_keys($params);
+        foreach($param_keys as $key)  {
+            if (isset($params[$key]['type']) && in_array($params[$key]['type'], $non_predefined_types)) {
+                $params[$key]['schema'] = array('$ref' => "#/definitions/". trim($params[$key]['type']));
+            }
+        }
+            
+        return $params;
     }
 
     /**
