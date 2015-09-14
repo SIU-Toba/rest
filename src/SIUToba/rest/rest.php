@@ -186,6 +186,41 @@ class rest
         });
     }
 
+    public function set_autenticador($autenticador)
+    {
+        $this->autenticador = $autenticador;
+    }
+
+    public function set_autorizador($autorizador)
+    {
+        $this->autorizador = $autorizador;
+    }
+
+    public function set_lector_recursos($lector) 
+    {
+        $this->lector_recursos = $lector;
+    }
+
+    public function set_logger($logger)
+    {
+        $this->logger = $logger;
+    }
+
+    public function set_quoter($quoter)
+    {
+        $this->rest_quoter = $quoter;
+    }
+
+    public function set_router($router)
+    {
+        $this->router = $router;
+    }
+
+    public function set_response($response)
+    {
+        $this->response = $response;
+    }
+
     public function set_vista($vista)
     {
         $this->vista = $vista;
