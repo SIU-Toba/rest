@@ -48,10 +48,9 @@ class controlador_docs
     {
         if (empty($path)) {
             $lista = $this->getResourceList();
-
             return rest::response()->get($lista);
         } else {
-            throw new rest_error("En esta version toda la documentación esta en la raiz");
+            throw new rest_error("En esta versión toda la documentación esta en la raiz");
         }
     }
 
@@ -68,9 +67,10 @@ class controlador_docs
         $this->list['definitions'] = array();
 
         $lista_apis = $this->get_lista_apis();
+
         foreach ($lista_apis as $path) {
             $this->add_modelos($path);
-            $this->add_apis($path);            
+            $this->add_apis($path);
         }
 
         $this->reordenar_lista_apis($list['paths']);
@@ -89,14 +89,16 @@ class controlador_docs
                 if ('php' !== pathinfo($nombre, PATHINFO_EXTENSION)) {
                     continue;
                 }
+
                 $prefijo = rest::app()->config('prefijo_controladores');
 
                 if (!$this->empieza_con($prefijo, pathinfo($nombre, PATHINFO_BASENAME))) {
                     continue;
                 }
+
                 $nombre = str_replace('\\', '/', $nombre); // windows! ...
 
-                $path = $this->get_url_de_clase($nombre);
+                $path = $this->get_url_de_clase($root, $nombre);
                 $path = ltrim($path, '/');
 
                 $list[] = $path;
@@ -229,9 +231,10 @@ class controlador_docs
      *
      * @return string
      */
-    protected function get_url_de_clase($ruta_absoluta)
+    protected function get_url_de_clase($api_root, $ruta_absoluta)
     {
-        $partes = preg_split('/rest/', $ruta_absoluta);
+        $name = basename($api_root);
+        $partes = preg_split("/$name/", $ruta_absoluta);
         $path_relativo = $partes[1];
         $prefijo = rest::app()->config('prefijo_controladores');
         $clase_recurso = basename($path_relativo, '.php'); //recurso_padre
