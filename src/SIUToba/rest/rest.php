@@ -221,6 +221,11 @@ class rest
         $this->response = $response;
     }
 
+    public function set_request($request)
+    {
+        $this->request = $request;
+    }
+
     public function set_vista($vista)
     {
         $this->vista = $vista;

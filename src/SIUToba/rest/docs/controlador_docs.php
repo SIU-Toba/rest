@@ -83,6 +83,9 @@ class controlador_docs
         $list = array();
         foreach ($this->api_root as $root) {
             $path = realpath($root);
+            if ($path === false) {
+                continue;
+            }
             $archivos_api = $this->obtener_clases_directorio($path);
 
             foreach ($archivos_api as $nombre => $objeto) {
