@@ -36,7 +36,7 @@ class autenticacion_ssl extends proveedor_autenticacion
         if (isset($_SERVER['SSL_CLIENT_S_DN_CN']) && trim($_SERVER['SSL_CLIENT_S_DN_CN']) != '') {    //Busco el nombre del cliente
             $user = trim($_SERVER['SSL_CLIENT_S_DN_CN']);
             $cert = $_SERVER['SSL_CLIENT_CERT'];
-            if ($this->validador_ssl->es_valido($user, $cert)) {                
+            if ($this->es_valido($user, $cert)) {                
                 $usuario = new rest_usuario();
                 $usuario->set_usuario($user);
                 return $usuario;
@@ -44,6 +44,32 @@ class autenticacion_ssl extends proveedor_autenticacion
         }
 
         return; //anonimo
+    }
+
+
+    function es_valido($usuario, $certificado)
+    {
+        //Calculo el fingerprint del certificado enviado por el usuario
+        $fingerprint_cert = self::certificado_get_fingerprint($certificado);
+        //Recupero el fingerprint configurado anteriormente y comparo
+        $fingerprint_local = $this->get_usuario_huella($usuario);
+
+        return hash_equals($fingerprint_local, $fingerprint_cert);
+    }
+
+    function get_usuario_huella($usuario)
+    {
+       // $usuarios_ini = toba_modelo_rest::get_ini_usuarios($this->modelo_proyecto);
+        foreach ($this->validador_ssl->get_passwords() as $key => $u) {
+            if ($key === $usuario) {
+                if (isset($u['fingerprint'])) {
+                    return $u['fingerprint'];
+                } else {
+                    rest::app()->logger->info('Se encontro al usuario "' . $usuario . '", pero no tiene una entrada fingerprint en rest_usuario.ini');
+                }
+            }
+        }
+        return NULL;
     }
 
     /**
@@ -54,10 +80,26 @@ class autenticacion_ssl extends proveedor_autenticacion
      * @return mixed
      */
     public function requerir_autenticacion(respuesta_rest $rta)
+    {        
+        $rta->set_data(array('mensaje' => 'autenticación cancelada, falta información'));
+    }
+
+    static protected function certificado_decodificar($certificado)
     {
-        /*$rta->add_headers(array(
-            'WWW-Authenticate' => 'Basic realm="Usuario de la API"',
-        ));
-        $rta->set_data(array('mensaje' => 'autenticación cancelada'));*/
+        $resource = openssl_x509_read($certificado);
+        $output = null;
+        $result = openssl_x509_export($resource, $output);
+        if($result !== false) {
+            $output = str_replace('-----BEGIN CERTIFICATE-----', '', $output);
+            $output = str_replace('-----END CERTIFICATE-----', '', $output);
+            return base64_decode($output);
+        } else {
+            throw new toba_error("El certificado no es un certificado valido", "Detalles: $certificado");
+        }
+    }
+
+    static protected function certificado_get_fingerprint($certificado)
+    {
+        return sha1(self::certificado_decodificar($certificado));
     }
 }
