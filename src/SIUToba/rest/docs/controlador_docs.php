@@ -237,7 +237,7 @@ class controlador_docs
     protected function get_url_de_clase($api_root, $ruta_absoluta)
     {
         $name = basename($api_root);
-        $partes = preg_split("/$name/", $ruta_absoluta);
+        $partes = preg_split("#/$name/#", $ruta_absoluta);
         $path_relativo = $partes[1];
         $prefijo = rest::app()->config('prefijo_controladores');
         $clase_recurso = basename($path_relativo, '.php'); //recurso_padre
