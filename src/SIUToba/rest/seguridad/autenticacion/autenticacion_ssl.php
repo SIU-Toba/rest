@@ -6,6 +6,7 @@ use SIUToba\rest\http\request;
 use SIUToba\rest\http\respuesta_rest;
 use SIUToba\rest\seguridad\proveedor_autenticacion;
 use SIUToba\rest\seguridad\rest_usuario;
+use SIUToba\SSLCertUtils\SSLCertUtils;
 
 class autenticacion_ssl extends proveedor_autenticacion
 {
@@ -47,10 +48,17 @@ class autenticacion_ssl extends proveedor_autenticacion
     }
 
 
+    protected function calcularFingerprint($cert)
+    {
+        $certUtils = new SSLCertUtils();
+        $certUtils->loadCert($cert);
+        return $certUtils->getFingerprint();
+    }
+
     function es_valido($usuario, $certificado)
     {
         //Calculo el fingerprint del certificado enviado por el usuario
-        $fingerprint_cert = self::certificado_get_fingerprint($certificado);
+        $fingerprint_cert = $this->calcularFingerprint($certificado);
         //Recupero el fingerprint configurado anteriormente y comparo
         $fingerprint_local = $this->get_usuario_huella($usuario);
 
@@ -81,25 +89,6 @@ class autenticacion_ssl extends proveedor_autenticacion
      */
     public function requerir_autenticacion(respuesta_rest $rta)
     {        
-        $rta->set_data(array('mensaje' => 'autenticaciÛn cancelada, falta informaciÛn'));
-    }
-
-    static protected function certificado_decodificar($certificado)
-    {
-        $resource = openssl_x509_read($certificado);
-        $output = null;
-        $result = openssl_x509_export($resource, $output);
-        if($result !== false) {
-            $output = str_replace('-----BEGIN CERTIFICATE-----', '', $output);
-            $output = str_replace('-----END CERTIFICATE-----', '', $output);
-            return base64_decode($output);
-        } else {
-            throw new toba_error("El certificado no es un certificado valido", "Detalles: $certificado");
-        }
-    }
-
-    static protected function certificado_get_fingerprint($certificado)
-    {
-        return sha1(self::certificado_decodificar($certificado));
+        $rta->set_data(array('mensaje' => 'autenticaci√≥n cancelada, falta informaci√≥n'));
     }
 }
