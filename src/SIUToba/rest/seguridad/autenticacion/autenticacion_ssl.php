@@ -8,6 +8,7 @@ use SIUToba\rest\seguridad\proveedor_autenticacion;
 use SIUToba\rest\seguridad\rest_usuario;
 use SIUToba\SSLCertUtils\SSLCertUtils;
 
+require_once(__DIR__. '/../../lib/funciones_old_versions.php');
 class autenticacion_ssl extends proveedor_autenticacion
 {
     /**
