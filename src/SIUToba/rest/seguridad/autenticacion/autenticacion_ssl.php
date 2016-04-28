@@ -53,7 +53,9 @@ class autenticacion_ssl extends proveedor_autenticacion
         $fingerprint_cert = self::certificado_get_fingerprint($certificado);
         //Recupero el fingerprint configurado anteriormente y comparo
         $fingerprint_local = $this->get_usuario_huella($usuario);
-
+        if (is_null($fingerprint_local) || is_null($fingerprint_cert)) {            //Algo quedo mal en la configuracion del server, si sigue explota hash_equals
+            return false;
+        }
         return hash_equals($fingerprint_local, $fingerprint_cert);
     }
 
