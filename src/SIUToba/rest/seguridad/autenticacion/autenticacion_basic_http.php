@@ -48,6 +48,19 @@ class autenticacion_basic_http extends proveedor_autenticacion
         $rta->add_headers(array(
             'WWW-Authenticate' => 'Basic realm="Usuario de la API"',
         ));
-        $rta->set_data(array('mensaje' => 'autenticaci髇 cancelada'));
+        $rta->set_data(array('mensaje' => 'autenticaci锟絥 cancelada'));
+    }
+
+    /**
+     * Indica si la petici贸n/headers debe manejarse con este mecanismo de autenticaci贸n.
+     *
+     * @param  request $request la petici贸n
+     *
+     * @return boolean          true si este mecanismo atiende la petici贸n de autenticaci贸n
+     */
+    public function atiende_pedido(request $request)
+    {
+        // la sola existencia de PHP_AUTH_USER permite ingresar ya con clave NULL
+        return isset($_SERVER['PHP_AUTH_USER']);
     }
 }

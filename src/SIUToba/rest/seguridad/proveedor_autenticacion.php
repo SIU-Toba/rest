@@ -8,7 +8,7 @@ use SIUToba\rest\http\respuesta_rest;
 abstract class proveedor_autenticacion
 {
     /**
-     * Obtiene un usuario si est� logueado o si lo puede obtener del request o cualquier otro medio.
+     * Obtiene un usuario si est� logueado o si lo puede obtener del request o cualquier otro medio.
      * Si el usuario es nulo, se puede llegar a llamar a requerir_autenticacion (si la operacion lo requiere).
      * En caso de errores, guardarlos y enviarlos en la respuesta.
      *
@@ -26,4 +26,13 @@ abstract class proveedor_autenticacion
      * @return mixed
      */
     abstract public function requerir_autenticacion(respuesta_rest $rta);
+
+    /**
+     * Indica si la petición/headers debe manejarse con este mecanismo de autenticación.
+     *
+     * @param  request $request la petición
+     * 
+     * @return boolean true si este mecanismo atiende la petición de autenticación
+     */
+    abstract public function atiende_pedido(request $request);
 }

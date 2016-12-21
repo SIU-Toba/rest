@@ -31,7 +31,7 @@ class autenticacion_oauth2 extends proveedor_autenticacion
     }
 
     /**
-     * Obtiene un usuario si está logueado o si lo puede obtener del request o cualquier otro medio.
+     * Obtiene un usuario si estï¿½ logueado o si lo puede obtener del request o cualquier otro medio.
      * Si el usuario es nulo, se puede llegar a llamar a requerir_autenticacion (si la operacion lo requiere).
      * En caso de errores, guardarlos y enviarlos en la respuesta.
      *
@@ -42,17 +42,11 @@ class autenticacion_oauth2 extends proveedor_autenticacion
     public function get_usuario(request $request = null)
     {
         $auth_header = $request->headers('HTTP_AUTHORIZATION', null);
-        if ($auth_header === null) {
-            return;
-        }
 
         $well_formed_header = preg_match('/Bearer (.+)/i', $auth_header, $result);
 
-        if ($well_formed_header === 0 || $well_formed_header === false) {
-            return;
-        }
-
         $token = $result[1];
+        
         $info = $this->decoder->decode($token);
 
         if ($info === null) {
@@ -76,9 +70,33 @@ class autenticacion_oauth2 extends proveedor_autenticacion
     public function requerir_autenticacion(respuesta_rest $rta)
     {
         $rta->set_status(401);
-        // quizá haya que agregar más detalles al error: http://hdknr.github.io/docs/identity/bearer.html#id5
+        // quizï¿½ haya que agregar mï¿½s detalles al error: http://hdknr.github.io/docs/identity/bearer.html#id5
         $rta->add_headers(array(
             'WWW-Authenticate' => 'Bearer',
         ));
+    }
+
+    /**
+     * Indica si la peticiÃ³n/headers debe manejarse con este mecanismo de autenticaciÃ³n.
+     *
+     * @param  request $request la peticiÃ³n
+     *
+     * @return boolean          true si este mecanismo atiende la peticiÃ³n de autenticaciÃ³n
+     */
+    public function atiende_pedido(request $request)
+    {
+        $auth_header = $request->headers('HTTP_AUTHORIZATION', null);
+
+        if ($auth_header === null) {
+            return false;
+        }
+
+        $well_formed_header = preg_match('/Bearer (.+)/i', $auth_header, $result);
+
+        if ($well_formed_header === 0 || $well_formed_header === false) {
+            return false;
+        }
+
+        return true;
     }
 }
