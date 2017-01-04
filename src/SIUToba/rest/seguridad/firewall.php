@@ -2,6 +2,7 @@
 
 namespace SIUToba\rest\seguridad;
 
+use SIUToba\rest\lib\rest_error;
 use SIUToba\rest\seguridad\autenticacion\rest_error_autenticacion;
 use SIUToba\rest\seguridad\autorizacion\rest_error_autorizacion;
 
@@ -13,13 +14,17 @@ use SIUToba\rest\seguridad\autorizacion\rest_error_autorizacion;
  */
 class firewall
 {
-    protected $authentication;
+    protected $authentications;
     protected $authorization;
     protected $path_pattern;
 
-    public function __construct(proveedor_autenticacion $authen, proveedor_autorizacion $author, $pattern)
+    public function __construct($authen, proveedor_autorizacion $author, $pattern)
     {
-        $this->authentication = $authen;
+        // BC
+        if (!is_array($authen))
+            $authen = array($authen);
+
+        $this->authentications = $authen;
         $this->authorization = $author;
         $this->path_pattern = $pattern;
     }
@@ -47,10 +52,26 @@ class firewall
               The server understood the request, but is refusing to fulfill it.
          */
 
-        $usuario = $this->authentication->get_usuario($request);
+        // buscamos algun mecanismo de auth que atienda el pedido
+        $authentication = null;
+        foreach ($this->authentications as $auth){
+            $auth2 = $auth();
+            if ($auth2->atiende_pedido($request)) {
+                $authentication = $auth2;
+                break;
+            }
+        }
+
+        // para el caso de que ningún mecanismo atienda el pedido
+        if ($authentication == null){
+            throw new rest_error(401, 'No se pudo cargar un autenticador para el pedido');
+        }
+
+        $usuario = $authentication->get_usuario($request);
+
         if (!$this->authorization->tiene_acceso($usuario, $ruta)) {
             if (null === $usuario) {
-                throw new rest_error_autenticacion($this->authentication);
+                throw new rest_error_autenticacion($authentication);
             } else {
                 throw new rest_error_autorizacion();
             }

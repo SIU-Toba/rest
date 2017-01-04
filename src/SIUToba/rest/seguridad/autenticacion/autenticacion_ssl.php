@@ -105,6 +105,6 @@ class autenticacion_ssl extends proveedor_autenticacion
     public function atiende_pedido(request $request)
     {
         // la sola existencia de SSL_CLIENT_VERIFY indica que trabajamos con SSL
-        return isset($_SERVER['SSL_CLIENT_VERIFY']);
+        return isset($_SERVER['SSL_CLIENT_VERIFY']) && $_SERVER['SSL_CLIENT_VERIFY'] != 'NONE';
     }
 }
