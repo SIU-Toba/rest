@@ -54,17 +54,29 @@ class firewall
 
         // buscamos algun mecanismo de auth que atienda el pedido
         $authentication = null;
-        foreach ($this->authentications as $auth){
-            $auth2 = $auth();
-            if ($auth2->atiende_pedido($request)) {
-                $authentication = $auth2;
-                break;
-            }
-        }
 
-        // para el caso de que ningún mecanismo atienda el pedido
-        if ($authentication == null){
-            throw new rest_error(401, 'No se pudo cargar un autenticador para el pedido');
+        if (count($this->authentications) == 1) {                           //BC
+            $authentication = current($this->authentications);
+            // invocamos la closure
+            $authentication = $authentication();
+        } else {
+            foreach ($this->authentications as $auth){
+                // invocamos la closure
+                $auth = $auth();
+
+                // basic|digest son el ultimo metodo, no atienden antes de redirect
+                if ($auth instanceof autenticacion\autenticacion_basic_http ||
+                    $auth instanceof autenticacion\autenticacion_digest_http ||
+                    $auth->atiende_pedido($request)){
+                    $authentication = $auth;
+                    break;
+                }
+            }
+
+            // para el caso de que ningún mecanismo atienda el pedido
+            if ($authentication == null){
+                throw new rest_error(401, 'No se pudo cargar un autenticador para el pedido');
+            }
         }
 
         $usuario = $authentication->get_usuario($request);

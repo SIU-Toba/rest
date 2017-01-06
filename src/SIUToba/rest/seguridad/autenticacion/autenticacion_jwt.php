@@ -26,7 +26,7 @@ class autenticacion_jwt extends proveedor_autenticacion
         $auth_header = $request->headers('HTTP_AUTHORIZATION', null);
 
         preg_match('/Bearer (.+)/i', $auth_header, $result);
-        
+
         $token = $result[1];
 
         try {
@@ -44,7 +44,6 @@ class autenticacion_jwt extends proveedor_autenticacion
             }
 
         } catch (\Exception $exc) {
-            //TODO: necesitamos logger !!!
             $this->mensaje = $exc->getMessage();
         }
 

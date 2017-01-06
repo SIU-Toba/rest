@@ -9,10 +9,13 @@ abstract class validador_jwt
 {
     protected $jwt;
 
-    public function __construct(AbstractDecoder $decoder)
+    public function __construct()
     {
         $this->jwt = new JWTUtil();
+    }
 
+    public function set_decoder(AbstractDecoder $decoder)
+    {
         $this->jwt->setDecoder($decoder);
     }
 

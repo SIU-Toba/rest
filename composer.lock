@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "84595da70e2895c68cc84b98b8872866",
-    "content-hash": "0074220ecc80cc96835cf20db700b579",
+    "hash": "5dc9e2f9e4a3a3daf4b216d9bb770722",
+    "content-hash": "973a33e8705853df27c7ddc7dd2e4267",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -122,16 +122,16 @@
         },
         {
             "name": "siu-toba/jwt-util",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SIU-Toba/jwt-util.git",
-                "reference": "1d9ccb61066616fae5d440bad1a630115aa27f0b"
+                "reference": "4beef55301d387cc88350f71fa8ec48acca64207"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SIU-Toba/jwt-util/zipball/1d9ccb61066616fae5d440bad1a630115aa27f0b",
-                "reference": "1d9ccb61066616fae5d440bad1a630115aa27f0b",
+                "url": "https://api.github.com/repos/SIU-Toba/jwt-util/zipball/4beef55301d387cc88350f71fa8ec48acca64207",
+                "reference": "4beef55301d387cc88350f71fa8ec48acca64207",
                 "shasum": ""
             },
             "require": {
@@ -141,10 +141,13 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "": "src"
+                    "SIU\\JWT\\": "src/SIU/JWT"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "SIU"
+            ],
             "authors": [
                 {
                     "name": "Sistema de Información Universitaria - SIU",
@@ -153,7 +156,7 @@
             ],
             "description": "Una pequeña librería que autentica con Web Tokens JSON (JWT)",
             "homepage": "http://www.siu.edu.ar",
-            "time": "2016-12-21 20:27:21"
+            "time": "2017-01-06 18:47:22"
         },
         {
             "name": "siu-toba/ssl-cert-utils",
@@ -193,9 +196,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "siu-toba/jwt-util": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
