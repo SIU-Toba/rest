@@ -2,7 +2,7 @@
 
 namespace SIUToba\rest\seguridad\autenticacion;
 
-use SIU\JWT\JWTUtil;
+use SIU\JWT\Util;
 use SIU\JWT\Decoder\AbstractDecoder;
 
 abstract class validador_jwt
@@ -11,7 +11,7 @@ abstract class validador_jwt
 
     public function __construct()
     {
-        $this->jwt = new JWTUtil();
+        $this->jwt = new Util();
     }
 
     public function set_decoder(AbstractDecoder $decoder)

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5dc9e2f9e4a3a3daf4b216d9bb770722",
-    "content-hash": "973a33e8705853df27c7ddc7dd2e4267",
+    "hash": "0cbd2de40da5c11a2a565853b99463aa",
+    "content-hash": "965da50051de1a939d19d7e41d75299d",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -122,16 +122,16 @@
         },
         {
             "name": "siu-toba/jwt-util",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SIU-Toba/jwt-util.git",
-                "reference": "4beef55301d387cc88350f71fa8ec48acca64207"
+                "reference": "f08725656de7d6b82f3de3615f09f0ce47680b8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SIU-Toba/jwt-util/zipball/4beef55301d387cc88350f71fa8ec48acca64207",
-                "reference": "4beef55301d387cc88350f71fa8ec48acca64207",
+                "url": "https://api.github.com/repos/SIU-Toba/jwt-util/zipball/f08725656de7d6b82f3de3615f09f0ce47680b8f",
+                "reference": "f08725656de7d6b82f3de3615f09f0ce47680b8f",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
             ],
             "description": "Una pequeña librería que autentica con Web Tokens JSON (JWT)",
             "homepage": "http://www.siu.edu.ar",
-            "time": "2017-01-06 18:47:22"
+            "time": "2017-01-09 19:54:14"
         },
         {
             "name": "siu-toba/ssl-cert-utils",
