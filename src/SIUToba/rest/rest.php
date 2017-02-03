@@ -196,7 +196,7 @@ class rest
         $this->autorizador = $autorizador;
     }
 
-    public function set_lector_recursos($lector) 
+    public function set_lector_recursos($lector)
     {
         $this->lector_recursos = $lector;
     }
@@ -369,5 +369,17 @@ class rest
         $controlador = $this->controlador_documentacion;
         $url = strstr($url, '/');
         $controlador->get_documentacion($url);
+    }
+
+    /**
+     * Agrega una ruta donde la librería Rest busca recursos.
+     *
+     * @param string $path ruta a un directorio con recursos
+     */
+    public function add_path_controlador($path)
+    {
+        $this->lector_recursos->add_directorio_recursos($path);
+
+        $this->controlador_documentacion->add_punto_partida($path);
     }
 }
