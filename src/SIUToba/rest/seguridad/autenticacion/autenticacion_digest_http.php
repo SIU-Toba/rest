@@ -60,7 +60,7 @@ class autenticacion_digest_http extends proveedor_autenticacion
         $rta->add_headers(array(
             'WWW-Authenticate' => $header,
         ));
-        $rta->set_data(array('mensaje' => 'autenticaci髇 cancelada'));
+        $rta->set_data(array('mensaje' => 'autenticaci锟絥 cancelada'));
     }
 
     protected function http_digest_parse($digest_header)
@@ -89,5 +89,17 @@ class autenticacion_digest_http extends proveedor_autenticacion
         $valid_response = md5($digest_plano);
 
         return $data['response'] == $valid_response;
+    }
+
+    /**
+     * Indica si la petici贸n/headers debe manejarse con este mecanismo de autenticaci贸n.
+     *
+     * @param  request $request la petici贸n
+     *
+     * @return boolean          true si este mecanismo atiende la petici贸n de autenticaci贸n
+     */
+    public function atiende_pedido(request $request)
+    {
+        return isset($_SERVER['PHP_AUTH_DIGEST']);
     }
 }

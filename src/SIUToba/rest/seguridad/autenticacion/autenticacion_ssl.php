@@ -28,17 +28,17 @@ class autenticacion_ssl extends proveedor_autenticacion
         $hay_CA = isset($_SERVER['SSL_CLIENT_I_DN']);
         $hay_vto = isset($_SERVER['SSL_CLIENT_V_END']);                 //Hay vencimiento?
         if (!$hay_serial || !$hay_vto || !$cert_valido || !$hay_CA) {
-            return; 
+            return;
         }
 
         if ($_SERVER['SSL_CLIENT_V_REMAIN'] <= 0) {                     //Le quedan dias de validez al cert?
             return;
         }
- 
+
         if (isset($_SERVER['SSL_CLIENT_S_DN_CN']) && trim($_SERVER['SSL_CLIENT_S_DN_CN']) != '') {    //Busco el nombre del cliente
             $user = trim($_SERVER['SSL_CLIENT_S_DN_CN']);
             $cert = $_SERVER['SSL_CLIENT_CERT'];
-            if ($this->es_valido($user, $cert)) {                
+            if ($this->es_valido($user, $cert)) {
                 $usuario = new rest_usuario();
                 $usuario->set_usuario($user);
                 return $usuario;
@@ -91,7 +91,20 @@ class autenticacion_ssl extends proveedor_autenticacion
      * @return mixed
      */
     public function requerir_autenticacion(respuesta_rest $rta)
-    {        
+    {
         $rta->set_data(array('mensaje' => 'autenticación cancelada, falta información'));
+    }
+
+    /**
+     * Indica si la petición/headers debe manejarse con este mecanismo de autenticación.
+     *
+     * @param  request $request la petición
+     *
+     * @return boolean          true si este mecanismo atiende la petición de autenticación
+     */
+    public function atiende_pedido(request $request)
+    {
+        // la sola existencia de SSL_CLIENT_VERIFY indica que trabajamos con SSL
+        return isset($_SERVER['SSL_CLIENT_VERIFY']) && $_SERVER['SSL_CLIENT_VERIFY'] != 'NONE';
     }
 }

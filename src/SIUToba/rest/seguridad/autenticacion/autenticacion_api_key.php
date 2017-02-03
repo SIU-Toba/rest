@@ -51,4 +51,22 @@ class autenticacion_api_key extends proveedor_autenticacion
     {
         $rta->set_data(array('mensaje' => $this->mensaje));
     }
+
+    /**
+     * Indica si la petición/headers debe manejarse con este mecanismo de autenticación.
+     *
+     * @param  request $request la petición
+     *
+     * @return boolean          true si este mecanismo atiende la petición de autenticación
+     */
+    public function atiende_pedido(request $request)
+    {
+        $api_key = $request->get('api_key');
+
+        if ($api_key === null) {
+            return false;
+        }
+
+        return true;
+    }
 }

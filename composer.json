@@ -6,7 +6,8 @@
     "require": {
         "php": ">=5.5.0",
         "doctrine/cache": "~1.4",
-        "siu-toba/ssl-cert-utils": "1.0"
+        "siu-toba/ssl-cert-utils": "1.0",
+        "siu-toba/jwt-util": "~1.0.0"
     },
     "autoload": {
         "psr-4": {
