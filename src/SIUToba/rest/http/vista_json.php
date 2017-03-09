@@ -94,11 +94,12 @@ class vista_json extends vista_respuesta
 
     protected function utf8_encode_fields(array $elements)
     {
-        foreach ($elements as $key => $element) {
-            if (is_array($element)) {
-                $elements[$key] = $this->utf8_encode_fields($element);
-            } else {
-                $elements[$key] = utf8_encode($element);
+        $keys_e = array_keys($elements);
+        foreach ($keys_e as $key) {
+            if (is_array($elements[$key])) {
+                $elements[$key] = $this->utf8_encode_fields($elements[$key]);
+            } elseif (mb_detect_encoding($elements[$key], "UTF-8", true) != "UTF-8") {
+                $elements[$key] = utf8_encode($elements[$key]);
             }
         }
 
