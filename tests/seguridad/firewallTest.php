@@ -17,12 +17,19 @@ class firewallTest extends \PHPUnit_Framework_TestCase
 
     protected function get_instancia_ruta($pattern = '#.*#')
     {
+        $closureMaldita = function(){ return $this->autenticador;};
+
         $this->autenticador = $this->getMockBuilder('SIUToba\rest\seguridad\proveedor_autenticacion')
             ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+            ->setMethods(['__invoke'])                        
+            ->getMockForAbstractClass();        
         $this->autorizador = $this->getMockBuilder('SIUToba\rest\seguridad\proveedor_autorizacion')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
+
+        $this->autenticador
+             ->method('__invoke')
+             ->will($this->returnCallback($closureMaldita));
 
         return new firewall($this->autenticador, $this->autorizador, $pattern);
     }
