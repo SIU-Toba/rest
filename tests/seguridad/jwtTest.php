@@ -2,6 +2,7 @@
 
 namespace SIUToba\rest\tests\seguridad;
 
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\seguridad\firewall;
 use SIU\JWT\Decoder\SimetricDecoder;
 use SIUToba\rest\seguridad\autenticacion\validador_jwt;
@@ -15,7 +16,7 @@ class ValidarJWT extends validador_jwt
     }
 }
 
-class jwtTest extends \PHPUnit_Framework_TestCase
+class jwtTest extends TestCase
 {
     protected function get_instancia()
     {

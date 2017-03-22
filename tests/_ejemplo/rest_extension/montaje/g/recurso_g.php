@@ -5,5 +5,10 @@ class recurso_g
 	{
 	
 	}
+
+	function post_list()
+	{
+		
+	}
 }
 ?>

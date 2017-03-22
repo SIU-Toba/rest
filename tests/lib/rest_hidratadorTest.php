@@ -2,9 +2,10 @@
 
 namespace SIUToba\rest\tests\lib;
 
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\rest_hidratador;
 
-class rest_hidratadorTest extends \PHPUnit_Framework_TestCase
+class rest_hidratadorTest extends TestCase
 {
     public function testPasamanos()
     {

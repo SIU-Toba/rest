@@ -2,10 +2,11 @@
 
 namespace SIUToba\rest\tests\lib;
 
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\rest_filtro_sql;
 use SIUToba\rest\rest;
 
-class rest_filtro_sqlTest extends \PHPUnit_Framework_TestCase
+class rest_filtro_sqlTest extends TestCase
 {
     protected $request;
 

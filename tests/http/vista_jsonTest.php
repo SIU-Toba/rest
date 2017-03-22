@@ -8,10 +8,11 @@
 
 namespace SIUToba\rest\tests\http;
 
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\http\respuesta_rest;
 use SIUToba\rest\http\vista_json;
 
-class vista_jsonTest extends \PHPUnit_Framework_TestCase
+class vista_jsonTest extends TestCase
 {
     public function testJsonSimple()
     {

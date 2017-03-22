@@ -8,9 +8,10 @@
 
 namespace SIUToba\rest\tests\http;
 
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\http\respuesta_rest;
 
-class respuesta_restTest extends \PHPUnit_Framework_TestCase
+class respuesta_restTest extends TestCase
 {
     public function testGet()
     {

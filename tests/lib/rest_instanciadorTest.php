@@ -4,8 +4,9 @@ namespace SIUToba\rest\tests\lib;
 
 use ClassA;
 use SIUToba\rest\lib\rest_instanciador;
+use \PHPUnit\Framework\TestCase;
 
-class rest_instanciadorTest extends \PHPUnit_Framework_TestCase
+class rest_instanciadorTest extends TestCase
 {
     public function test_instanciacion_global()
     {

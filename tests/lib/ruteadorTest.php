@@ -2,11 +2,10 @@
 
 namespace SIUToba\rest\tests\lib;
 
-use PHPUnit_Framework_MockObject_Mock;
-use PHPUnit_Framework_TestCase;
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\ruteador;
 
-class ruteadorTest extends PHPUnit_Framework_TestCase
+class ruteadorTest extends TestCase
 {
     /**
      * @var ruteador

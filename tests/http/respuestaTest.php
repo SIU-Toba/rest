@@ -2,9 +2,10 @@
 
 namespace SIUToba\rest\tests\http;
 
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\http\respuesta;
 
-class respuestaTest extends \PHPUnit_Framework_TestCase
+class respuestaTest extends TestCase
 {
     /**
      * @expectedException SIUToba\rest\lib\rest_error_interno

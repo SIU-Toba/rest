@@ -2,9 +2,10 @@
 
 namespace SIUToba\rest\tests\seguridad;
 
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\seguridad\firewall;
 
-class firewallTest extends \PHPUnit_Framework_TestCase
+class firewallTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject

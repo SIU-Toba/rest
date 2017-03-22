@@ -2,10 +2,11 @@
 
 namespace SIUToba\rest\tests\lib;
 
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\rest_error;
 use SIUToba\rest\lib\rest_validador;
 
-class rest_validadorTest extends \PHPUnit_Framework_TestCase
+class rest_validadorTest extends TestCase
 {
     public function testOK()
     {

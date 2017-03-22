@@ -8,9 +8,10 @@
 
 namespace SIUToba\rest\tests\seguridad\autenticacion\oauth2;
 
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\seguridad\autenticacion\oauth2\oauth_token_decoder_web;
 
-class token_decoder_webTest extends \PHPUnit_Framework_TestCase
+class token_decoder_webTest extends TestCase
 {
     public function testDecode()
     {

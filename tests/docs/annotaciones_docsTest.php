@@ -2,9 +2,10 @@
 
 namespace SIUToba\rest\tests\docs;
 
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\docs\anotaciones_docs;
 
-class annotaciones_docsTest extends \PHPUnit_Framework_TestCase
+class annotaciones_docsTest extends TestCase
 {
     /**
      * @return anotaciones_docs

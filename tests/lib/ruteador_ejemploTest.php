@@ -2,13 +2,12 @@
 
 namespace SIUToba\rest\tests\lib;
 
-use PHPUnit_Framework_MockObject_Mock;
-use PHPUnit_Framework_TestCase;
+use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\lector_recursos_archivo;
 use SIUToba\rest\lib\rest_instanciador;
 use SIUToba\rest\lib\ruteador;
 
-class ruteador_ejemploTest extends PHPUnit_Framework_TestCase
+class ruteador_ejemploTest extends TestCase
 {
     /**
      * @var ruteador
@@ -152,6 +151,15 @@ class ruteador_ejemploTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($this->BASE_DIR[1] . '/montaje/g/recurso_g.php', $this->instanciador->archivo);
         $this->assertEquals('get_list', $this->instanciador->accion);
+        $this->assertEquals(array(), $this->instanciador->parametros);
+    }
+
+    public function testPostMontajeOtroDir()
+    {
+        $this->ruteador->buscar_controlador('POST', 'montaje/g');
+
+        $this->assertEquals($this->BASE_DIR[1] . '/montaje/g/recurso_g.php', $this->instanciador->archivo);
+        $this->assertEquals('post_list', $this->instanciador->accion);
         $this->assertEquals(array(), $this->instanciador->parametros);
     }
 
