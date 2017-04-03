@@ -28,21 +28,38 @@ class autenticacion_ssl extends proveedor_autenticacion
         $hay_CA = isset($_SERVER['SSL_CLIENT_I_DN']);
         $hay_vto = isset($_SERVER['SSL_CLIENT_V_END']);                 //Hay vencimiento?
         if (!$hay_serial || !$hay_vto || !$cert_valido || !$hay_CA) {
+            $mensaje = '';
+            if (!$cert_valido) {
+                $mensaje = "El certificado presentado por el cliente no se puede verificar contra la CA definida en el Servidor Web (en apache la CA es la variable SSLCACertificateFile)";
+            } else if (! $hay_CA) {
+                $mensaje = "No se definió una CA en el Servidor Web (en apache la CA es la variable SSLCACertificateFile)";
+            } else if (! $hay_vto) {
+                $mensaje = "El certificado del cliente no tiene fecha de vencimiento";
+            } else if (! $hay_serial) {
+                $mensaje = "El certificado del cliente no tiene serial";
+            }
+
+            $this->set_error($mensaje);
             return;
         }
 
         if ($_SERVER['SSL_CLIENT_V_REMAIN'] <= 0) {                     //Le quedan dias de validez al cert?
+            $this->set_error("El certificado de cliente está expirado");
             return;
         }
 
-        if (isset($_SERVER['SSL_CLIENT_S_DN_CN']) && trim($_SERVER['SSL_CLIENT_S_DN_CN']) != '') {    //Busco el nombre del cliente
+        if (isset($_SERVER['SSL_CLIENT_S_DN_CN']) && trim($_SERVER['SSL_CLIENT_S_DN_CN']) != '') {   //Busco el nombre del cliente
             $user = trim($_SERVER['SSL_CLIENT_S_DN_CN']);
             $cert = $_SERVER['SSL_CLIENT_CERT'];
             if ($this->es_valido($user, $cert)) {
                 $usuario = new rest_usuario();
                 $usuario->set_usuario($user);
                 return $usuario;
+            } else {
+                $this->set_error("El certificado de cliente es válido, pero no se encuentra en el repositorio de usuarios");
             }
+        } else {
+            $this->set_error("El certificado de cliente no contiene un DN");
         }
 
         return; //anonimo

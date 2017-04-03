@@ -83,7 +83,7 @@ class firewall
 
         if (!$this->authorization->tiene_acceso($usuario, $ruta)) {
             if (null === $usuario) {
-                throw new rest_error_autenticacion($authentication);
+                throw new rest_error_autenticacion($authentication, $authentication->get_ultimo_error());
             } else {
                 throw new rest_error_autorizacion();
             }
