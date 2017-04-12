@@ -57,8 +57,7 @@ class firewall
 
         if (count($this->authentications) == 1) {                           //BC
             // current ya invoca la closure
-            $auth = current($this->authentications);
-            $authentication = $auth();
+            $authentication = current($this->authentications);
         } else {
             foreach ($this->authentications as $auth){
                 // invocamos la closure
