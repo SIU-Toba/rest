@@ -4,7 +4,7 @@
     "homepage": "http://toba.siu.edu.ar",
     "license": "SIU",
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=5.6.0",
         "doctrine/cache": "~1.4",
         "siu-toba/ssl-cert-utils": "1.0",
         "siu-toba/jwt-util": "~1.0.0"
