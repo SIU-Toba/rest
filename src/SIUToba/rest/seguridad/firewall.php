@@ -55,15 +55,10 @@ class firewall
         // buscamos algun mecanismo de auth que atienda el pedido
         $authentication = null;
 
-        if (count($this->authentications) == 1) {                           //BC
-            // current ya invoca la closure
-            $auth = current($this->authentications);
-            $authentication = $auth();
+        if (count($this->authentications) == 1) {
+            $authentication = current($this->authentications);
         } else {
             foreach ($this->authentications as $auth){
-                // invocamos la closure
-                $auth = $auth();
-
                 // basic|digest son el ultimo metodo, no atienden antes de redirect
                 if ($auth instanceof autenticacion\autenticacion_basic_http ||
                     $auth instanceof autenticacion\autenticacion_digest_http ||
