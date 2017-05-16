@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## CURRENT
+## v 2.0.1 16/05/2017
  * Vuelve version para PHP 5.6 a 7+
 
 ## v 2.0.0 10/05/2017
