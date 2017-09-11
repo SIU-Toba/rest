@@ -256,6 +256,7 @@ class rest
             $ex->configurar_respuesta($this->response);
             $this->logger->info("Excepcion de Autenticacion. Autenticar y reintentar");
             $this->logger->info(var_export($this->response, true));
+            $this->logger->info($ex->getMessage());
         } catch (rest_error_autorizacion $ex) {
             $ex->configurar_respuesta($this->response);
             $this->logger->info("Error de Autorizacion.");
