@@ -14,7 +14,7 @@ class vista_json extends vista_respuesta
     public function get_cuerpo()
     {
         $data = $this->respuesta->get_data();
-        if (!empty($data) && $this->respuesta->get_encoding_datos() !== 'utf-8') {
+        if (!empty($data)) {
             $data = $this->utf8_encode_fields($data);
         }
 
@@ -102,7 +102,6 @@ class vista_json extends vista_respuesta
                 $elements[$key] = utf8_encode($elements[$key]);
             }
         }
-
         return $elements;
     }
 }
