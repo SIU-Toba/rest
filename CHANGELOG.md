@@ -1,4 +1,6 @@
 # CHANGELOG
+## v 2.0.2 06/10/2017
+ * Fix encoding mensaje error en respuesta
 
 ## v 2.0.1 16/05/2017
  * Vuelve version para PHP 5.6 a 7+
