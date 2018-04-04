@@ -94,7 +94,7 @@ class vista_json extends vista_respuesta
 
     protected function utf8_encode_fields($element){
         if (is_string($element)){
-            if (mb_detect_encoding($element[$key], "UTF-8", true) != "UTF-8"){
+            if (mb_detect_encoding($element, "UTF-8", true) != "UTF-8"){
                 $element = utf8_encode($element);
             }
         } elseif (is_array($element)){
