@@ -92,16 +92,21 @@ class vista_json extends vista_respuesta
         return $result;
     }
 
-    protected function utf8_encode_fields(array $elements)
-    {
-        $keys_e = array_keys($elements);
-        foreach ($keys_e as $key) {
-            if (is_array($elements[$key])) {
-                $elements[$key] = $this->utf8_encode_fields($elements[$key]);
-            } elseif (mb_detect_encoding($elements[$key], "UTF-8", true) != "UTF-8") {
-                $elements[$key] = utf8_encode($elements[$key]);
+    protected function utf8_encode_fields($element){
+        if (is_string($element)){
+            if (mb_detect_encoding($element, "UTF-8", true) != "UTF-8"){
+                $element = utf8_encode($element);
+            }
+        } elseif (is_array($element)){
+            foreach ($element as &$value){
+                $value = $this->utf8_encode_fields($value);
+            }
+        } elseif (is_object($element)){
+            $vars = array_keys(get_object_vars($element));
+            foreach ($vars as $var){
+                $element->$var = $this->utf8_encode_fields($element->$var);
             }
         }
-        return $elements;
+        return $element;
     }
 }
