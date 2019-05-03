@@ -20,10 +20,10 @@ class respuestaTest extends TestCase
     {
         $r = new respuesta("data", 204);
         $r->finalizar();
-        $this->assertEmpty($r->get_data());
+        $this->assertEmpty($r->get_data()->__toString());
 
         $r = new respuesta("data", 304);
         $r->finalizar();
-        $this->assertEmpty($r->get_data());
+        $this->assertEmpty($r->get_data()->__toString());
     }
 }

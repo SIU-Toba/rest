@@ -44,34 +44,35 @@ class respuesta_restTest extends TestCase
 
     public function testPutOK()
     {
-        $errores = false;
+        //$errores = false;
         $r = new respuesta_rest();
-        $r->put();
+        $r = $r->put();
         $this->assertEquals(204, $r->get_status());
-        $this->assertEmpty($r->get_data());
+        $this->assertEmpty($r->get_data()->__toString());			//Hay que testear un stream empty
     }
 
     public function testDeleteOK()
     {
         $r = new respuesta_rest();
-        $r->delete();
+        $r = $r->delete();
         $this->assertEquals(204, $r->get_status());
-        $this->assertEmpty($r->get_data());
+        $this->assertEmpty($r->get_data()->__toString());			//Hay que testear un stream empty
     }
 
     public function testRedirect()
     {
         $r = new respuesta_rest();
-        $r->redirect('hola');
-        $this->assertArrayHasKey('Location', $r->headers);
-        $this->assertEquals($r->headers['Location'], 'hola');
+        $r = $r->redirect('hola');
+        $this->assertArrayHasKey('Location', $r->getHeaders());
+        $this->assertTrue($r->hasHeader('Location'));
+        $this->assertEquals($r->getHeader('Location'), ['hola']);
     }
 
     public function testErrorNegocio()
     {
         $r = new respuesta_rest();
         $error = array('error' => 'e');
-        $r->error_negocio($error);
+        $r = $r->error_negocio($error);
         $this->assertEquals(400, $r->get_status());
         $this->assertEquals($error, $r->get_data());
     }
