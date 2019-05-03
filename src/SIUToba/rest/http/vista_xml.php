@@ -13,7 +13,7 @@ class vista_xml extends vista_respuesta
 
     public function get_cuerpo()
     {
-        $data = $this->respuesta->get_data();
+        $data = $this->respuesta->get_data()->getContents();
         $xml_root = new SimpleXMLElement("<?xml version=\"1.0\"?><data></data>");
         $this->array_to_xml($data, $xml_root);
 

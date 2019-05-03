@@ -115,7 +115,7 @@ class rest
 
         // Request default
         $this->container->singleton('request', function ($c) {
-            $req = new request();
+            $req = request::fromGlobals();
             $req->set_encoding_datos($c['settings']['encoding']);
 
             return $req;
@@ -123,10 +123,14 @@ class rest
 
         // Respuesta default
         $this->container->singleton('response', function ($c) {
-            $respuesta = new respuesta_rest();
+            /*$respuesta = new respuesta_rest();
             $respuesta->set_encoding_datos($c['settings']['encoding']);
-            $respuesta->set_api_version($c['settings']['api_version']);
+            $respuesta->set_api_version($c['settings']['api_version']);*/
 
+	   $respuesta = new respuesta_rest();
+	   $respuesta = $respuesta->set_api_version($c['settings']['api_version']);
+	   $respuesta->set_encoding_datos($c['settings']['encoding']);
+	   
             return $respuesta;
         });
 

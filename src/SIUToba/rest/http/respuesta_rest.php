@@ -1,7 +1,7 @@
 <?php
 
 namespace SIUToba\rest\http;
-
+use GuzzleHttp\Psr7;
 use SIUToba\rest\lib\rest_error;
 
 /**
@@ -23,13 +23,10 @@ class respuesta_rest extends respuesta
      */
     public function get($data)
     {
-        if ($data !== false) {
-            $this->get_list($data);
-        } else {
-            $this->not_found();
-        }
-
-        return $this;
+	if ($data === false) {	
+		$this->not_found();
+	}
+	return $this->get_list($data);
     }
 
     /**
@@ -37,10 +34,8 @@ class respuesta_rest extends respuesta
      */
     public function get_list($data)
     {
-        $this->data = $data;
-        $this->status = 200;
-
-        return $this;
+	$data = $this->getParaStream($data);
+	return  $this->withStatus(200)->withBody(Psr7\stream_for($data));	
     }
 
     /**
@@ -48,10 +43,8 @@ class respuesta_rest extends respuesta
      */
     public function post($data)
     {
-        $this->data = $data;
-        $this->status = 201; //created
-        return $this;
-        //se podria incluir un header con un Location, pero hay que hacer una api para URLs primero
+	$data = $this->getParaStream($data);
+	return  $this->withStatus(201)->withBody(Psr7\stream_for($data));	
     }
 
     /**
@@ -62,13 +55,12 @@ class respuesta_rest extends respuesta
      */
     public function put($data = null)
     {
-        if (! isset($data)) {
-            $this->status = 204; //sin contenido
+        if (! isset($data) || is_null($data)) {
+		return $this->withStatus(204);
         } else {
-            $this->data = $data;
-            $this->status = 200; //Ok
+		$data = $this->getParaStream($data);
+		return  $this->withStatus(200)->withBody(Psr7\stream_for($data));	
         }
-        return $this;
     }
 
     /**
@@ -78,7 +70,7 @@ class respuesta_rest extends respuesta
      */
     public function delete()
     {
-        $this->put();
+	return $this->withStatus(204);
     }
 
     /**
@@ -87,9 +79,8 @@ class respuesta_rest extends respuesta
      */
     public function error_negocio($errores, $status = 400)
     {
-        $this->data = $errores;
-        $this->status = $status; //
-        return $this;
+	$errores = $this->getParaStream($errores);
+	return  $this->withStatus($status)->withBody(Psr7\stream_for($errores));	
     }
 
     /**
@@ -108,9 +99,7 @@ class respuesta_rest extends respuesta
      */
     public function redirect($url, $status = 302)
     {
-        $this->set_status($status);
-        $this->headers['Location'] = $url;
-
-        return $this;
+	return  $this->withStatus($status)->withHeader('Location', $url);
     }
+		
 }

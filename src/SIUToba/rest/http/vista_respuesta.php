@@ -35,7 +35,8 @@ abstract class vista_respuesta
         }
 
         //Send headers
-        foreach ($this->respuesta->headers as $name => $value) {
+	$headers = $this->respuesta->getHeaders();
+        foreach ($headers as $name => $value) {
             $hValues = explode("\n", $value);
             foreach ($hValues as $hVal) {
                 header("$name: $hVal", false);
