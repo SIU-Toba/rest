@@ -13,8 +13,8 @@ class vista_json extends vista_respuesta
 
     public function get_cuerpo()
     {
-        $data = $this->respuesta->get_data();
-        if (!empty($data)) {
+        $data = $this->respuesta->get_data()->getContents();
+        /*if (!empty($data)) {							//Esto espera un array y todo lo que viene de stream es un string en el mejor de los casos.
             $data = $this->utf8_encode_fields($data);
         }
 
@@ -28,7 +28,8 @@ class vista_json extends vista_respuesta
             $output = json_encode($data);
         }
 
-        return $output;
+        return $output;	*/
+	return $data;
     }
 
     protected function prettyPrint($json)

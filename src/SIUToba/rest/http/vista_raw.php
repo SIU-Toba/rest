@@ -21,7 +21,7 @@ class vista_raw extends vista_respuesta
 
     public function get_cuerpo()
     {
-        return $this->respuesta->get_data();
+        return $this->respuesta->get_data()->getContents();
     }
 
 }
