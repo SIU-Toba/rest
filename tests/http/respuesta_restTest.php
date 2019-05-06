@@ -17,10 +17,10 @@ class respuesta_restTest extends TestCase
     {
         $data = array(1);
         $r = new respuesta_rest();
-        $r->get($data);
-
+        $r = $r->get($data);			//Devuelve una nueva instancia
+	
         $this->assertEquals(200, $r->get_status());
-        $this->assertEquals($data, $r->get_data());
+        $this->assertEquals($data, json_decode($r->get_data()->getContents(), true));
     }
 
     /**
@@ -44,9 +44,9 @@ class respuesta_restTest extends TestCase
 
     public function testPutOK()
     {
-        //$errores = false;
         $r = new respuesta_rest();
         $r = $r->put();
+		
         $this->assertEquals(204, $r->get_status());
         $this->assertEmpty($r->get_data()->__toString());			//Hay que testear un stream empty
     }
@@ -74,6 +74,6 @@ class respuesta_restTest extends TestCase
         $error = array('error' => 'e');
         $r = $r->error_negocio($error);
         $this->assertEquals(400, $r->get_status());
-        $this->assertEquals($error, $r->get_data());
+        $this->assertEquals($error, json_decode($r->get_data()->__toString(), true));
     }
 }
