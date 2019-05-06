@@ -25,11 +25,11 @@ class rest_errorTest extends TestCase
         $status = 400;
         $mensaje = "mi mensaje";
         $arreglo = array('hola' => 'mundo');
-        $error = new rest_error($status, $mensaje, $arreglo);
-        $r = new respuesta_rest();
-        $error->configurar_respuesta($r);
+        $error = new rest_error($status, $mensaje, $arreglo);        
+	$r = new respuesta_rest();
+         $error->configurar_respuesta($r);
 
-        $data = $r->get_data();
+        $data = json_decode($r->get_data()->getContents(), true);
         $this->assertEquals($mensaje, $data['descripcion']);
         $this->assertEquals($status, $r->get_status());
         $this->assertEquals($arreglo, $data['detalle']);
@@ -44,12 +44,12 @@ class rest_errorTest extends TestCase
         $r = new respuesta_rest();
         $error->configurar_respuesta($r);
 
-        $data = $r->get_data();
+        $data = json_decode($r->get_data()->getContents(), true);
         $this->assertArrayNotHasKey('detalle', $data);
 
         $error = new rest_error($status, $mensaje);
         $error->configurar_respuesta($r);
-        $data = $r->get_data();
+        $data = json_decode($r->get_data()->getContents(), true);
         $this->assertArrayNotHasKey('detalle', $data);
     }
 }
