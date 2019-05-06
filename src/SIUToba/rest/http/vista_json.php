@@ -13,9 +13,14 @@ class vista_json extends vista_respuesta
 
     public function get_cuerpo()
     {
-        $data = $this->respuesta->get_data()->getContents();
-        /*if (!empty($data)) {							//Esto espera un array y todo lo que viene de stream es un string en el mejor de los casos.
-            $data = $this->utf8_encode_fields($data);
+        $stream = $this->respuesta->get_data();				//Obtengo el body de la respuesta (es un Stream)
+        $data = $stream->getContents();
+
+        if ( $data != '' && $data !== false) {							
+		$tmp = json_decode($data, true);				//Verifico si originalmente era un array convertido en json
+		if (false !== $tmp) {	
+			$data = $this->utf8_encode_fields($tmp);
+		}
         }
 
         if ($this->pretty_print) {
@@ -28,8 +33,7 @@ class vista_json extends vista_respuesta
             $output = json_encode($data);
         }
 
-        return $output;	*/
-	return $data;
+        return $output;
     }
 
     protected function prettyPrint($json)

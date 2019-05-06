@@ -31,19 +31,18 @@ class rest_error extends \Exception
         return $this->detalle;
     }
 
-    public function configurar_respuesta(respuesta_rest $rta)
+    public function configurar_respuesta(respuesta_rest &$rta)
     {
         $datos = array(
             'error' => $this->code,
             'mensaje' => $rta->getMessageForCode($this->code),
-            'descripcion' => $this->getMessage(), );
+            'descripcion' => $this->getMessage() );
 
         if (!empty($this->detalle)) {
             $datos['detalle'] = $this->detalle;
         }
 
-        $rta->set_data($datos);
-        $rta->set_status($this->code);
+        $rta = $rta->set_data($datos)->set_status($this->code);
 
         return $this;
     }

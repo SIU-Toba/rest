@@ -29,6 +29,7 @@ class respuesta extends Response
      */
     public function __construct($data = null, $status = 200, $headers = array())
     {
+	$data = $this->getParaStream($data);
 	parent::__construct($status, $headers, $data);		
     }
 
@@ -63,7 +64,9 @@ class respuesta extends Response
 
     public function get_data()
     {
-	return $this->getBody();
+	$bd = $this->getBody();
+	$bd->rewind();
+	return $bd;
     }
 
     public function set_data($content)
@@ -113,14 +116,14 @@ class respuesta extends Response
 	
 	/**
 	 * Devuelve el parametro de manera compatible para la funcion stream_for
-	 * Esto es un Iterador en caso de arreglo o el mismo parametro
+	 * Esto es un json en caso de arreglo o el mismo parametro
 	 * @param mixed $valores
 	 * @return mixed
 	 */
 	protected function getParaStream($valores)
 	{
 		if (is_array($valores)) {
-			$valores = new \ArrayIterator($valores);		//Esto genera un pumpStream, hay que ver como hacer para generar un Multipart
+			$valores = json_encode($valores, true);
 		}
 		return $valores;
 	}
