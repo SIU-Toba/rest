@@ -19,11 +19,11 @@ class respuestaTest extends TestCase
     public function testFinalizarValidacionVacio()
     {
         $r = new respuesta("data", 204);
-        $r->finalizar();
+        $r = $r->finalizar();       //Recupera el nuevo objeto respuesta
         $this->assertEmpty($r->get_data()->__toString());
 
         $r = new respuesta("data", 304);
-        $r->finalizar();
-        $this->assertEmpty($r->get_data()->__toString());
+        $r->finalizar();            //Sigue con el objeto original
+        $this->assertTrue($r->get_data()->__toString() === 'data');
     }
 }

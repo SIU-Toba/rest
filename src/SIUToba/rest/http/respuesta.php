@@ -14,7 +14,7 @@ use GuzzleHttp\Psr7\Response;
 class respuesta extends Response
 {
     protected $encoding;
-    
+
     /**
      * @var string Verison de la API
      */
@@ -30,7 +30,7 @@ class respuesta extends Response
     public function __construct($data = null, $status = 200, $headers = array())
     {
 	$data = $this->getParaStream($data);
-	parent::__construct($status, $headers, $data);		
+	parent::__construct($status, $headers, $data);
     }
 
     public function set_encoding_datos($encoding)
@@ -56,7 +56,7 @@ class respuesta extends Response
    public function add_headers(array $headers)
     {
 	 $new = $this;
-	 foreach($headers as $header) {		 
+	 foreach($headers as $header) {
 		 $new = $new->withAddedHeader($header[0], $header[1]);		// headerName => valor
 	 }
 	 return $new;
@@ -74,10 +74,10 @@ class respuesta extends Response
 	$content = $this->getParaStream($content);
 	return $this->withBody(Psr7\stream_for($content));
     }
-    
+
     public function set_api_version($api_version)
     {
-        $this->api_version = $api_version;        
+        $this->api_version = $api_version;
         // Agrego la version de la API a los headers
 	return $this->withHeader('API-Version' , $this->api_version);
     }
@@ -90,8 +90,7 @@ class respuesta extends Response
 	$new = $this;
         if (in_array($this->getStatusCode(), array(204, 304))) {
 		$new = $this->withoutHeader('Content-Type')->withoutHeader('Content-Length')->withBody(Psr7\stream_for(''));
-        }
-        if (!isset($new->stream)) {									//Accede a la variable directamente porque cuando es vacio tiene un stream_for('')
+        } elseif ($new->getBody()->getSize() === 0) {	//Si tiene un stream_for('') para cualquier cosa no 204/304 es que no seteo nada
             throw new rest_error_interno("El contenido de la respuesta no puede ser nulo. Si no se desea una respuesta, inicializar
             en '' o arreglo vacio");
         }
@@ -113,18 +112,18 @@ class respuesta extends Response
             return;
         }
     }
-	
-	/**
-	 * Devuelve el parametro de manera compatible para la funcion stream_for
-	 * Esto es un json en caso de arreglo o el mismo parametro
-	 * @param mixed $valores
-	 * @return mixed
-	 */
-	protected function getParaStream($valores)
-	{
-		if (is_array($valores)) {
-			$valores = json_encode($valores, true);
-		}
-		return $valores;
-	}
+
+    /**
+     * Devuelve el parametro de manera compatible para la funcion stream_for
+     * Esto es un json en caso de arreglo o el mismo parametro
+     * @param mixed $valores
+     * @return mixed
+     */
+    protected function getParaStream($valores)
+    {
+            if (is_array($valores)) {
+                    $valores = json_encode($valores, true);
+            }
+            return $valores;
+    }
 }
