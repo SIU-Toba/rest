@@ -36,6 +36,7 @@ class respuesta extends Response
     public function set_encoding_datos($encoding)
     {
         $this->encoding = $encoding;
+        return $this;
     }
 
     public function get_encoding_datos()
@@ -55,9 +56,9 @@ class respuesta extends Response
 
    public function add_headers(array $headers)
     {
-	 $new = $this;
-	 foreach($headers as $header) {
-		 $new = $new->withAddedHeader($header[0], $header[1]);		// headerName => valor
+	 $new = clone $this;
+	 foreach($headers as $header => $valor) {
+            $new = $new->withAddedHeader($header, $valor);		// headerName => valor
 	 }
 	 return $new;
     }
@@ -79,7 +80,7 @@ class respuesta extends Response
     {
         $this->api_version = $api_version;
         // Agrego la version de la API a los headers
-	return $this->withHeader('API-Version' , $this->api_version);
+	return $this->withAddedHeader('API-Version' , $this->api_version);
     }
 
     /**
@@ -87,7 +88,7 @@ class respuesta extends Response
      */
     public function finalizar()
     {
-	$new = $this;
+	$new = clone $this;
         if (in_array($this->getStatusCode(), array(204, 304))) {
 		$new = $this->withoutHeader('Content-Type')->withoutHeader('Content-Length')->withBody(Psr7\stream_for(''));
         } elseif ($new->getBody()->getSize() === 0) {	//Si tiene un stream_for('') para cualquier cosa no 204/304 es que no seteo nada
@@ -106,24 +107,26 @@ class respuesta extends Response
      */
     public static function getMessageForCode($status)
     {
-        if (isset(self::$phrases[$status])) {
+        /*if (isset(self::$phrases[$status])) {
             return self::$phrases[$status];
         } else {
             return;
-        }
+        }*/
+        return ;
     }
 
-    /**
-     * Devuelve el parametro de manera compatible para la funcion stream_for
-     * Esto es un json en caso de arreglo o el mismo parametro
-     * @param mixed $valores
-     * @return mixed
-     */
-    protected function getParaStream($valores)
-    {
-            if (is_array($valores)) {
-                    $valores = json_encode($valores, true);
-            }
-            return $valores;
-    }
+	/**
+	 * Devuelve el parametro de manera compatible para la funcion stream_for
+	 * Esto es un json en caso de arreglo o el mismo parametro
+	 * @param mixed $valores
+	 * @return mixed
+	 */
+	protected function getParaStream($valores)
+	{
+		if (is_array($valores)) {
+			$valores = json_encode($valores, \JSON_UNESCAPED_UNICODE);
+                        //var_dump(\json_last_error_msg());
+		}
+		return $valores;
+	}
 }

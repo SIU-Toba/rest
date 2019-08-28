@@ -52,7 +52,7 @@ class autenticacion_digest_http extends proveedor_autenticacion
      *
      * @return mixed
      */
-    public function requerir_autenticacion(respuesta_rest $rta)
+    public function requerir_autenticacion(respuesta_rest &$rta)
     {
         //importante las comillas dobles
         $header = 'Digest realm="'.$this->realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.md5($this->realm).'"';
