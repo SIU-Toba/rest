@@ -4,6 +4,9 @@ namespace SIUToba\rest\http;
 
 use SIUToba\rest\lib\rest_error;
 use GuzzleHttp\Psr7\ServerRequest;
+use GuzzleHttp\Psr7\CachingStream;
+use GuzzleHttp\Psr7\LazyOpenStream;
+use GuzzleHttp\Psr7\Uri;
 
 /**
  * Clase basada en Slim - a micro PHP 5 framework para abstraer el Request.
@@ -52,7 +55,7 @@ class request extends ServerRequest
         /*$this->headers = $this->extract_headers();
         $this->behind_proxy = $behind_proxy;*/
     }
-	
+
     public static function fromGlobals()
     {
 		$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
@@ -68,7 +71,7 @@ class request extends ServerRequest
 			->withParsedBody($_POST)
 			->withUploadedFiles(ServerRequest::normalizeFiles($_FILES));
     }
-	
+
     public function set_encoding_datos($encoding)
     {
         $this->encoding = $encoding;
@@ -214,6 +217,7 @@ class request extends ServerRequest
     
     public function get_request_uri()
     {
+		return $this->getUri()->getPath();
 		return $this->getUri()->__toString();
         if (! isset($this->request_uri)) {
             $this->request_uri = $_SERVER["REQUEST_URI"];
@@ -238,22 +242,6 @@ class request extends ServerRequest
 		$uri = $this->getUri();
 		return Uri::composeComponents($uri->getScheme(), $uri->getAuthority(), $uri->getPath(), '', '');
     }
-
-   /* protected function extract_headers()
-    {
-        $results = array();
-        foreach ($_SERVER as $key => $value) {
-            $key = strtoupper($key);
-            if (strpos($key, 'X_') === 0 || strpos($key, 'HTTP_') === 0 || in_array($key, static::$special)) {
-                if ($key === 'HTTP_CONTENT_TYPE' || $key === 'HTTP_CONTENT_LENGTH') {
-                    continue;
-                }
-                $results[$key] = $value;
-            }
-        }
-
-        return $results;
-    }*/
 
     protected function get_valor_o_default($arreglo, $key = null, $default = null)
     {

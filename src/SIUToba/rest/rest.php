@@ -7,10 +7,10 @@ use SIUToba\rest\docs\controlador_docs;
 use SIUToba\rest\http\request;
 use SIUToba\rest\http\respuesta_rest;
 use SIUToba\rest\http\vista_json;
-use SIUToba\rest\http\vista_respuesta;
+//use SIUToba\rest\http\vista_respuesta;
 use SIUToba\rest\http\vista_xml;
 use SIUToba\rest\lib\lector_recursos_archivo;
-use SIUToba\rest\lib\logger;
+//use SIUToba\rest\lib\logger;
 use SIUToba\rest\lib\logger_vacio;
 use SIUToba\rest\lib\rest_error;
 use SIUToba\rest\lib\rest_error_interno;
@@ -21,7 +21,7 @@ use SIUToba\rest\seguridad\autenticacion\rest_error_autenticacion;
 use SIUToba\rest\seguridad\autorizacion\autorizacion_anonima;
 use SIUToba\rest\seguridad\autorizacion\rest_error_autorizacion;
 use SIUToba\rest\seguridad\firewall;
-use SIUToba\rest\seguridad\proveedor_autorizacion;
+//use SIUToba\rest\seguridad\proveedor_autorizacion;
 use SIUToba\rest\seguridad\rest_usuario;
 
 /**
@@ -108,7 +108,6 @@ class rest
     public function __construct($settings = array())
     {
         self::$instancia = $this;
-//		$this->autoload();
 
         $this->container = new Set();
         $this->container['settings'] = array_merge(static::get_default_settings(), $settings);
@@ -123,14 +122,9 @@ class rest
 
         // Respuesta default
         $this->container->singleton('response', function ($c) {
-            /*$respuesta = new respuesta_rest();
-            $respuesta->set_encoding_datos($c['settings']['encoding']);
-            $respuesta->set_api_version($c['settings']['api_version']);*/
-
 	   $respuesta = new respuesta_rest();
-	   $respuesta = $respuesta->set_api_version($c['settings']['api_version']);
-	   $respuesta->set_encoding_datos($c['settings']['encoding']);
-	   
+           $respuesta = $respuesta->set_encoding_datos($c['settings']['encoding'])->set_api_version($c['settings']['api_version']);
+
             return $respuesta;
         });
 
@@ -242,16 +236,16 @@ class rest
         $this->logger->debug("Iniciando el pedido");
         try {
             $method = $this->request->get_method();
+            $respuesta = $this->response;       //Fuerzo instanciacion de la respuesta ya que un singleton no sirve mas
+            $this->set_response($respuesta->withStatus(200));
+
             $url = $this->get_url_relativa();
             $url = ltrim($url, '/');
-
             $this->logger->debug("Procesando URL '/$url'");
 
-            $partes_url = explode('/', $url);
-
             $this->controlar_acceso($url);
-
-            if ($partes_url[0] == $this->settings['prefijo_api_docs']) {
+            $partes_url = explode('/', $url);
+            if ($partes_url[0] == $this->container['settings']['prefijo_api_docs']) {
                 $this->mostrar_documentacion($url);
             } else {
                 $recurso = $this->router->buscar_controlador($method, $url);
@@ -259,30 +253,30 @@ class rest
                 $recurso->ejecutar_accion();
             }
         } catch (rest_error_autenticacion $ex) {
-            $ex->configurar_respuesta($this->response);
+            $ex->configurar_respuesta($respuesta);
             $this->logger->info("Excepcion de Autenticacion. Autenticar y reintentar");
-            $this->logger->info(var_export($this->response, true));
+            $this->logger->info(var_export($respuesta, true));
             $this->logger->info($ex->getMessage());
         } catch (rest_error_autorizacion $ex) {
-            $ex->configurar_respuesta($this->response);
+            $ex->configurar_respuesta($respuesta);
             $this->logger->info("Error de Autorizacion.");
         } catch (rest_error $ex) {
             // Excepciones controladas, partel del flujo normal de la API
-            $ex->configurar_respuesta($this->response);
-            $this->logger->info("La api retornó un error. Status: ".$this->response->get_status());
-            $this->logger->info(var_export($this->response->get_data(), true));
+            $ex->configurar_respuesta($respuesta);
+            $this->logger->info("La api retornó un error. Status: ".$respuesta->get_status());
+            $this->logger->info(var_export($respuesta->get_data(), true));
         } catch (Exception $ex) {
             // Excepcion del codigo del proyecto - Error de programación, no tiene que entrar aca en el flujo normal
             $this->logger->error("Error al ejecutar el pedido. ".$ex->getMessage());
             $this->logger->error($ex->getTraceAsString());
             $error = new rest_error(500, "Error Interno en el servidor: ".$ex->getMessage());
-            $error->configurar_respuesta($this->response);
+            $error->configurar_respuesta($respuesta);
         }
         $this->response->finalizar();
         $this->vista->escribir();
         $this->logger->debug("Pedido finalizado");
         if ($this->config('debug')) {
-            $this->logger->debug(var_export($this->response, true));
+            $this->logger->debug(var_export($respuesta, true));
         }
         if (method_exists($this->logger, 'guardar')) { // es el logger de toba
             $this->logger->guardar();
@@ -311,7 +305,10 @@ class rest
     {
         $uri = $this->request->get_request_uri();
         $url = strtok($uri, '?');
-        $url_api = $this->settings['url_api'];
+        $url_api = $this->container['settings']['url_api'];
+
+       /* $resultado = GuzzleHttp\Psr7\UriResolver::relativize(new GuzzleHttp\Psr7\Uri($url_api), new GuzzleHttp\Psr7\Uri($uri));
+        return $resultado->__toString();*/
 
         if (substr($url, 0, strlen($url_api)) == $url_api) {
             return substr($url, strlen($url_api));
@@ -319,20 +316,9 @@ class rest
         throw new rest_error_interno("Este controlador no está configurado para manejar esta URL. La url es: '$uri', la url de la API es '$url_api'");
     }
 
-//	protected function autoload()
-//	{
-//		include_once 'bootstrap.php';
-////		if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-////			require 'vendor/autoload.php';
-////		} else {
-////			die("Falta correr 'composer install' en php/lib/rest");
-////		}
-//		bootstrap::registerAutoloader();
-//	}
-
     public function config($clave)
     {
-        return $this->settings[$clave];
+        return $this->container['settings'][$clave];
     }
 
     public function __get($name)
@@ -384,7 +370,7 @@ class rest
         $controlador = $this->controlador_documentacion;
         $controlador->set_config($config);
         $url = strstr($url, '/');
-        $controlador->get_documentacion($url);
+        $this->set_response($controlador->get_documentacion($url));
     }
 
     /**
