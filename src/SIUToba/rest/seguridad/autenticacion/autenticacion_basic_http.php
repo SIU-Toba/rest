@@ -46,8 +46,8 @@ class autenticacion_basic_http extends proveedor_autenticacion
     public function requerir_autenticacion(respuesta_rest &$rta)
     {
         $rta = $rta
-                ->add_headers(array('WWW-Authenticate' => 'Basic realm="Usuario de la API"'))
-                ->set_data(array('mensaje' => 'autenticaciÃ³n cancelada'));
+            ->add_headers(array('WWW-Authenticate' => 'Basic realm="Usuario de la API"'))
+            ->set_data(array('mensaje' => 'autenticación cancelada'));
     }
 
     /**

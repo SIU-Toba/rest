@@ -107,9 +107,9 @@ class autenticacion_ssl extends proveedor_autenticacion
      *
      * @return mixed
      */
-    public function requerir_autenticacion(respuesta_rest $rta)
+    public function requerir_autenticacion(respuesta_rest &$rta)
     {
-        $rta->set_data(array('mensaje' => 'autenticación cancelada, falta información'));
+        $rta = $rta->set_data(array('mensaje' => 'autenticación cancelada, falta información'));
     }
 
     /**
