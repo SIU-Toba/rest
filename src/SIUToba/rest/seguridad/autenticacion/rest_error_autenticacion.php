@@ -10,9 +10,9 @@ class rest_error_autenticacion extends rest_error
 {
     protected $proveedor_autenticacion;
 
-    public function __construct(proveedor_autenticacion $autenticador, $mensaje = "Se requiere autenticaciÃ³n")
+    public function __construct(proveedor_autenticacion $autenticador, $mensaje = "Se requiere autenticación")
     {
-        $mensaje = (empty($mensaje)) ? 'Se require autenticaciÃ³n' : $mensaje;
+        $mensaje = (empty($mensaje)) ? 'Se require autenticación' : $mensaje;
         parent::__construct(401, $mensaje);
         $this->proveedor_autenticacion = $autenticador;
     }

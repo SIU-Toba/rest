@@ -42,7 +42,7 @@ class rest_error extends \Exception
             $datos['detalle'] = $this->detalle;
         }
 
-        $rta = $rta->set_data($datos)->set_status($this->code);
+        $rta = $rta->set_status($this->code)->set_data($datos);
 
         return $this;
     }
