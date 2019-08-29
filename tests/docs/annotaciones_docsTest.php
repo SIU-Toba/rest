@@ -7,6 +7,12 @@ use SIUToba\rest\docs\anotaciones_docs;
 
 class annotaciones_docsTest extends TestCase
 {
+    protected function setUp()
+    {
+       include_once __DIR__.'/../../src/SIUToba/rest/lib/funciones_basicas.php';
+       parent::setUp();
+    }
+
     /**
      * @return anotaciones_docs
      */
