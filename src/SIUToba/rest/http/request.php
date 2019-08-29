@@ -275,7 +275,7 @@ class request extends ServerRequest
 
             return $salida;
         } elseif (is_string($entrada)) {
-            return utf8_decode($entrada);
+            return \utf8_d_seguro($entrada);
         } else {
             return $entrada;
         }
