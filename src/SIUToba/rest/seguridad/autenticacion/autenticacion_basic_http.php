@@ -47,7 +47,7 @@ class autenticacion_basic_http extends proveedor_autenticacion
     {
         $rta = $rta
             ->add_headers(array('WWW-Authenticate' => 'Basic realm="Usuario de la API"'))
-            ->set_data(array('mensaje' => 'autenticación cancelada'));
+            ->set_data(array('mensaje' => \utf8_e_seguro('autenticación cancelada')));
     }
 
     /**

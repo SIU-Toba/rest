@@ -109,7 +109,7 @@ class autenticacion_ssl extends proveedor_autenticacion
      */
     public function requerir_autenticacion(respuesta_rest &$rta)
     {
-        $rta = $rta->set_data(array('mensaje' => 'autenticaciÃ³n cancelada, falta informaciÃ³n'));
+        $rta = $rta->set_data(array('mensaje' => \utf8_e_seguro('autenticación cancelada, falta información')));
     }
 
     /**

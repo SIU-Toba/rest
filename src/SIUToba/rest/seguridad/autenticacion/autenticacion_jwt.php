@@ -38,9 +38,9 @@ class autenticacion_jwt extends proveedor_autenticacion
                 return $usuario;
             }
             if (isset($token)) {
-                $this->mensaje = "No se encontro usuario vÃ¡lido en el token";
+                $this->mensaje = "No se encontro usuario válido en el token";
             } else {
-                $this->mensaje = 'Debe proveer un token vÃ¡lido';
+                $this->mensaje = 'Debe proveer un token válido';
             }
 
         } catch (\Exception $exc) {
@@ -59,7 +59,7 @@ class autenticacion_jwt extends proveedor_autenticacion
      */
     public function requerir_autenticacion(respuesta_rest &$rta)
     {
-        $rta = $rta->set_data(array('mensaje' => $this->mensaje));
+        $rta = $rta->set_data(array('mensaje' => \utf8_e_seguro($this->mensaje)));
     }
 
     /**

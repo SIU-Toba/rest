@@ -41,7 +41,7 @@ class rest_error extends \Exception
         if (!empty($this->detalle)) {
             $datos['detalle'] = $this->detalle;
         }
-
+        $datos = \array_map('utf8_e_seguro', $datos);
         $rta = $rta->set_status($this->code)->set_data($datos);
 
         return $this;
