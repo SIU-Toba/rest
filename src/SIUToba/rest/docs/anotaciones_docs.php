@@ -100,7 +100,7 @@ class anotaciones_docs
             $pos = strpos($annotation, ' ');
             $nombre = substr($annotation, 0, $pos);
             $contenido = substr($annotation, $pos + 1);
-            $retorno [$nombre][] = trim($contenido);
+            $retorno [$nombre][] = \utf8_e_seguro(trim($contenido));
         }
 
         return $retorno;
@@ -129,13 +129,13 @@ class anotaciones_docs
             $parametros = array();
             $parameters = $metodo->getParameters();
             foreach ($parameters as $p) {
-                $parametros[] = $p->getName();
+                $parametros[] = \utf8_e_seguro($p->getName());
             }
 
             $anotaciones = $this->get_annotations_metodo($metodo);
 
             $nuevo_metodo = array(
-                'nombre' => $metodo->getName(),
+                'nombre' => \utf8_e_seguro($metodo->getName()),
                 'parametros' => $parametros,
                 'anotaciones' => $anotaciones,
             );
@@ -194,22 +194,23 @@ class anotaciones_docs
         }
 
         $api_parameter = array();
-        $tipo_dato = tipo_datos_docs::get_tipo_datos($matches[2]);
-        switch ($type) {
-            case 'query':
-                $api_parameter['name'] = ltrim($matches[1], '$');
-                $api_parameter['in'] = $type;
-                $api_parameter['schema'] = $tipo_dato;
-                break;
-        /*	case 'path':
-                $api_parameter['in'] = $type;*/
-            case 'body':
-                $api_parameter['content'] = array('*/*' => ['schema' => $tipo_dato]);
-                break;
-        }
-        
-        $api_parameter['description'] = $matches[4] ?: '[sin descripcion]';
-        if (!empty($matches[3])) {
+		$tipo_dato = tipo_datos_docs::get_tipo_datos($matches[2]);
+		$api_parameter['description'] = $matches[4] ?: '[sin descripcion]';
+		switch($type) {
+			case 'query':
+				$api_parameter['name'] = ltrim($matches[1], '$');
+				$api_parameter['in'] = $type;
+				$api_parameter['schema'] = $tipo_dato;
+				break;
+		/*	case 'path':		
+				$api_parameter['in'] = $type;*/
+			case 'body':
+				$api_parameter['content'] = array('*/*' => ['schema' => $tipo_dato]);
+				break;
+		}
+		
+		$api_parameter = \array_map('utf8_e_seguro', $api_parameter);
+		if (!empty($matches[3])) {
             $modificadores = $matches[3];
             if (preg_match('/required/', $modificadores)) {
                 $api_parameter['required'] = true;
@@ -258,7 +259,7 @@ class anotaciones_docs
                     continue;
                 }
 
-                $status = $matches[1];
+                $status = \utf8_e_seguro($matches[1]);
 
                 if ($matches[2] == 'array') {
                     $items = tipo_datos_docs::get_tipo_datos($matches[3]);
@@ -269,7 +270,7 @@ class anotaciones_docs
                 } else {
                     $schema = tipo_datos_docs::get_tipo_datos($matches[3]);
                 }
-                $mje = $matches[4];
+                $mje = \utf8_e_seguro($matches[4]);
 
                 $resObj = array('description' => $mje);
                 if (! empty($schema)) {
@@ -286,5 +287,30 @@ class anotaciones_docs
     protected function termina_con($needle, $haystack)
     {
         return substr($haystack, -strlen($needle)) === $needle;
+    }
+
+    /**
+     * @param $tipo
+     *
+     * @return array
+     */
+    protected function get_tipo_datos($tipo)
+    {
+        $tipo = preg_replace("#[\{\}\"\s]#",'', $tipo);
+        if (trim($tipo) == '') {
+            return;
+        }
+
+        $refs = explode(':', $tipo);
+        if (false === $refs) {
+            $tipoRef = array('type' => \utf8_e_seguro(trim($tipo)));                            //Basic type - no name
+        } else {
+            if (substr($refs[0], 0, 1) == '$') {
+                $tipoRef = array('$ref' => "#/definitions/". \utf8_e_seguro(trim($refs[1])));   //Referred type {"$ref": "Defined@Model"}
+            } else {
+                $tipoRef = array('type' => \utf8_e_seguro(trim($refs[1])));                     //Basic type - named {"id" : "integer"}
+            }
+        }
+        return $tipoRef;
     }
 }
