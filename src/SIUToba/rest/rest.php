@@ -24,6 +24,8 @@ use SIUToba\rest\seguridad\firewall;
 //use SIUToba\rest\seguridad\proveedor_autorizacion;
 use SIUToba\rest\seguridad\rest_usuario;
 
+include_once 'lib/funciones_basicas.php';
+
 /**
  * @property lector_recursos_archivo lector_recursos
  * @property request request
@@ -236,8 +238,6 @@ class rest
         $this->logger->debug("Iniciando el pedido");
         try {
             $method = $this->request->get_method();
-            $respuesta = $this->response;       //Fuerzo instanciacion de la respuesta ya que un singleton no sirve mas
-            $this->set_response($respuesta->withStatus(200));
 
             $url = $this->get_url_relativa();
             $url = ltrim($url, '/');
@@ -253,24 +253,32 @@ class rest
                 $recurso->ejecutar_accion();
             }
         } catch (rest_error_autenticacion $ex) {
+            $respuesta = $this->response;       //Fuerzo instanciacion ya que necesito pasarlo por referencia
             $ex->configurar_respuesta($respuesta);
             $this->logger->info("Excepcion de Autenticacion. Autenticar y reintentar");
             $this->logger->info(var_export($respuesta, true));
             $this->logger->info($ex->getMessage());
+            $this->set_response($respuesta);
         } catch (rest_error_autorizacion $ex) {
+            $respuesta = $this->response;       //Fuerzo instanciacion ya que necesito pasarlo por referencia
             $ex->configurar_respuesta($respuesta);
             $this->logger->info("Error de Autorizacion.");
+            $this->set_response($respuesta);
         } catch (rest_error $ex) {
             // Excepciones controladas, partel del flujo normal de la API
+            $respuesta = $this->response;       //Fuerzo instanciacion ya que necesito pasarlo por referencia
             $ex->configurar_respuesta($respuesta);
-            $this->logger->info("La api retornó un error. Status: ".$respuesta->get_status());
+            $this->logger->info("La api retorn� un error. Status: ".$respuesta->get_status());
             $this->logger->info(var_export($respuesta->get_data(), true));
+            $this->set_response($respuesta);
         } catch (Exception $ex) {
+            $respuesta = $this->response;       //Fuerzo instanciacion ya que necesito pasarlo por referencia
             // Excepcion del codigo del proyecto - Error de programación, no tiene que entrar aca en el flujo normal
             $this->logger->error("Error al ejecutar el pedido. ".$ex->getMessage());
             $this->logger->error($ex->getTraceAsString());
             $error = new rest_error(500, "Error Interno en el servidor: ".$ex->getMessage());
             $error->configurar_respuesta($respuesta);
+            $this->set_response($respuesta);
         }
         $this->response->finalizar();
         $this->vista->escribir();
