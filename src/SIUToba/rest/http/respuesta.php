@@ -124,7 +124,7 @@ class respuesta extends Response
 	protected function getParaStream($valores)
 	{
 		if (is_array($valores)) {
-			$valores = json_encode($valores, \JSON_UNESCAPED_UNICODE);
+			$valores = json_encode($valores);
                         //var_dump(\json_last_error_msg());
 		}
 		return $valores;
