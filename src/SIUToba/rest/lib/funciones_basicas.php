@@ -7,7 +7,7 @@ if (!function_exists('utf8_e_seguro')) {
     */
     function utf8_e_seguro($s)
     {
-        echo 'paso por enconde ' . PHP_EOL;
+        //echo 'paso por enconde ' . PHP_EOL;
         if (mb_detect_encoding($s, "UTF-8", true) == "UTF-8") {
             return $s;
         }
@@ -24,7 +24,7 @@ if (!function_exists('utf8_d_seguro')) {
     */
     function utf8_d_seguro($s)
     {
-        echo 'paso por Decode ' . PHP_EOL;
+        //echo 'paso por Decode ' . PHP_EOL;
         if (mb_detect_encoding($s, "UTF-8", true) == "UTF-8") {
             return \utf8_decode($s);
         }
