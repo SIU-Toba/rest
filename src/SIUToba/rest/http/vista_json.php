@@ -16,9 +16,9 @@ class vista_json extends vista_respuesta
         $stream = $this->respuesta->get_data();				//Obtengo el body de la respuesta (es un Stream)
         $data = $stream->getContents();
 
-        if ( $data != '' && $data !== false) {							
+        if ( $data != '' && $data !== false) {
 		$tmp = json_decode($data, true);				//Verifico si originalmente era un array convertido en json
-		if (false !== $tmp) {	
+		if (false !== $tmp) {
 			$data = $this->utf8_encode_fields($tmp);
 		}
         }
@@ -104,7 +104,7 @@ class vista_json extends vista_respuesta
             if (is_array($elements[$key])) {
                 $elements[$key] = $this->utf8_encode_fields($elements[$key]);
             } elseif (mb_detect_encoding($elements[$key], "UTF-8", true) != "UTF-8") {
-                $elements[$key] = utf8_encode($elements[$key]);
+                $elements[$key] = \utf8_e_seguro($elements[$key]);
             }
         }
         return $elements;
