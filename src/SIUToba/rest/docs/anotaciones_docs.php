@@ -287,7 +287,7 @@ class anotaciones_docs
             $tipoRef = array('type' => trim($tipo));                            //Basic type - no name
         } else {
             if (substr($refs[0], 0, 1) == '$') {
-                $tipoRef = array('$ref' => "#/definitions/". trim($refs[1]));   //Referred type {"$ref": "Defined@Model"}
+                $tipoRef = array('$ref' => "#/components/schemas/". trim($refs[1]));   //Referred type {"$ref": "Defined@Model"}
             } else {
                 $tipoRef = array('type' => trim($refs[1]));                     //Basic type - named {"id" : "integer"}
             }
