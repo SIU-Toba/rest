@@ -20,7 +20,7 @@ class lector_recursos_archivo
 
     /**
     * Permite agregar una fuente de recursos
-    * @param $path string  
+    * @param $path string
     */
     public function add_directorio_recursos($path)
     {
@@ -67,6 +67,7 @@ class lector_recursos_archivo
             return is_dir($directorio.DIRECTORY_SEPARATOR.$padre) &&
                 !file_exists($directorio.DIRECTORY_SEPARATOR.$padre.DIRECTORY_SEPARATOR.$this->prefijo_recursos.$padre.'.php');
         }
+        return false;
     }
 
     /**
