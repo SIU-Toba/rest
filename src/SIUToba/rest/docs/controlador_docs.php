@@ -318,8 +318,9 @@ class controlador_docs
                               'description' => 'Documentación de la API',
                               'version' => /*rest::app()->config('api_version')*/ "1.0.1");
 
-        $url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] ;//. '{basePath}';
+        $url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $this->api_url;
         $list['servers'] = array([ "url" => $url, "basePath" => $this->api_url]);
+        //$list['produces'] = array("application/json");
         return $list;
     }
 
@@ -329,15 +330,15 @@ class controlador_docs
                 "tags" => $tags,
                 "summary" => $resumen,
                 "description" => $descripcion,
-                "externalDocs" => [],
+                //"externalDocs" => [],
                 "operationId" => $opId,
                 "parameters" => $parametros,
                 "requestBody" => $body,
                 "responses" => $respuestas,
-                "callbacks" => [],
+                //"callbacks" => [],
                 "deprecated" => false,
-                "security" => [],
-                "servers" => []
+                //"security" => [],
+                //"servers" => []
             );
         return $data;
     }
@@ -353,7 +354,7 @@ class controlador_docs
             'allowEmptyValue' => ! $requerido,
             'explode' => false,
             'allowReserved' => false,
-            'style' => []       //Aca iria type¿?
+          //  'style' => []       //Aca iria type¿?
         );
 
         return $data;
