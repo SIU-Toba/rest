@@ -76,7 +76,7 @@ class rest_hidratador
             }
 
             if (is_array($campo) && isset($campo['_mapeo'])) { // "nombre" => array('_mapeo' => "otro nombre",
-                $nueva_fila[$key] = $fila[$campo['_mapeo']];
+                $nueva_fila[$key] = \array_map('utf8_e_seguro', $fila[$campo['_mapeo']]);
                 continue;
             }
             if (is_array($campo) && isset($campo['_compuesto'])) {
@@ -86,12 +86,11 @@ class rest_hidratador
             }
             //pasa como viene
             if (is_array($campo)) {
-                $nueva_fila[$key] = $fila[$key]; // 'key' => array()..
+                $nueva_fila[$key] = utf8_e_seguro($fila[$key]); // 'key' => array()..
             } else {
-                $nueva_fila[$campo] = $fila[$campo]; // 2 => 'campo'
+                $nueva_fila[$campo] = utf8_e_seguro($fila[$campo]); // 2 => 'campo'
             }
         }
-
         return $nueva_fila;
     }
 
