@@ -250,7 +250,8 @@ class rest
             } else {
                 $recurso = $this->router->buscar_controlador($method, $url);
                 $this->logger->debug("Controlador encontrado {$recurso->archivo} :: {$recurso->accion} (".implode(',', $recurso->parametros).")");
-                $recurso->ejecutar_accion();
+                $respuesta = $recurso->ejecutar_accion();
+                $this->set_response($respuesta);
             }
         } catch (rest_error_autenticacion $ex) {
             $respuesta = $this->response;       //Fuerzo instanciacion ya que necesito pasarlo por referencia
