@@ -101,6 +101,7 @@ class rest
             'http.version' => '1.1',
             // API version
             'api_version' => '1.0.0',
+            'api_titulo' => 'Api Reference',
         );
     }
 
@@ -368,6 +369,8 @@ class rest
     {
         $this->logger->debug("Iniciando documentacion");
         $controlador = $this->controlador_documentacion;
+        $controlador->set_titulo($this->container['settings']['api_titulo']);
+        $controlador->set_version_api($this->container['settings']['api_version']);
         $url = strstr($url, '/');
         $controlador->get_documentacion($url);
     }

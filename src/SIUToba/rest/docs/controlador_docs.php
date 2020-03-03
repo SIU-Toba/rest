@@ -20,6 +20,7 @@ class controlador_docs
     protected $api_url;
 
     protected $list;
+    protected $settings = array('titulo' => 'Api Title', 'version' => '1.0');
 
     public function __construct($api_root, $api_url)
     {
@@ -39,6 +40,23 @@ class controlador_docs
         }
     }
 
+    /**
+     * Permite informar el titulo deseado para la documentacion a generar
+     * @param string $titulo
+     */
+    public function set_titulo($titulo)
+    {
+        $this->settings['titulo'] = $titulo;
+    }
+
+    /**
+     * Permite informar la version de la API para la cual se genera la documentacion
+     * @param string $version
+     */
+    public function set_version_api($version)
+    {
+        $this->settings['version'] = $version;
+    }
 
     /**
      * Retorna la documentacion en formato swagger para el path. Si el path
@@ -59,7 +77,7 @@ class controlador_docs
         $list = array();
         $this->list = & $list;
         $list['swagger'] = "2.0";
-        $list['info'] = array('title' => 'API Title', 'version' => '1.0');                               //TODO: Read from settings
+        $list['info'] = array('title' => $this->settings['titulo'], $this->settings['version']);
         $list['basePath'] = $this->api_url;
         $list['produces'] = array("application/json");
 
@@ -312,7 +330,7 @@ class controlador_docs
     * @param $params List of body params
     * @return array  List of body params with schema definitions
     */
-    protected function add_tipos_en_modelo($params)  
+    protected function add_tipos_en_modelo($params)
     {
         $non_predefined_types = array_keys($this->list['definitions']);
         $param_keys = array_keys($params);
@@ -321,7 +339,7 @@ class controlador_docs
                 $params[$key]['schema'] = array('$ref' => "#/definitions/". trim($params[$key]['type']));
             }
         }
-            
+
         return $params;
     }
 
