@@ -77,7 +77,7 @@ class controlador_docs
         $list = array();
         $this->list = & $list;
         $list['swagger'] = "2.0";
-        $list['info'] = array('title' => $this->settings['titulo'], $this->settings['version']);
+        $list['info'] = array('title' => $this->settings['titulo'], 'version' => $this->settings['version']);
         $list['basePath'] = $this->api_url;
         $list['produces'] = array("application/json");
 
@@ -134,6 +134,7 @@ class controlador_docs
         /** @var $reflexion anotaciones_docs */
         $reflexion = $this->get_annotaciones_de_path($path);
         $metodos = $reflexion->get_metodos();
+        $nombre_clase = $reflexion->get_nombre_clase();
 
         $montaje = $this->get_montaje_de_path($path);
         $prefijo_montaje = $montaje ? '/' . $montaje : '';
@@ -195,7 +196,7 @@ class controlador_docs
             $operation['summary'] = $reflexion->get_summary_metodo($metodo);
             $operation['description'] = $reflexion->get_notes_metodo($metodo);
 
-            $operation['operationId'] = $nombre_metodo;
+            $operation['operationId'] = "$nombre_clase:$nombre_metodo";
             $operation['parameters'] = array_merge($params_path, $params_body, $params_query);
 
             $operation['responses'] = $reflexion->get_respuestas_metodo($metodo);

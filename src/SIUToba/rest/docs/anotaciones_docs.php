@@ -32,6 +32,15 @@ class anotaciones_docs
     }
 
     /**
+     * Devuelve el nombre (con Namespace) de la clase
+     * @return string
+     */
+    public function get_nombre_clase()
+    {
+        return $this->reflexion->getNamespaceName() .'/'. $this->reflexion->getName();
+    }
+
+    /**
      * Parsea una reflexion (metodo, clase) y devuelve las anotaciones en un arreglo.
      *
      * @param $reflexion
@@ -227,7 +236,7 @@ class anotaciones_docs
                 $matches = array();
                 //200 [array] $tipo descripcion
                 $resultado = preg_match("/(\d{3})?\s*([ary]*)\s*(\{[\":\w\$\s]+\})?\s*(.*)/i", $respuesta, $matches);
-                 if (0 === $resultado || false === $resultado) {    
+                 if (0 === $resultado || false === $resultado) {
                         continue;
                 }
 
@@ -273,16 +282,16 @@ class anotaciones_docs
             return;
         }
 
-        $refs = explode(':', $tipo);        
+        $refs = explode(':', $tipo);
         if (false === $refs) {
             $tipoRef = array('type' => trim($tipo));                            //Basic type - no name
         } else {
             if (substr($refs[0], 0, 1) == '$') {
                 $tipoRef = array('$ref' => "#/definitions/". trim($refs[1]));   //Referred type {"$ref": "Defined@Model"}
             } else {
-                $tipoRef = array('type' => trim($refs[1]));                     //Basic type - named {"id" : "integer"} 
-            }       
-        }   
-        return $tipoRef;        
+                $tipoRef = array('type' => trim($refs[1]));                     //Basic type - named {"id" : "integer"}
+            }
+        }
+        return $tipoRef;
     }
 }
