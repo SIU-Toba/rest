@@ -367,10 +367,17 @@ class rest
      */
     protected function mostrar_documentacion($url)
     {
+        $config = [
+            'titulo' => $this->container['settings']['api_titulo'],
+            'version' => $this->container['settings']['api_version'],
+            ];
+        if (isset($this->container['settings']['logo'])) {
+            $config['url_logo'] = $this->container['settings']['logo'];
+        }
+
         $this->logger->debug("Iniciando documentacion");
         $controlador = $this->controlador_documentacion;
-        $controlador->set_titulo($this->container['settings']['api_titulo']);
-        $controlador->set_version_api($this->container['settings']['api_version']);
+        $controlador->set_config($config);
         $url = strstr($url, '/');
         $controlador->get_documentacion($url);
     }

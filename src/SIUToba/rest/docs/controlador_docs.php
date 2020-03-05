@@ -41,21 +41,14 @@ class controlador_docs
     }
 
     /**
-     * Permite informar el titulo deseado para la documentacion a generar
-     * @param string $titulo
+     * Permite fijar las opciones para la generacion de documentacion
+     *
+     * @param array $settings Array asociativo conteniendo las opciones
+     * ['titulo' => '', 'version' => '', 'url_logo' => '',..]
      */
-    public function set_titulo($titulo)
+    public function set_config($settings=array())
     {
-        $this->settings['titulo'] = $titulo;
-    }
-
-    /**
-     * Permite informar la version de la API para la cual se genera la documentacion
-     * @param string $version
-     */
-    public function set_version_api($version)
-    {
-        $this->settings['version'] = $version;
+        $this->settings = \array_merge($this->settings, $settings);
     }
 
     /**
@@ -80,6 +73,7 @@ class controlador_docs
         $list['info'] = array('title' => $this->settings['titulo'], 'version' => $this->settings['version']);
         $list['basePath'] = $this->api_url;
         $list['produces'] = array("application/json");
+        $list = $this->add_extension_logo($list);
 
         $this->list['paths'] = array();
         $this->list['definitions'] = array();
@@ -364,5 +358,17 @@ class controlador_docs
     protected function empieza_con($prefijo, $string)
     {
         return substr($string, 0, strlen($prefijo)) === $prefijo;
+    }
+
+    protected function add_extension_logo($list)
+    {
+        //Agrega el logo si esta presente
+        if (isset($this->settings['url_logo'])) {
+            $valid =  (false !== filter_var($this->settings['url_logo'], FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED));
+            if ($valid) {
+                $list['info']['x-logo'] = array('url' => $this->settings['api_logo']);
+            }
+        }
+        return $list;
     }
 }
