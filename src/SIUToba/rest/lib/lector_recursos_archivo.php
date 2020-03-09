@@ -62,11 +62,13 @@ class lector_recursos_archivo
      */
     public function es_montaje($padre)
     {
+		$es_montaje=false;
         foreach ($this->directorios_recursos as $directorio) {
             //una carpeta sin recurso_xxx.php la asumo como montaje
-            return is_dir($directorio.DIRECTORY_SEPARATOR.$padre) &&
-                !file_exists($directorio.DIRECTORY_SEPARATOR.$padre.DIRECTORY_SEPARATOR.$this->prefijo_recursos.$padre.'.php');
+            $es_montaje = $es_montaje ||( is_dir($directorio.DIRECTORY_SEPARATOR.$padre) &&
+                !file_exists($directorio.DIRECTORY_SEPARATOR.$padre.DIRECTORY_SEPARATOR.$this->prefijo_recursos.$padre.'.php'));
         }
+		return $es_montaje;
     }
 
     /**
