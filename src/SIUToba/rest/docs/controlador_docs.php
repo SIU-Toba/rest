@@ -20,7 +20,7 @@ class controlador_docs
     protected $api_url;
 
     protected $list;
-    protected $settings = array('titulo' => 'Api Title', 'version' => '1.0');
+    protected $settings = array('titulo' => 'Api Title', 'api_version' => '1.0');
 
     public function __construct($api_root, $api_url)
     {
@@ -44,7 +44,7 @@ class controlador_docs
      * Permite fijar las opciones para la generacion de documentacion
      *
      * @param array $settings Array asociativo conteniendo las opciones
-     * ['titulo' => '', 'version' => '', 'url_logo' => '',..]
+     * ['titulo' => '', 'api_version' => '', 'url_logo' => '',..]
      */
     public function set_config($settings=array())
     {
@@ -309,7 +309,7 @@ class controlador_docs
                               'version' => $this->settings['api_version']);
 
         $url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $this->api_url;
-        $list['servers'] = array([ "url" => $url, "basePath" => $this->api_url]);
+        $list['servers'] = array([ "url" => $url]); //, "basePath" => $this->api_url]
 		$list = $this->add_extension_logo($list);
         //$list['produces'] = array("application/json");
         return $list;
