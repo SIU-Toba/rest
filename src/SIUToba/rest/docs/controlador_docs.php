@@ -67,17 +67,6 @@ class controlador_docs
 
     protected function getResourceList()
     {
-        $list = array();
-        $this->list = & $list;
-        $list['swagger'] = "2.0";
-        $list['info'] = array('title' => $this->settings['titulo'], 'version' => $this->settings['version']);
-        $list['basePath'] = $this->api_url;
-        $list['produces'] = array("application/json");
-        $list = $this->add_extension_logo($list);
-
-        $this->list['paths'] = array();
-        $this->list['definitions'] = array();
-
         $resultado = $this->getHeader();
         $lista_apis = $this->get_lista_apis();
 
@@ -314,12 +303,14 @@ class controlador_docs
     {
         $list = array();
         $list['openapi'] = "3.0.0";
-        $list['info'] = array('title' => 'Referencia API del proyecto',
+		//$list['swagger'] = "2.0";
+        $list['info'] = array('title' => $this->settings['titulo'],
                               'description' => 'Documentación de la API',
-                              'version' => /*rest::app()->config('api_version')*/ "1.0.1");
+                              'version' => $this->settings['api_version']);
 
         $url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $this->api_url;
         $list['servers'] = array([ "url" => $url, "basePath" => $this->api_url]);
+		$list = $this->add_extension_logo($list);
         //$list['produces'] = array("application/json");
         return $list;
     }
