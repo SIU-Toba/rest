@@ -101,6 +101,7 @@ class rest
             'http.version' => '1.1',
             // API version
             'api_version' => '1.0.0',
+            'api_titulo' => 'Api Reference',
         );
     }
 
@@ -366,8 +367,17 @@ class rest
      */
     protected function mostrar_documentacion($url)
     {
+        $config = [
+            'titulo' => $this->container['settings']['api_titulo'],
+            'version' => $this->container['settings']['api_version'],
+            ];
+        if (isset($this->container['settings']['logo'])) {
+            $config['url_logo'] = $this->container['settings']['logo'];
+        }
+
         $this->logger->debug("Iniciando documentacion");
         $controlador = $this->controlador_documentacion;
+        $controlador->set_config($config);
         $url = strstr($url, '/');
         $controlador->get_documentacion($url);
     }

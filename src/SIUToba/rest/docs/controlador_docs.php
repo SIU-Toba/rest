@@ -20,6 +20,7 @@ class controlador_docs
     protected $api_url;
 
     protected $list;
+    protected $settings = array('titulo' => 'Api Title', 'version' => '1.0');
 
     public function __construct($api_root, $api_url)
     {
@@ -39,6 +40,16 @@ class controlador_docs
         }
     }
 
+    /**
+     * Permite fijar las opciones para la generacion de documentacion
+     *
+     * @param array $settings Array asociativo conteniendo las opciones
+     * ['titulo' => '', 'version' => '', 'url_logo' => '',..]
+     */
+    public function set_config($settings=array())
+    {
+        $this->settings = \array_merge($this->settings, $settings);
+    }
 
     /**
      * Retorna la documentacion en formato swagger para el path. Si el path
@@ -59,9 +70,10 @@ class controlador_docs
         $list = array();
         $this->list = & $list;
         $list['swagger'] = "2.0";
-        $list['info'] = array('title' => 'API Title', 'version' => '1.0');                               //TODO: Read from settings
+        $list['info'] = array('title' => $this->settings['titulo'], 'version' => $this->settings['version']);
         $list['basePath'] = $this->api_url;
         $list['produces'] = array("application/json");
+        $list = $this->add_extension_logo($list);
 
         $this->list['paths'] = array();
         $this->list['definitions'] = array();
@@ -116,6 +128,7 @@ class controlador_docs
         /** @var $reflexion anotaciones_docs */
         $reflexion = $this->get_annotaciones_de_path($path);
         $metodos = $reflexion->get_metodos();
+        $nombre_clase = $reflexion->get_nombre_clase();
 
         $montaje = $this->get_montaje_de_path($path);
         $prefijo_montaje = $montaje ? '/' . $montaje : '';
@@ -177,7 +190,7 @@ class controlador_docs
             $operation['summary'] = $reflexion->get_summary_metodo($metodo);
             $operation['description'] = $reflexion->get_notes_metodo($metodo);
 
-            $operation['operationId'] = $nombre_metodo;
+            $operation['operationId'] = "$nombre_clase:{$metodo['nombre']}";
             $operation['parameters'] = array_merge($params_path, $params_body, $params_query);
 
             $operation['responses'] = $reflexion->get_respuestas_metodo($metodo);
@@ -312,7 +325,7 @@ class controlador_docs
     * @param $params List of body params
     * @return array  List of body params with schema definitions
     */
-    protected function add_tipos_en_modelo($params)  
+    protected function add_tipos_en_modelo($params)
     {
         $non_predefined_types = array_keys($this->list['definitions']);
         $param_keys = array_keys($params);
@@ -321,7 +334,7 @@ class controlador_docs
                 $params[$key]['schema'] = array('$ref' => "#/definitions/". trim($params[$key]['type']));
             }
         }
-            
+
         return $params;
     }
 
@@ -345,5 +358,17 @@ class controlador_docs
     protected function empieza_con($prefijo, $string)
     {
         return substr($string, 0, strlen($prefijo)) === $prefijo;
+    }
+
+    protected function add_extension_logo($list)
+    {
+        //Agrega el logo si esta presente
+        if (isset($this->settings['url_logo'])) {
+            $valid =  (false !== filter_var($this->settings['url_logo'], FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED));
+            if ($valid) {
+                $list['info']['x-logo'] = array('url' => $this->settings['api_logo']);
+            }
+        }
+        return $list;
     }
 }

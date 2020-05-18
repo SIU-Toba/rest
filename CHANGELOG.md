@@ -1,4 +1,10 @@
 # CHANGELOG
+## v 2.0.3 18/05/2020
+ * Agrega template para un recurso que de información de la API (sirve como healthcheck)
+ * Agrega posibilidad de especificar un logo para la documentacion
+ * Agrega mecanismo para hacer univoco el campo operationId
+ * Agrega parametrización de info básica para armado documentación en JSON
+
 ## v 2.0.2 06/10/2017
  * Fix encoding mensaje error en respuesta
 
