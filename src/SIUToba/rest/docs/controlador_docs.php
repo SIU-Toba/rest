@@ -190,7 +190,7 @@ class controlador_docs
             $operation['summary'] = $reflexion->get_summary_metodo($metodo);
             $operation['description'] = $reflexion->get_notes_metodo($metodo);
 
-            $operation['operationId'] = "$nombre_clase:$nombre_metodo";
+            $operation['operationId'] = "$nombre_clase:{$metodo['nombre']}";
             $operation['parameters'] = array_merge($params_path, $params_body, $params_query);
 
             $operation['responses'] = $reflexion->get_respuestas_metodo($metodo);
