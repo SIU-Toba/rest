@@ -2,7 +2,6 @@
     "name": "siu-toba/rest",
     "description": "Libreria para servicios REST",
     "homepage": "http://toba.siu.edu.ar",
-    "license": "SIU",
     "require": {
         "php": ">=5.6.0",
         "doctrine/cache": "~1.4",
