@@ -47,7 +47,6 @@ class modelo_recursos
         $property = array();
         //TODO, hacer mas modelos para representar estos subrecursos? eso impacta en definiciones y herencia entre ellas?
         if (isset($def['_compuesto'])) {
-            //$def = array('type' => $campo); //lo muestro asi por ahora
             $aux = array();
             $this->get_property($aux, $campo, $def['_compuesto']);
             $def = array('type' => $aux);
@@ -57,6 +56,9 @@ class modelo_recursos
         foreach ($def as $k => $campo_def) {
             if (strpos($k, '_') !== 0) {
                 $property[$k] = $campo_def;
+				if ($k == 'items' && is_array($campo_def) && isset($campo_def['$ref'])) {	//Falta chequear tipo basico, queda proximo release
+					$property[$k] = array('$ref' => "#/definitions/". trim($campo_def['$ref']));
+				}
             }
         }
         $properties[$campo] = $property;

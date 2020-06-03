@@ -1,4 +1,7 @@
 # CHANGELOG
+## v 2.0.4 18/05/2020
+ * Agrega la posibilidad de incluir referencias a tipos propios en el modelo
+ 
 ## v 2.0.3 18/05/2020
  * Agrega template para un recurso que de información de la API (sirve como healthcheck)
  * Agrega posibilidad de especificar un logo para la documentacion
