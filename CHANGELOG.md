@@ -1,4 +1,8 @@
 # CHANGELOG
+## v 2.0.5 16/06/2020
+ * Agrega la posibilidad de setear parametros del request para operar detras de un proxy
+ * Fix en el template del recurso_info 
+
 ## v 2.0.4 18/05/2020
  * Agrega la posibilidad de incluir referencias a tipos propios en el modelo
  
