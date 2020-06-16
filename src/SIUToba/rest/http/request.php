@@ -40,10 +40,17 @@ class request
     public $headers;
 
     protected $encoding;
+    protected $behind_proxy;
+    
+    private $request_uri;
+    private $host;
+    private $port;
+    private $protocol;
 
-    public function __construct()
+    public function __construct($behind_proxy = false)
     {
         $this->headers = $this->extract_headers();
+        $this->behind_proxy = $behind_proxy;
     }
 
     public function set_encoding_datos($encoding)
@@ -146,19 +153,28 @@ class request
      */
     public function get_host()
     {
-        if (isset($_SERVER['HTTP_HOST'])) {
-            if (strpos($_SERVER['HTTP_HOST'], ':') !== false) {
-                $hostParts = explode(':', $_SERVER['HTTP_HOST']);
-
-                return $hostParts[0];
+        if (! isset($this->host)) {
+            if (isset($_SERVER['HTTP_HOST'])) {
+                if (strpos($_SERVER['HTTP_HOST'], ':') !== false) {
+                    $hostParts = explode(':', $_SERVER['HTTP_HOST']);
+                    $this->host = $hostParts[0];
+                } else {
+                    $this->host = $_SERVER['HTTP_HOST'];
+                }
+            } else {
+                $this->host = $_SERVER['SERVER_NAME'];
             }
-
-            return $_SERVER['HTTP_HOST'];
         }
-
-        return $_SERVER['SERVER_NAME'];
+        return $this->host;
     }
 
+    public function set_host($host)
+    {
+        if ($this->behind_proxy) {
+            $this->host = $host;
+        }
+    }
+    
     /**
      * Get Port.
      *
@@ -166,9 +182,19 @@ class request
      */
     public function get_puerto()
     {
-        return (int) $_SERVER['SERVER_PORT'];
+        if (! isset($this->port)) {
+            $this->port = (int) $_SERVER['SERVER_PORT'];
+        }
+        return $this->port;
     }
 
+    public function set_puerto($port)
+    {
+        if ($this->behind_proxy) {
+            $this->port = $port;
+        }
+    }
+    
     /**
      * Devuelve el esquema (https or http).
      *
@@ -176,14 +202,39 @@ class request
      */
     public function get_esquema()
     {
-        return empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off' ? 'http' : 'https';
+        if (!isset($this->protocol)) {
+            $this->protocol = (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') ? 'http' : 'https';
+        }
+        return $this->protocol;
     }
 
+    public function set_esquema($proto)
+    {
+        if ($this->behind_proxy) {
+            $this->protocol = $proto;
+        }
+    }
+    
+    public function get_request_uri()
+    {
+        if (! isset($this->request_uri)) {
+            $this->request_uri = $_SERVER["REQUEST_URI"];
+        }
+        return $this->request_uri;
+    }
+
+    public function set_request_uri($uri)
+    {
+        if ($this->behind_proxy) {
+            $this->request_uri = $uri;
+        }
+    }
+    
     /**
-     *  URL (schema + host [ + port si no es 80 ]).
-     *
-     * @return string
-     */
+    *  URL (schema + host [ + port si no es 80 ]).
+    *
+    * @return string
+    */
     public function get_url()
     {
         $url = $this->get_esquema().'://'.$this->get_host();
@@ -193,12 +244,10 @@ class request
 
         return $url;
     }
-
-    public function get_request_uri()
-    {
-        return $_SERVER["REQUEST_URI"];
-    }
-
+    
+    //----------------------------------------------------------------------------------//
+    //								PROTECTED METHODS
+    //----------------------------------------------------------------------------------//
     protected function extract_headers()
     {
         $results = array();
