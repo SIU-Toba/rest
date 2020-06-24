@@ -8,8 +8,9 @@
 
 namespace SIUToba\rest\tests\http;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\http\respuesta_rest;
+use SIUToba\rest\lib\rest_error;
 
 class respuesta_restTest extends TestCase
 {
@@ -24,20 +25,22 @@ class respuesta_restTest extends TestCase
     }
 
     /**
-     * @expectedException SIUToba\rest\lib\rest_error
+     * @expectedException rest_error
      */
     public function testGetNotFound()
     {
+		$this->expectException(rest_error::class);
         $data = false;
         $r = new respuesta_rest();
         $r->get($data);
     }
 
     /**
-     * @expectedException SIUToba\rest\lib\rest_error
+     * @expectedException rest_error
      */
     public function testNotFound()
     {
+		$this->expectException(rest_error::class);
         $r = new respuesta_rest();
         $r->not_found("mje");
     }

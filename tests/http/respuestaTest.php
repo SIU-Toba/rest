@@ -2,16 +2,18 @@
 
 namespace SIUToba\rest\tests\http;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\http\respuesta;
+use SIUToba\rest\lib\rest_error_interno;
 
 class respuestaTest extends TestCase
 {
     /**
-     * @expectedException SIUToba\rest\lib\rest_error_interno
+     * @expectedException rest_error_interno
      */
     public function testFinalizarError()
     {
+		$this->expectException(rest_error_interno::class);
         $r = new respuesta();
         $r->finalizar(); //no se seteo la respuesta
     }
