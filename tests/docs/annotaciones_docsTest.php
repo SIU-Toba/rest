@@ -6,7 +6,13 @@ use \PHPUnit\Framework\TestCase;
 use SIUToba\rest\docs\anotaciones_docs;
 
 class annotaciones_docsTest extends TestCase
-{
+{    
+    protected function setUp(): void
+    {
+       include_once __DIR__.'/../../src/SIUToba/rest/lib/funciones_basicas.php';
+       parent::setUp();
+    }
+    
     /**
      * @return anotaciones_docs
      */
@@ -53,7 +59,7 @@ class annotaciones_docsTest extends TestCase
         // @param_query $juego string nombre del juego
         $this->assertEquals('query', $pq['in']);
         $this->assertEquals('juego', $pq['name']);
-        $this->assertEquals('string', $pq['type']);
+        $this->assertEquals('string', $pq['schema']['type']);
         $this->assertEquals('nombre del juego', $pq['description']);
 
         $params_body = $a->get_parametros_metodo($metodos[0], 'body');
@@ -61,9 +67,9 @@ class annotaciones_docsTest extends TestCase
 
         //@param_body $limit integer Limitar a esta cantidad de registros
         $params_body1 = $params_body[0];
-        $this->assertEquals('body', $params_body1['in']);
-        $this->assertEquals('limit', $params_body1['name']);
-        $this->assertEquals('integer', $params_body1['type']);
+		$this->assertTrue(is_array($params_body1['content']['*/*']['schema']));
+		$this->assertArrayHasKey('type',$params_body1['content']['*/*']['schema']);
+        $this->assertEquals('integer', $params_body1['content']['*/*']['schema']['type']);
         $this->assertEquals('Limitar a esta cantidad de registros', $params_body1['description']);
     }
 
@@ -74,13 +80,13 @@ class annotaciones_docsTest extends TestCase
         $respuestas = $a->get_respuestas_metodo($metodos[0]);
 
         $schema = array('type' => 'array',
-                        'items' => array('$ref' => '#/definitions/Persona'), );
+                        'items' => array('$ref' => '#/components/schemas/Persona'), );
 
         $this->assertEquals(3, count($respuestas));
 
         $this->assertArrayHasKey('200', $respuestas);
         $this->assertEquals('descripcion', $respuestas['200']['description']);
-        $this->assertEquals($schema, $respuestas['200']['schema']);
+        $this->assertEquals($schema, $respuestas['200']['content']['*/*']['schema']);
 
         $this->assertArrayHasKey('404', $respuestas);
         $this->assertEquals('No se pudo encontrar a la persona', $respuestas['404']['description']);
