@@ -3,35 +3,35 @@ namespace SIUToba\rest\docs;
 
 class tipo_datos_docs
 {
-	//Tipos basicos permitidos por OpenApi
-	protected static $tipos_basicos = array('array', 'boolean', 'integer', 
-											'object', 'string', 'number');
-	//Formatos basicos permitidos por OpenApi
-	protected static $formatos_tipos = array('int32', 'int64', 'float', 'double',
-											'byte', 'binary', 'date', 'date-time',
-											'password');
-	
-	//Matriz de formato x tipo
-	protected static $mapeo_tipos = array(
-										'int32' => 'integer',
-										'int64' => 'integer',
-										'float' => 'number',
-										'double' => 'number',
-										'byte' => 'string',
-										'binary' => 'string',
-										'date' => 'string',
-										'date-time' => 'string',
-										'password' => 'string',
-									);
-	
-	/**
-	 * Obtiene el tipo de dato de un string con formato especifico
-	 * @param string $tipo
-	 * @return mixed
-	 */
-	public static function get_tipo_datos($tipo)
+    //Tipos basicos permitidos por OpenApi
+    protected static $tipos_basicos = array('array', 'boolean', 'integer',
+                                            'object', 'string', 'number');
+    //Formatos basicos permitidos por OpenApi
+    protected static $formatos_tipos = array('int32', 'int64', 'float', 'double',
+                                            'byte', 'binary', 'date', 'date-time',
+                                            'password');
+    
+    //Matriz de formato x tipo
+    protected static $mapeo_tipos = array(
+                                        'int32' => 'integer',
+                                        'int64' => 'integer',
+                                        'float' => 'number',
+                                        'double' => 'number',
+                                        'byte' => 'string',
+                                        'binary' => 'string',
+                                        'date' => 'string',
+                                        'date-time' => 'string',
+                                        'password' => 'string',
+                                    );
+    
+    /**
+     * Obtiene el tipo de dato de un string con formato especifico
+     * @param string $tipo
+     * @return mixed
+     */
+    public static function get_tipo_datos($tipo)
     {
-        $tipo = preg_replace("#[\{\}\"\s]#",'', $tipo);
+        $tipo = preg_replace("#[\{\}\"\s]#", '', $tipo);
         if (trim($tipo) == '') {
             return;
         }
@@ -41,10 +41,10 @@ class tipo_datos_docs
             $tipoRef = self::get_tipo_formato(trim($tipo));                           //Basic type - no name
         } else {
             if (substr($refs[0], 0, 1) == '$') {
-                $tipoRef = array('$ref' => "#/components/schemas/". trim($refs[1]));   //Referred type {"$ref": "Defined@Model"}
+                $tipoRef = array('$ref' => "#/components/schemas/". \utf8_e_seguro(trim($refs[1])));   //Referred type {"$ref": "Defined@Model"}
             } else {
-               $tipoEncontrado = (count($refs) > 1) ? $refs[1] : $refs[0];
-               $tipoRef = self::get_tipo_formato(trim($tipoEncontrado));                    //Basic type - named {"id" : "integer"}
+                $tipoEncontrado = (count($refs) > 1) ? $refs[1] : $refs[0];
+                $tipoRef = self::get_tipo_formato(trim($tipoEncontrado));                    //Basic type - named {"id" : "integer"}
             }
         }
         return $tipoRef;
