@@ -36,7 +36,7 @@ class tipo_datos_docs
 	 */
 	public static function get_tipo_datos($tipo)
     {
-        $tipo = preg_replace("#[\{\}\"\s]#",'', $tipo);
+        $tipo = preg_replace("#[\{\}\"\s]#", '', $tipo);
         if (trim($tipo) == '') {
             return;
         }
@@ -46,10 +46,10 @@ class tipo_datos_docs
             $tipoRef = self::get_tipo_formato(trim($tipo));                           //Basic type - no name
         } else {
             if (substr($refs[0], 0, 1) == '$') {
-                $tipoRef = array('$ref' => "#/components/schemas/". trim($refs[1]));   //Referred type {"$ref": "Defined@Model"}
+                $tipoRef = array('$ref' => "#/components/schemas/". \utf8_e_seguro(trim($refs[1])));   //Referred type {"$ref": "Defined@Model"}
             } else {
-               $tipoEncontrado = (count($refs) > 1) ? $refs[1] : $refs[0];
-               $tipoRef = self::get_tipo_formato(trim($tipoEncontrado));                    //Basic type - named {"id" : "integer"}
+                $tipoEncontrado = (count($refs) > 1) ? $refs[1] : $refs[0];
+                $tipoRef = self::get_tipo_formato(trim($tipoEncontrado));                    //Basic type - named {"id" : "integer"}
             }
         }
         return $tipoRef;

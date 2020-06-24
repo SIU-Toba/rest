@@ -38,7 +38,7 @@ class rest_hidratador
      */
     public static function deshidratar_fila($data, $spec_hidratar, $damn_thing = array())
     {
-	$nueva_fila = array();
+        $nueva_fila = array();
         foreach ($spec_hidratar as $key => $campo) {
             if (!is_array($campo)) { //si no proveen todos los campos no los incluyo.
                 if (isset($data[(string) $campo])) {
@@ -76,7 +76,8 @@ class rest_hidratador
             }
 
             if (is_array($campo) && isset($campo['_mapeo'])) { // "nombre" => array('_mapeo' => "otro nombre",
-                $nueva_fila[$key] = \array_map('utf8_e_seguro', $fila[$campo['_mapeo']]);
+                $aux_val = $fila[$campo['_mapeo']];
+                $nueva_fila[$key] = (!is_array($aux_val)) ? utf8_e_seguro($aux_val) : \array_map('utf8_e_seguro', $aux_val);
                 continue;
             }
             if (is_array($campo) && isset($campo['_compuesto'])) {
