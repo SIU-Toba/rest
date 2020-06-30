@@ -7,7 +7,7 @@
         "doctrine/cache": "~1.4",
         "siu-toba/ssl-cert-utils": "1.0",
         "siu-toba/jwt-util": "~1.0.0",
-        "guzzlehttp/psr7": "1.x-dev"
+        "guzzlehttp/psr7": "~1.6"
     },
     "autoload": {
         "psr-4": {
