@@ -32,19 +32,11 @@ class modelo_recursos
         return $out;
     }
 
-    /**
-     * @deprecated since version number
-     */
-    protected function get_property(&$properties, $campo, $def)
-    {
-        array_merge($properties, $this->getProperty($campo, $def));
-    }
-
     protected function getProperty($campo, $def)
     {
         if (isset($def['_compuesto']) && ! empty($def['_compuesto'])) {
-            $aux = $this->getProperty($campo, $def['_compuesto']);
-            $def = array('type' => 'object', 'properties' => $aux[$campo]);
+			$aux = $this->getPropertiesCompuesto($def['_compuesto']);
+            $def = array('type' => 'object', 'properties' => $aux);
         }
 		
         $prop = array();
@@ -63,6 +55,15 @@ class modelo_recursos
         return array($campo => $prop);
     }
 
+	private function getPropertiesCompuesto($def)
+	{
+		$prop = array();
+		foreach($def as $campo => $campo_def) {
+			$prop = array_merge($prop, $this->getProperty($campo, $campo_def));
+        }
+		return $prop;
+	}
+	
     protected function getSchema($id, $modelo_in)
     {
         $required = array();
