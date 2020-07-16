@@ -57,11 +57,13 @@ class tipo_datos_docs
 	 */
 	public static function get_tipo_formato($tipo)
 	{
-		$tipo_srch = strtolower($tipo);
-		if (\in_array($tipo_srch, self::$formatos_tipos)) {
-			return ['type' => self::$mapeo_tipos[$tipo_srch], 'format' => $tipo_srch];
-		} elseif (\in_array($tipo_srch, self::$tipos_basicos)) {
-			return ['type' => $tipo_srch];
+		if (! is_array($tipo)) {
+			$tipo_srch = strtolower($tipo);
+			if (\in_array($tipo_srch, self::$formatos_tipos)) {
+				return ['type' => self::$mapeo_tipos[$tipo_srch], 'format' => $tipo_srch];
+			} elseif (\in_array($tipo_srch, self::$tipos_basicos)) {
+				return ['type' => $tipo_srch];
+			}
 		}
 		return ['type' => $tipo];			//Tipo definido por el usuario
 	}

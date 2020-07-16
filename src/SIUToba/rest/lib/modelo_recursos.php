@@ -44,9 +44,9 @@ class modelo_recursos
     {
         if (isset($def['_compuesto']) && ! empty($def['_compuesto'])) {
             $aux = $this->getProperty($campo, $def['_compuesto']);
-            $def = array('type' => $aux	);
+            $def = array('type' => 'object', 'properties' => $aux[$campo]);
         }
-
+		
         $prop = array();
         foreach($def as $k => $campo_def) {
             if (false === \strpos($k, '_')) {           //Obtengo propiedades != _compuesto y _mapeo
