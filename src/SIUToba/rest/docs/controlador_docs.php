@@ -73,6 +73,7 @@ class controlador_docs
         $list['info'] = array('title' => $this->settings['titulo'], 'version' => $this->settings['version']);
         $list['basePath'] = $this->api_url;
         $list['produces'] = array("application/json");
+		$list['schemes'] = array(rest::request()->get_esquema());
         $list = $this->add_extension_logo($list);
 
         $this->list['paths'] = array();
