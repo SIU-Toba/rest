@@ -21,8 +21,9 @@ class firewall
     public function __construct($authen, proveedor_autorizacion $author, $pattern)
     {
         // BC
-        if (!is_array($authen))
+        if (!is_array($authen)) {
             $authen = array($authen);
+        }
 
         $this->authentications = $authen;
         $this->authorization = $author;
@@ -58,24 +59,29 @@ class firewall
         if (count($this->authentications) == 1) {
             $authentication = current($this->authentications);
         } else {
-            foreach ($this->authentications as $auth){
+            foreach ($this->authentications as $auth) {
                 // basic|digest son el ultimo metodo, no atienden antes de redirect
                 if ($auth instanceof autenticacion\autenticacion_basic_http ||
                     $auth instanceof autenticacion\autenticacion_digest_http ||
-                    $auth->atiende_pedido($request)){
+                    $auth->atiende_pedido($request)) {
                     $authentication = $auth;
-                    break;
+                    
+                    //Chequeo si la autenticacion recupera usuario o solo entro aca
+                    //por el reuso de clase que hace la autenticacion de Toba
+                    if (null !== $authentication->get_usuario($request)) {
+                        break;
+                    }
                 }
             }
 
             // para el caso de que ningún mecanismo atienda el pedido
-            if ($authentication == null){
+            if ($authentication == null) {
                 throw new rest_error(401, 'No se pudo cargar un autenticador para el pedido');
             }
         }
-
+        
         $usuario = $authentication->get_usuario($request);
-
+        
         if (!$this->authorization->tiene_acceso($usuario, $ruta)) {
             if (null === $usuario) {
                 throw new rest_error_autenticacion($authentication, $authentication->get_ultimo_error());
