@@ -44,7 +44,7 @@ class controlador_docs
      * Permite fijar las opciones para la generacion de documentacion
      *
      * @param array $settings Array asociativo conteniendo las opciones
-     * ['titulo' => '', 'api_version' => '', 'url_logo' => '',..]
+     * ['titulo' => '', 'version' => '', 'url_logo' => '',..]
      */
     public function set_config($settings=array())
     {
@@ -311,7 +311,7 @@ class controlador_docs
         $list['openapi'] = "3.0.0";
         $list['info'] = array('title' => $this->settings['titulo'],
                               'description' => 'Documentación de la API',
-                              'version' => $this->settings['api_version']);
+                              'version' => $this->settings['version']);
 
         $list['servers'] = array([ "url" => $this->api_url]);
 		$list = $this->add_extension_logo($list);
