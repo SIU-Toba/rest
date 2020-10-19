@@ -64,7 +64,12 @@ class firewall
                     $auth instanceof autenticacion\autenticacion_digest_http ||
                     $auth->atiende_pedido($request)){
                     $authentication = $auth;
-                    break;
+
+                    //Chequeo si la autenticacion recupera usuario o solo entro aca
+                    //por el reuso de clase que hace la autenticacion de Toba
+                     if (null !== $authentication->get_usuario($request)) {
+                         break;
+                     }
                 }
             }
 
