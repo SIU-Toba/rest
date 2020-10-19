@@ -1,4 +1,7 @@
 # CHANGELOG
+## v 2.0.7 19/10/2020
+ * Se fixea inconveniente con uso de autenticación `toba` en concomitancia con otro método
+
 ## v 2.0.6 23/09/2020
  * Agrega el parametro `schemes` a la generacion de la documentacion
 
