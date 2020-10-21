@@ -120,7 +120,7 @@ class controlador_docs
         /** @var $reflexion anotaciones_docs */
         $reflexion = $this->get_annotaciones_de_path($exploded_path);
         $metodos = $reflexion->get_metodos();
-        $nombre_clase = $reflexion->get_nombre_clase();
+        $nombre_clase = str_replace('\\', '/', $reflexion->get_nombre_clase());
 
         $montaje = $this->get_montaje_de_path($exploded_path);
         $prefijo_montaje = $montaje ? '/' . $montaje : '';
@@ -165,7 +165,9 @@ class controlador_docs
                                                                 array(str_replace('_', '-', $path)),
                                                                 $operation['parameters'],
                                                                 $params_body,
-                                                                $reflexion->get_respuestas_metodo($metodo));
+                                                                $reflexion->get_respuestas_metodo($metodo),
+																$reflexion->get_since_metodo($metodo),
+																$reflexion->get_metodo_deprecado($metodo));
         }
         return $doc_api;
     }
@@ -313,29 +315,38 @@ class controlador_docs
                               'description' => 'Documentación de la API',
                               'version' => $this->settings['version']);
 
-        $list['servers'] = array([ "url" => $this->api_url]);
+        $list['servers'] = array([ "url" => rtrim($this->api_url,'/')]);
 		$list = $this->add_extension_logo($list);
         return $list;
     }
 
-    protected function get_operacion($opId, $resumen, $descripcion, $tags, $parametros, $body, $respuestas)
+    protected function get_operacion($opId, $resumen, $descripcion, $tags, $parametros, $body, $respuestas, $since, $deprecado)
     {
         $data = array(
-                "tags" => $tags,
-                "summary" => $resumen,
+                "tags" => $tags,            
                 "description" => $descripcion,
                 //"externalDocs" => [],
-               // "operationId" => $opId,
+                "operationId" => $opId,
                 //"callbacks" => [],
                 //"deprecated" => false,
                 //"security" => [],
                 //"servers" => []
-            );
+        );
+		
+		if (! empty($resumen)) {
+			$data["summary"] = $resumen;
+		}		
 		if (! empty($parametros)) {
 			 $data["parameters"] = $parametros;
 		}
 		if (! empty($body)) {
 			$data["requestBody"] = current($body);
+		}
+		if (! empty($deprecado) && $deprecado != '') {
+			$data["deprecated"] = $deprecado;
+		}
+		if (! empty($since) && '' != $since) {
+			//$data["x-since"] = $since;
 		}
 		$data["responses"] = $respuestas;
 		

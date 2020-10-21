@@ -237,6 +237,15 @@ class anotaciones_docs
         return '';
     }
 
+	public function get_since_metodo($metodo)
+	{
+		if (isset($metodo['anotaciones']['since'])) {
+            return $metodo['anotaciones']['since'][0];
+        }
+
+        return '';
+	}
+		
     public function get_respuestas_metodo($metodo)
     {
         $respuestas = array();
