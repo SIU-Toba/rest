@@ -9,14 +9,14 @@ use \SIUToba\rest\docs\tipo_datos_docs;
 class anotaciones_docs
 {
     protected static $metodos_validos = array('get', 'put', 'post', 'delete');
-	
+    
     /**
      * @var \ReflectionClass
      */
     protected $reflexion;
 
     protected $anotaciones_clase;
-	
+    
     /**
      * La clase no puede tener namespaces (esta pensada para las del modelo).
      *
@@ -51,8 +51,8 @@ class anotaciones_docs
     protected function get_annotations($reflexion)
     {
         if (!isset($this->anotaciones_clase)) {
-			$this->anotaciones_clase = $this->get_annotations_metodo($reflexion);
-		}
+            $this->anotaciones_clase = $this->get_annotations_metodo($reflexion);
+        }
         return $this->anotaciones_clase;
     }
 
@@ -194,22 +194,22 @@ class anotaciones_docs
         }
 
         $api_parameter = array();
-		$tipo_dato = tipo_datos_docs::get_tipo_datos($matches[2]);
-		switch($type) {
-			case 'query':
-				$api_parameter['name'] = ltrim($matches[1], '$');
-				$api_parameter['in'] = $type;
-				$api_parameter['schema'] = $tipo_dato;
-				break;
-		/*	case 'path':		
-				$api_parameter['in'] = $type;*/
-			case 'body':
-				$api_parameter['content'] = array('*/*' => ['schema' => $tipo_dato]);
-				break;
-		}
-		
-		$api_parameter['description'] = $matches[4] ?: '[sin descripcion]';
-		if (!empty($matches[3])) {
+        $tipo_dato = tipo_datos_docs::get_tipo_datos($matches[2]);
+        switch ($type) {
+            case 'query':
+                $api_parameter['name'] = ltrim($matches[1], '$');
+                $api_parameter['in'] = $type;
+                $api_parameter['schema'] = $tipo_dato;
+                break;
+        /*	case 'path':
+                $api_parameter['in'] = $type;*/
+            case 'body':
+                $api_parameter['content'] = array('*/*' => ['schema' => $tipo_dato]);
+                break;
+        }
+        
+        $api_parameter['description'] = $matches[4] ?: '[sin descripcion]';
+        if (!empty($matches[3])) {
             $modificadores = $matches[3];
             if (preg_match('/required/', $modificadores)) {
                 $api_parameter['required'] = true;
@@ -237,15 +237,15 @@ class anotaciones_docs
         return '';
     }
 
-	public function get_since_metodo($metodo)
-	{
-		if (isset($metodo['anotaciones']['since'])) {
+    public function get_since_metodo($metodo)
+    {
+        if (isset($metodo['anotaciones']['since'])) {
             return $metodo['anotaciones']['since'][0];
         }
 
         return '';
-	}
-		
+    }
+        
     public function get_respuestas_metodo($metodo)
     {
         $respuestas = array();
@@ -254,8 +254,8 @@ class anotaciones_docs
                 $matches = array();
                 //200 [array] $tipo descripcion
                 $resultado = preg_match("/(\d{3})?\s*([ary]*)\s*(\{[\":\w\$\s]+\})?\s*(.*)/i", $respuesta, $matches);
-                 if (0 === $resultado || false === $resultado) {
-                        continue;
+                if (0 === $resultado || false === $resultado) {
+                    continue;
                 }
 
                 $status = $matches[1];
