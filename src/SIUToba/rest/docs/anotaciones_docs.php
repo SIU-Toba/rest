@@ -92,6 +92,7 @@ class anotaciones_docs
     protected function extraer_anotaciones($doc)
     {
         //remuevo lo que esta antes del primer @
+        //$annotations = preg_split('/^@/', $doc);
         $annotations = explode('@', $doc);
         array_shift($annotations);
 
@@ -245,7 +246,16 @@ class anotaciones_docs
 
         return '';
     }
-        
+     
+    public function get_metodo_deprecado($metodo)
+    {
+        if (isset($metodo['anotaciones']['deprecated'])) {
+            return $metodo['anotaciones']['deprecated'][0];
+        }
+
+        return '';
+    }
+    
     public function get_respuestas_metodo($metodo)
     {
         $respuestas = array();
