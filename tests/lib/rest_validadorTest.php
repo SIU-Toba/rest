@@ -2,7 +2,7 @@
 
 namespace SIUToba\rest\tests\lib;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\rest_error;
 use SIUToba\rest\lib\rest_validador;
 
@@ -36,10 +36,11 @@ class rest_validadorTest extends TestCase
     }
 
     /**
-     * @expectedException SIUToba\rest\lib\rest_error
+     * @expectedException rest_error
      */
     public function testLongitudError()
     {
+		$this->expectException(rest_error::class);
         $regla = array(
             'campo' => array('_validar' => array(rest_validador::TIPO_LONGITUD => array('min' => 1, 'max' => 2))),
         );
@@ -49,10 +50,11 @@ class rest_validadorTest extends TestCase
     }
 
     /**
-     * @expectedException SIUToba\rest\lib\rest_error
+     * @expectedException rest_error
      */
     public function testLongitudError2()
     {
+		$this->expectException(rest_error::class);
         $regla = array(
             'campo' => array('_validar' => array(rest_validador::TIPO_LONGITUD => array('min' => 2))),
         );
@@ -74,10 +76,11 @@ class rest_validadorTest extends TestCase
     }
 
     /**
-     * @expectedException SIUToba\rest\lib\rest_error
+     * @expectedException rest_error
      */
     public function testLongitudError3()
     {
+		$this->expectException(rest_error::class);
         $regla = array(
             'campo' => array('_validar' => array(rest_validador::TIPO_ARREGLO => array('min' => 2, 'max' => 3)))
         );

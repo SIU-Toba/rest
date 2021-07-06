@@ -48,13 +48,13 @@ abstract class proveedor_autenticacion
      *
      * @return mixed
      */
-    abstract public function requerir_autenticacion(respuesta_rest $rta);
+    abstract public function requerir_autenticacion(respuesta_rest &$rta);
 
     /**
      * Indica si la petición/headers debe manejarse con este mecanismo de autenticación.
      *
      * @param  request $request la petición
-     * 
+     *
      * @return boolean true si este mecanismo atiende la petición de autenticación
      */
     abstract public function atiende_pedido(request $request);

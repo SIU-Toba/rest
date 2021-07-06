@@ -46,7 +46,7 @@ class autenticacion_oauth2 extends proveedor_autenticacion
         $well_formed_header = preg_match('/Bearer (.+)/i', $auth_header, $result);
 
         $token = $result[1];
-        
+
         $info = $this->decoder->decode($token);
 
         if ($info === null) {
@@ -67,13 +67,12 @@ class autenticacion_oauth2 extends proveedor_autenticacion
      *
      * @return mixed
      */
-    public function requerir_autenticacion(respuesta_rest $rta)
+    public function requerir_autenticacion(respuesta_rest &$rta)
     {
-        $rta->set_status(401);
-        // quizï¿½ haya que agregar mï¿½s detalles al error: http://hdknr.github.io/docs/identity/bearer.html#id5
-        $rta->add_headers(array(
-            'WWW-Authenticate' => 'Bearer',
-        ));
+        // quizá haya que agregar más detalles al error: http://hdknr.github.io/docs/identity/bearer.html#id5
+        $rta = $rta
+                ->set_status(401)
+                ->add_headers(array('WWW-Authenticate' => 'Bearer'));
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace SIUToba\rest\lib;
 
+use GuzzleHttp\Psr7\UriResolver;
+
 class ruteador
 {
     const SUFIJO_COLECCION = '_list';
@@ -19,8 +21,9 @@ class ruteador
         $this->instanciador = $instanciador;
     }
 
-    public function buscar_controlador($method, $url)
+    public function buscar_controlador($method, $urlInicial)
     {
+        $url = UriResolver::removeDotSegments($urlInicial);
         $partes_url = explode('/', $url);
 
         $instanciador = $this->instanciador;

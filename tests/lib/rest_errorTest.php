@@ -8,6 +8,12 @@ use SIUToba\rest\lib\rest_error;
 
 class rest_errorTest extends TestCase
 {
+    protected function setUp(): void
+    {
+       include_once \realpath(__DIR__.'/../../src/SIUToba/rest/lib/funciones_basicas.php');
+       parent::setUp();
+    }
+
     public function testInicializacion()
     {
         $status = 400;
@@ -26,10 +32,10 @@ class rest_errorTest extends TestCase
         $mensaje = "mi mensaje";
         $arreglo = array('hola' => 'mundo');
         $error = new rest_error($status, $mensaje, $arreglo);
-        $r = new respuesta_rest();
+	$r = new respuesta_rest();
         $error->configurar_respuesta($r);
 
-        $data = $r->get_data();
+        $data = json_decode($r->get_data()->getContents(), true);
         $this->assertEquals($mensaje, $data['descripcion']);
         $this->assertEquals($status, $r->get_status());
         $this->assertEquals($arreglo, $data['detalle']);
@@ -44,12 +50,12 @@ class rest_errorTest extends TestCase
         $r = new respuesta_rest();
         $error->configurar_respuesta($r);
 
-        $data = $r->get_data();
+        $data = json_decode($r->get_data()->getContents(), true);
         $this->assertArrayNotHasKey('detalle', $data);
 
         $error = new rest_error($status, $mensaje);
         $error->configurar_respuesta($r);
-        $data = $r->get_data();
+        $data = json_decode($r->get_data()->getContents(), true);
         $this->assertArrayNotHasKey('detalle', $data);
     }
 }

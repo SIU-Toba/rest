@@ -52,15 +52,13 @@ class autenticacion_digest_http extends proveedor_autenticacion
      *
      * @return mixed
      */
-    public function requerir_autenticacion(respuesta_rest $rta)
+    public function requerir_autenticacion(respuesta_rest &$rta)
     {
         //importante las comillas dobles
         $header = 'Digest realm="'.$this->realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.md5($this->realm).'"';
-
-        $rta->add_headers(array(
-            'WWW-Authenticate' => $header,
-        ));
-        $rta->set_data(array('mensaje' => 'autenticaciï¿½n cancelada'));
+        $rta = $rta
+                ->add_headers(array('WWW-Authenticate' => \utf8_e_seguro($header)))
+                ->set_data(array('mensaje' => \utf8_e_seguro('autenticación cancelada')));
     }
 
     protected function http_digest_parse($digest_header)

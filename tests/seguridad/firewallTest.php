@@ -2,7 +2,9 @@
 
 namespace SIUToba\rest\tests\seguridad;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
+use SIUToba\rest\seguridad\autenticacion\rest_error_autenticacion;
+use SIUToba\rest\seguridad\autorizacion\rest_error_autorizacion;
 use SIUToba\rest\seguridad\firewall;
 
 class firewallTest extends TestCase
@@ -76,20 +78,22 @@ class firewallTest extends TestCase
     }
 
     /**
-     * @expectedException SIUToba\rest\seguridad\autenticacion\rest_error_autenticacion
+     * @expectedException rest_error_autenticacion
      */
     public function atestAutenticarError()
     {
+		$this->expectException(rest_error_autenticacion::class);
         $f = $this->get_instancia_manejar(null, false);
         $usuario = $f->manejar('/', null);
         $this->assertEquals(null, $usuario);
     }
 
     /**
-     * @expectedException SIUToba\rest\seguridad\autorizacion\rest_error_autorizacion
+     * @expectedException rest_error_autorizacion
      */
     public function testAutorizarError()
     {
+		$this->expectException(rest_error_autorizacion::class);
         $f = $this->get_instancia_manejar('usuario', false);
         $usuario = $f->manejar('/', null);
         $this->assertEquals(null, $usuario);
