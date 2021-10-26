@@ -38,7 +38,11 @@ class anotaciones_docs
      */
     public function get_nombre_clase()
     {
-        return $this->reflexion->getNamespaceName() .'/'. $this->reflexion->getName();
+        $name = $this->reflexion->getName();
+        if ($this->reflexion->inNamespace()) {
+            $name = $this->reflexion->getNamespaceName() .'\\'. $this->reflexion->getShortName();
+        }
+        return $name;
     }
 
     /**
