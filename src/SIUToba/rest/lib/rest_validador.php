@@ -142,7 +142,7 @@ class rest_validador
         $filter_options = array();
         $flags = '';
 
-        $vacio = empty($valor) && 0 !== $valor; //
+        $vacio = empty($valor) && 0 !== $valor && false !== $valor; //
         if ($vacio) {
             return ($tipo != self::OBLIGATORIO); //vacio es valido
         } else {
@@ -226,7 +226,7 @@ class rest_validador
 
                 return true;
             case self::TIPO_ENUM:
-                return in_array($valor, $options);
+                return in_array($valor, $options, true);
             case self::TIPO_ARREGLO:
                 if (is_array($valor)) {
                     $cant_items = count($valor);

@@ -64,9 +64,9 @@ class tipo_datos_docs
 	{
 		if (! is_array($tipo)) {
 			$tipo_srch = strtolower($tipo);
-			if (\in_array($tipo_srch, self::$formatos_tipos)) {
+			if (\in_array($tipo_srch, self::$formatos_tipos, true)) {
 				return ['type' => self::$mapeo_tipos[$tipo_srch], 'format' => $tipo_srch];
-			} elseif (\in_array($tipo_srch, self::$tipos_basicos)) {
+			} elseif (\in_array($tipo_srch, self::$tipos_basicos, true)) {
 				return ['type' => $tipo_srch];
 			}
 		}

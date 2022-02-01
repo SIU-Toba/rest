@@ -24,7 +24,7 @@ class lector_recursos_archivo
     */
     public function add_directorio_recursos($path)
     {
-        if (! is_array($path) && ! in_array($path, $this->directorios_recursos)) {
+        if (! is_array($path) && ! in_array($path, $this->directorios_recursos, true)) {
             $this->directorios_recursos[] = $path;
         }
     }
