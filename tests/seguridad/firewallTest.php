@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 use SIUToba\rest\seguridad\autenticacion\rest_error_autenticacion;
 use SIUToba\rest\seguridad\autorizacion\rest_error_autorizacion;
 use SIUToba\rest\seguridad\firewall;
+use SIUToba\rest\seguridad\autenticacion\rest_error_autenticacion;
+use SIUToba\rest\seguridad\autorizacion\rest_error_autorizacion;
 
 class firewallTest extends TestCase
 {
