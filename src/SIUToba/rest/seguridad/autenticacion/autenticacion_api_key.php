@@ -47,9 +47,9 @@ class autenticacion_api_key extends proveedor_autenticacion
      *
      * @return mixed
      */
-    public function requerir_autenticacion(respuesta_rest $rta)
+    public function requerir_autenticacion(respuesta_rest &$rta)
     {
-        $rta->set_data(array('mensaje' => $this->mensaje));
+        $rta = $rta->set_data(array('mensaje' => \utf8_e_seguro($this->mensaje)));
     }
 
     /**

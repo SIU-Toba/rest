@@ -19,7 +19,7 @@ class ruteadorTest extends TestCase
 
     protected $instanciador;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->instanciador =
             $this->getMockBuilder('SIUToba\rest\lib\rest_instanciador')

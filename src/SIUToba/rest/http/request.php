@@ -3,11 +3,15 @@
 namespace SIUToba\rest\http;
 
 use SIUToba\rest\lib\rest_error;
+use GuzzleHttp\Psr7\ServerRequest;
+use GuzzleHttp\Psr7\CachingStream;
+use GuzzleHttp\Psr7\LazyOpenStream;
+use GuzzleHttp\Psr7\Uri;
 
 /**
  * Clase basada en Slim - a micro PHP 5 framework para abstraer el Request.
  */
-class request
+class request extends ServerRequest
 {
     const METHOD_HEAD = 'HEAD';
     const METHOD_GET = 'GET';
@@ -25,7 +29,7 @@ class request
      *
      * @var array
      */
-    protected static $special = array(
+    /*protected static $special = array(
         'CONTENT_TYPE',
         'CONTENT_LENGTH',
         'PHP_AUTH_USER',
@@ -33,24 +37,39 @@ class request
         'PHP_AUTH_DIGEST',
         'AUTH_TYPE',
     );
-
+*/
     protected $union; //get + post
-    protected $body;
-
-    public $headers;
-
     protected $encoding;
-    protected $behind_proxy;
+
+	protected $behind_proxy;
     
     private $request_uri;
     private $host;
     private $port;
     private $protocol;
-
-    public function __construct($behind_proxy = false)
+	
+    public function __construct($metodo, $uri, $headers=[], $body = null, $protocolo='1.1', $serverGlobal=[])
     {
-        $this->headers = $this->extract_headers();
-        $this->behind_proxy = $behind_proxy;
+		parent::__construct($metodo, $uri, $headers, $body, $protocolo, $serverGlobal);
+    
+        /*$this->headers = $this->extract_headers();
+        $this->behind_proxy = $behind_proxy;*/
+    }
+
+    public static function fromGlobals()
+    {
+		$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
+		$headers = getallheaders();
+		$uri = ServerRequest::getUriFromGlobals();
+		$body = new CachingStream(new LazyOpenStream('php://input', 'r+'));
+		$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? str_replace('HTTP/', '', $_SERVER['SERVER_PROTOCOL']) : '1.1';
+		$serverRequest = new request($method, $uri, $headers, $body, $protocol, $_SERVER);
+
+		return $serverRequest
+			->withCookieParams($_COOKIE)
+			->withQueryParams($_GET)
+			->withParsedBody($_POST)
+			->withUploadedFiles(ServerRequest::normalizeFiles($_FILES));
     }
 
     public function set_encoding_datos($encoding)
@@ -65,7 +84,7 @@ class request
 
     public function get_method()
     {
-        return $_SERVER['REQUEST_METHOD'];
+		return $this->getMethod();
     }
 
     /**
@@ -89,7 +108,7 @@ class request
      */
     public function get($key = null, $default = null)
     {
-        return $this->get_valor_o_default($_GET, $key, $default);
+        return $this->get_valor_o_default($this->getQueryParams(), $key, $default);
     }
 
     /**
@@ -99,8 +118,7 @@ class request
      */
     public function post($key = null, $default = null)
     {
-        $datos = $this->get_valor_o_default($_POST, $key, $default);
-
+        $datos = $this->get_valor_o_default($this->getParsedBody(), $key, $default);
         return $this->manejar_encoding($datos);
     }
 
@@ -109,14 +127,13 @@ class request
      */
     public function get_body_json()
     {
-        $body = $this->get_body();
-        $json = json_decode($body, true);
-        if ($body && null === $json) {
-            throw new rest_error(400, "No se pudo decodificar el mensaje '$body'");
-        }
-        $arreglo = $this->manejar_encoding($json);
+		$body = $this->getParsedBody();
+		if (is_null($body) || ! is_array($body)) {
+		 throw new rest_error(400, "No se pudo decodificar el mensaje");
+		}
 
-        return $arreglo;
+		$arreglo = $this->manejar_encoding($body);	
+		return $arreglo;
     }
 
     /**
@@ -125,8 +142,8 @@ class request
      * Si key es nulo devuelve todos. Sino devuelve el parametro key si existe o su default
      */
     public function headers($key = null, $default = null)
-    {
-        return $this->get_valor_o_default($this->headers, $key, $default);
+    {		
+		return ($this->hasHeader($key))  ? $this->getHeader($key): $default;	
     }
 
     /**
@@ -136,14 +153,7 @@ class request
      */
     public function get_body()
     {
-        if (!$this->body) {
-            $this->body = file_get_contents('php://input');
-            if (!$this->body) {
-                $this->body = '';
-            }
-        }
-
-        return $this->body;
+		return $this->getBody();
     }
 
     /**
@@ -153,19 +163,7 @@ class request
      */
     public function get_host()
     {
-        if (! isset($this->host)) {
-            if (isset($_SERVER['HTTP_HOST'])) {
-                if (strpos($_SERVER['HTTP_HOST'], ':') !== false) {
-                    $hostParts = explode(':', $_SERVER['HTTP_HOST']);
-                    $this->host = $hostParts[0];
-                } else {
-                    $this->host = $_SERVER['HTTP_HOST'];
-                }
-            } else {
-                $this->host = $_SERVER['SERVER_NAME'];
-            }
-        }
-        return $this->host;
+		return $this->headers('host');        
     }
 
     public function set_host($host)
@@ -182,6 +180,7 @@ class request
      */
     public function get_puerto()
     {
+		return $this->getUri()->getPort();
         if (! isset($this->port)) {
             $this->port = (int) $_SERVER['SERVER_PORT'];
         }
@@ -202,6 +201,7 @@ class request
      */
     public function get_esquema()
     {
+        return $this->getUri()->getScheme();
         if (!isset($this->protocol)) {
             $this->protocol = (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') ? 'http' : 'https';
         }
@@ -217,6 +217,8 @@ class request
     
     public function get_request_uri()
     {
+		return $this->getUri()->getPath();
+		return $this->getUri()->__toString();
         if (! isset($this->request_uri)) {
             $this->request_uri = $_SERVER["REQUEST_URI"];
         }
@@ -237,31 +239,8 @@ class request
     */
     public function get_url()
     {
-        $url = $this->get_esquema().'://'.$this->get_host();
-        if (($this->get_esquema() === 'https' && $this->get_puerto() !== 443) || ($this->get_esquema() === 'http' && $this->get_puerto() !== 80)) {
-            $url .= sprintf(':%s', $this->get_puerto());
-        }
-
-        return $url;
-    }
-    
-    //----------------------------------------------------------------------------------//
-    //								PROTECTED METHODS
-    //----------------------------------------------------------------------------------//
-    protected function extract_headers()
-    {
-        $results = array();
-        foreach ($_SERVER as $key => $value) {
-            $key = strtoupper($key);
-            if (strpos($key, 'X_') === 0 || strpos($key, 'HTTP_') === 0 || in_array($key, static::$special)) {
-                if ($key === 'HTTP_CONTENT_TYPE' || $key === 'HTTP_CONTENT_LENGTH') {
-                    continue;
-                }
-                $results[$key] = $value;
-            }
-        }
-
-        return $results;
+		$uri = $this->getUri();
+		return Uri::composeComponents($uri->getScheme(), $uri->getAuthority(), $uri->getPath(), '', '');
     }
 
     protected function get_valor_o_default($arreglo, $key = null, $default = null)
@@ -296,7 +275,7 @@ class request
 
             return $salida;
         } elseif (is_string($entrada)) {
-            return utf8_decode($entrada);
+            return \utf8_d_seguro($entrada);
         } else {
             return $entrada;
         }

@@ -8,8 +8,9 @@
 
 namespace SIUToba\rest\tests\http;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\http\respuesta_rest;
+use SIUToba\rest\lib\rest_error;
 
 class respuesta_restTest extends TestCase
 {
@@ -17,62 +18,65 @@ class respuesta_restTest extends TestCase
     {
         $data = array(1);
         $r = new respuesta_rest();
-        $r->get($data);
-
+        $r = $r->get($data);			//Devuelve una nueva instancia
+	
         $this->assertEquals(200, $r->get_status());
-        $this->assertEquals($data, $r->get_data());
+        $this->assertEquals($data, json_decode($r->get_data()->getContents(), true));
     }
 
     /**
-     * @expectedException SIUToba\rest\lib\rest_error
+     * @expectedException rest_error
      */
     public function testGetNotFound()
     {
+		$this->expectException(rest_error::class);
         $data = false;
         $r = new respuesta_rest();
         $r->get($data);
     }
 
     /**
-     * @expectedException SIUToba\rest\lib\rest_error
+     * @expectedException rest_error
      */
     public function testNotFound()
     {
+		$this->expectException(rest_error::class);
         $r = new respuesta_rest();
         $r->not_found("mje");
     }
 
     public function testPutOK()
     {
-        $errores = false;
         $r = new respuesta_rest();
-        $r->put();
+        $r = $r->put();
+		
         $this->assertEquals(204, $r->get_status());
-        $this->assertEmpty($r->get_data());
+        $this->assertEmpty($r->get_data()->__toString());			//Hay que testear un stream empty
     }
 
     public function testDeleteOK()
     {
         $r = new respuesta_rest();
-        $r->delete();
+        $r = $r->delete();
         $this->assertEquals(204, $r->get_status());
-        $this->assertEmpty($r->get_data());
+        $this->assertEmpty($r->get_data()->__toString());			//Hay que testear un stream empty
     }
 
     public function testRedirect()
     {
         $r = new respuesta_rest();
-        $r->redirect('hola');
-        $this->assertArrayHasKey('Location', $r->headers);
-        $this->assertEquals($r->headers['Location'], 'hola');
+        $r = $r->redirect('hola');
+        $this->assertArrayHasKey('Location', $r->getHeaders());
+        $this->assertTrue($r->hasHeader('Location'));
+        $this->assertEquals($r->getHeader('Location'), ['hola']);
     }
 
     public function testErrorNegocio()
     {
         $r = new respuesta_rest();
         $error = array('error' => 'e');
-        $r->error_negocio($error);
+        $r = $r->error_negocio($error);
         $this->assertEquals(400, $r->get_status());
-        $this->assertEquals($error, $r->get_data());
+        $this->assertEquals($error, json_decode($r->get_data()->__toString(), true));
     }
 }

@@ -24,7 +24,7 @@ class ruteador_ejemploTest extends TestCase
     protected $BASE_DIR;
 
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->BASE_DIR = array(realpath(__DIR__ . '/../_ejemplo/rest'), realpath(__DIR__ . '/../_ejemplo/rest_extension'));
 
