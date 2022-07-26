@@ -203,7 +203,13 @@ class request
     public function get_esquema()
     {
         if (!isset($this->protocol)) {
-            $this->protocol = (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') ? 'http' : 'https';
+            $isHttps =
+            (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+            || (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https')
+            || (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443)
+            || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+            ;
+            $this->protocol = ($isHttps) ? 'https' : 'http';
         }
         return $this->protocol;
     }
