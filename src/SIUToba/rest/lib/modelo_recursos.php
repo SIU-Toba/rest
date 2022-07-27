@@ -39,7 +39,7 @@ class modelo_recursos
             $def = array('type' => 'object', 'properties' => $aux);
         }
 		
-        $prop = array();
+        $prop = [];
         foreach($def as $k => $campo_def) {
             if (false === \strpos($k, '_')) {           //Obtengo propiedades != _compuesto y _mapeo
 				if ($k == 'type') {
@@ -49,10 +49,11 @@ class modelo_recursos
 					// Si se hace referencia a otro schema se debe agregar el prefijo '#/components/schemas/' 
 					// ver: https://swagger.io/docs/specification/data-models/data-types/#array
 					if (isset($campo_def['$ref'])) {
-						$campo_def['$ref'] = '#/components/schemas/'. trim($campo_def['$ref']);
+						$prop = array_merge($prop, tipo_datos_docs::get_tipo_datos('$:'.trim($campo_def['$ref'])));
+					} else {
+						$prop[$k] = $campo_def;
 					}
 					
-					$prop[$k] = $campo_def;
 				}
              //   $prop[$k] = ($k != 'type') ? $campo_def: tipo_datos_docs::get_tipo_formato($campo_def);
             } elseif (false !== \strpos($k, '_mapeo')) {      //Busco posibles mapeos de nombres
