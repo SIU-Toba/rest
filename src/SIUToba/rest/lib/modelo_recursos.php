@@ -47,7 +47,9 @@ class modelo_recursos
                 } elseif ($k == 'items') {
                     // Si se hace referencia a otro schema se debe agregar el prefijo '#/components/schemas/' 
                     // ver: https://swagger.io/docs/specification/data-models/data-types/#array
-                    $prop = array_merge($prop, tipo_datos_docs::get_tipo_datos('$:'.trim($campo_def))); 
+                    $prop[$k] = array_merge($prop, tipo_datos_docs::get_tipo_datos('$:'.trim($campo_def)));
+                } elseif ($k == '$ref') {
+                    $prop = array_merge($prop, tipo_datos_docs::get_tipo_datos('$:'.trim($campo_def)));
                 } else {
                     $prop[$k] = $campo_def;
                 }
