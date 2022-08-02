@@ -46,10 +46,10 @@ class modelo_recursos
                     $prop = array_merge($prop, tipo_datos_docs::get_tipo_formato($campo_def));
                 } elseif ($k == 'items') {
                     // Si se hace referencia a otro schema se debe agregar el prefijo '#/components/schemas/' 
-                    // ver: https://swagger.io/docs/specification/data-models/data-types/#array
-                    $prop[$k] = array_merge($prop, tipo_datos_docs::get_tipo_datos('$:'.trim($campo_def)));
-                } elseif ($k == '$ref') {
-                    $prop = array_merge($prop, tipo_datos_docs::get_tipo_datos('$:'.trim($campo_def)));
+                    // ver: https://github.com/SIU-Toba/rest/wiki/Documentaci%C3%B3n-de-APIs-REST
+                    if (is_array($campo_def) && isset($campo_def['$ref'])) {
+                        $prop[$k] = tipo_datos_docs::get_tipo_datos('$ref:'.$campo_def['$ref']);
+                    }
                 } else {
                     $prop[$k] = $campo_def;
                 }

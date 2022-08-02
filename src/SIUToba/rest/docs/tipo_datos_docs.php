@@ -27,6 +27,11 @@ class tipo_datos_docs
 	/**
 	 * Obtiene el tipo de dato de un string con formato especifico
 	 * @param string $tipo
+	 * @example tipo_datos_docs::get_tipo_datos('$ref:Comision'); Devuelve ['$ref' => '#/components/schemas/Comision'].
+	 * @example tipo_datos_docs::get_tipo_datos('int32'); Devuelve ['type' => 'integer', 'format' => 'int32'].
+	 * @example tipo_datos_docs::get_tipo_datos('password'); Devuelve ['type' => 'string', 'format' => 'password'].
+	 * @example tipo_datos_docs::get_tipo_datos('boolean'); Devuelve ['type' => 'boolean'].
+	 * @example tipo_datos_docs::get_tipo_datos('integer'); Devuelve ['type' => 'integer'].
 	 * @return mixed
 	 */
 	public static function get_tipo_datos($tipo)
