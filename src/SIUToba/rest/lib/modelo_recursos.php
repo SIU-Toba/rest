@@ -42,16 +42,20 @@ class modelo_recursos
         $prop = [];
         foreach($def as $k => $campo_def) {
             if (false === \strpos($k, '_')) {           //Obtengo propiedades != _compuesto y _mapeo
-                if ($k == 'type') {
-                    $prop = array_merge($prop, tipo_datos_docs::get_tipo_formato($campo_def));
-                } elseif ($k == 'items') {
-                    // Si se hace referencia a otro schema se debe agregar el prefijo '#/components/schemas/' 
-                    // ver: https://github.com/SIU-Toba/rest/wiki/Documentaci%C3%B3n-de-APIs-REST
-                    if (is_array($campo_def) && isset($campo_def['$ref'])) {
-                        $prop[$k] = tipo_datos_docs::get_tipo_datos('$ref:'.$campo_def['$ref']);
-                    }
-                } else {
-                    $prop[$k] = $campo_def;
+                switch ($k) {
+                    case 'type':
+                        $prop = array_merge($prop, tipo_datos_docs::get_tipo_formato($campo_def));
+                        break;
+                    case 'items':
+                        if (! is_array($campo_def)) {
+                            $prop[$k] = tipo_datos_docs::get_tipo_datos($campo_def); 
+                        } else{
+                            $definicion = (isset($campo_def['$ref'])) ? '$ref:'.$campo_def['$ref'] : current($campo_def); 
+                            $prop[$k] = tipo_datos_docs::get_tipo_datos($definicion); 
+                        }
+                        break;
+                    default:
+                        $prop[$k] = $campo_def;    
                 }
              //   $prop[$k] = ($k != 'type') ? $campo_def: tipo_datos_docs::get_tipo_formato($campo_def);
             } elseif (false !== \strpos($k, '_mapeo')) {      //Busco posibles mapeos de nombres
