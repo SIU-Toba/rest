@@ -39,14 +39,24 @@ class modelo_recursos
             $def = array('type' => 'object', 'properties' => $aux);
         }
 		
-        $prop = array();
+        $prop = [];
         foreach($def as $k => $campo_def) {
             if (false === \strpos($k, '_')) {           //Obtengo propiedades != _compuesto y _mapeo
-				if ($k == 'type') {
-					$prop = array_merge($prop, tipo_datos_docs::get_tipo_formato($campo_def));
-				} else {
-					$prop[$k] = $campo_def;
-				}
+                switch ($k) {
+                    case 'type':
+                        $prop = array_merge($prop, tipo_datos_docs::get_tipo_formato($campo_def));
+                        break;
+                    case 'items':
+                        if (! is_array($campo_def)) {
+                            $prop[$k] = tipo_datos_docs::get_tipo_datos($campo_def); 
+                        } else{
+                            $definicion = (isset($campo_def['$ref'])) ? '$ref:'.$campo_def['$ref'] : current($campo_def); 
+                            $prop[$k] = tipo_datos_docs::get_tipo_datos($definicion); 
+                        }
+                        break;
+                    default:
+                        $prop[$k] = $campo_def;    
+                }
              //   $prop[$k] = ($k != 'type') ? $campo_def: tipo_datos_docs::get_tipo_formato($campo_def);
             } elseif (false !== \strpos($k, '_mapeo')) {      //Busco posibles mapeos de nombres
             //    $prop['discriminator'] = array('propertyName' => $campo, 'mapping' => $campo_def);
