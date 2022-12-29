@@ -36,8 +36,9 @@ class rest_hidratador
      *                          Posiblemente no se necesite utilizarla en la llamada inicial
      * @return array la fila deshidratado
      */
-    public static function deshidratar_fila($data, $spec_hidratar, &$nueva_fila = array())
+    public static function deshidratar_fila($data, $spec_hidratar, $damn_thing = array())
     {
+	$nueva_fila = array();
         foreach ($spec_hidratar as $key => $campo) {
             if (!is_array($campo)) { //si no proveen todos los campos no los incluyo.
                 if (isset($data[(string) $campo])) {
@@ -55,7 +56,8 @@ class rest_hidratador
             }
             if (isset($campo['_compuesto'])) {
                 //pongo en la misma fila, las columnas del compuesto
-                self::deshidratar_fila($data, $spec_hidratar['_compuesto'], $nueva_fila);
+                $recursive = self::deshidratar_fila($data[$key], $campo['_compuesto']);
+                $nueva_fila[$key] = $recursive;
                 continue;
             }
             //pasa derecho

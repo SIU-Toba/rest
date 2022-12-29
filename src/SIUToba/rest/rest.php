@@ -168,9 +168,10 @@ class rest
         });
 
         $this->container->singleton('controlador_documentacion', function ($c) {
+			$url = $c['request']->get_url() . $c['settings']['url_api'];
             return new controlador_docs(
                 $c['settings']['path_controladores'],
-                $c['settings']['url_api']
+				$url               
             );
         });
 

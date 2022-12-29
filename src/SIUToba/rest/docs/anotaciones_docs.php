@@ -4,18 +4,19 @@ namespace SIUToba\rest\docs;
 
 use ReflectionClass;
 use SIUToba\rest\lib\rest_instanciador;
+use \SIUToba\rest\docs\tipo_datos_docs;
 
 class anotaciones_docs
 {
     protected static $metodos_validos = array('get', 'put', 'post', 'delete');
-
+    
     /**
      * @var \ReflectionClass
      */
     protected $reflexion;
 
     protected $anotaciones_clase;
-
+    
     /**
      * La clase no puede tener namespaces (esta pensada para las del modelo).
      *
@@ -37,7 +38,11 @@ class anotaciones_docs
      */
     public function get_nombre_clase()
     {
-        return $this->reflexion->getNamespaceName() .'/'. $this->reflexion->getName();
+        $name = $this->reflexion->getName();
+        if ($this->reflexion->inNamespace()) {
+            $name = $this->reflexion->getNamespaceName() .'\\'. $this->reflexion->getShortName();
+        }
+        return $name;
     }
 
     /**
@@ -49,11 +54,9 @@ class anotaciones_docs
      */
     protected function get_annotations($reflexion)
     {
-        if ($this->anotaciones_clase) {
-            return $this->anotaciones_clase;
+        if (!isset($this->anotaciones_clase)) {
+            $this->anotaciones_clase = $this->get_annotations_metodo($reflexion);
         }
-        $this->anotaciones_clase = $this->get_annotations_metodo($reflexion);
-
         return $this->anotaciones_clase;
     }
 
@@ -93,6 +96,7 @@ class anotaciones_docs
     protected function extraer_anotaciones($doc)
     {
         //remuevo lo que esta antes del primer @
+        //$annotations = preg_split('/^@/', $doc);
         $annotations = explode('@', $doc);
         array_shift($annotations);
 
@@ -195,11 +199,21 @@ class anotaciones_docs
         }
 
         $api_parameter = array();
-        $api_parameter['name'] = ltrim($matches[1], '$');
-        $api_parameter['in'] = $type;
-        $api_parameter['type'] = $matches[2];
+        $tipo_dato = tipo_datos_docs::get_tipo_datos($matches[2]);
+        switch ($type) {
+            case 'query':
+                $api_parameter['name'] = ltrim($matches[1], '$');
+                $api_parameter['in'] = $type;
+                $api_parameter['schema'] = $tipo_dato;
+                break;
+        /*	case 'path':
+                $api_parameter['in'] = $type;*/
+            case 'body':
+                $api_parameter['content'] = array('*/*' => ['schema' => $tipo_dato]);
+                break;
+        }
+        
         $api_parameter['description'] = $matches[4] ?: '[sin descripcion]';
-
         if (!empty($matches[3])) {
             $modificadores = $matches[3];
             if (preg_match('/required/', $modificadores)) {
@@ -228,6 +242,24 @@ class anotaciones_docs
         return '';
     }
 
+    public function get_since_metodo($metodo)
+    {
+        if (isset($metodo['anotaciones']['since'])) {
+            return $metodo['anotaciones']['since'][0];
+        }
+
+        return '';
+    }
+     
+    public function get_metodo_deprecado($metodo)
+    {
+        if (isset($metodo['anotaciones']['deprecated'])) {
+            return $metodo['anotaciones']['deprecated'][0];
+        }
+
+        return '';
+    }
+    
     public function get_respuestas_metodo($metodo)
     {
         $respuestas = array();
@@ -236,26 +268,26 @@ class anotaciones_docs
                 $matches = array();
                 //200 [array] $tipo descripcion
                 $resultado = preg_match("/(\d{3})?\s*([ary]*)\s*(\{[\":\w\$\s]+\})?\s*(.*)/i", $respuesta, $matches);
-                 if (0 === $resultado || false === $resultado) {
-                        continue;
+                if (0 === $resultado || false === $resultado) {
+                    continue;
                 }
 
                 $status = $matches[1];
 
                 if ($matches[2] == 'array') {
-                    $items = $this->get_tipo_datos($matches[3]);
+                    $items = tipo_datos_docs::get_tipo_datos($matches[3]);
                     $schema = array(
                         'type' => 'array',
                         'items' => $items,
                     );
                 } else {
-                    $schema = $this->get_tipo_datos($matches[3]);
+                    $schema = tipo_datos_docs::get_tipo_datos($matches[3]);
                 }
                 $mje = $matches[4];
 
                 $resObj = array('description' => $mje);
-                if ($schema != '') {
-                    $resObj['schema'] = $schema;
+                if (! empty($schema)) {
+                    $resObj['content']['*/*']['schema'] = $schema;
                 }
 
                 $respuestas[$status] = $resObj;
@@ -268,30 +300,5 @@ class anotaciones_docs
     protected function termina_con($needle, $haystack)
     {
         return substr($haystack, -strlen($needle)) === $needle;
-    }
-
-    /**
-     * @param $tipo
-     *
-     * @return array
-     */
-    protected function get_tipo_datos($tipo)
-    {
-        $tipo = preg_replace("#[\{\}\"\s]#",'', $tipo);
-        if (trim($tipo) == '') {
-            return;
-        }
-
-        $refs = explode(':', $tipo);
-        if (false === $refs) {
-            $tipoRef = array('type' => trim($tipo));                            //Basic type - no name
-        } else {
-            if (substr($refs[0], 0, 1) == '$') {
-                $tipoRef = array('$ref' => "#/definitions/". trim($refs[1]));   //Referred type {"$ref": "Defined@Model"}
-            } else {
-                $tipoRef = array('type' => trim($refs[1]));                     //Basic type - named {"id" : "integer"}
-            }
-        }
-        return $tipoRef;
     }
 }

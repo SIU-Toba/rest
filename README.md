@@ -9,7 +9,7 @@ Esta librería permite servir APIs rest de forma simple pero estructurada. La mi
 
 La definición de una API REST se basa en convenciones y no requiere especificar metadatos.
 
-###Definición de Recursos
+### Definición de Recursos
 
 Toda información que pueda ser nombrada es un Recurso, por ejemplo: documentos, imagenes, colecciones de otros recursos, tablas definidas en una base de datos, etc.
 Los recursos a publicar/compartir para un determinado proyecto deben indicarse mediante una clase PHP dentro de la carpeta _/proyectos/nombre_proyecto/php/rest/_. Por Ejemplo:
@@ -124,13 +124,13 @@ class recurso_documento
 ```
 
 
-###Sub APIs
+### Sub APIs
 
 La librería permite agrupar recursos en subcarpetas, con **hasta dos niveles** de profundidad, permitiendo asi, definir sub APIs y lograr una mejor división semántica que facilite la aplicación de distintas configuraciones según el caso. Además estas subcarpetas sirven de prefijo de acceso en la URL, por ejemplo _/personas/deportes/_. 
 
 Por ejemplo, una API que brinda servicios al usuario actual, puede tener las subdivisiones `admin` y `me`. Para esto se deberá crear una carpeta _/rest/me_ y _/rest/admin_ sin ningún recurso dentro. Si se quieren conocer las `mascotas` del usuario actual, se debe crear un recurso `mascotas` en _/rest/me/mascotas/recurso_mascotas.php_ y luego, se podrá acceder por medio de la url _/rest/me/mascotas_. La alternativa, mas compleja, sin utilizar sub APIs, es accediendo a _/rest/usuarios/{usuario_actual}/mascotas_.
 
-##Links relacionados
+## Links relacionados
 * [**Testing de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Testing-de-APIs-REST)
 * [**Documentación de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Documentaci%C3%B3n-de-APIs-REST)
 * [**Convenciones en la creación de APIs REST**](https://github.com/SIU-Toba/rest/wiki/Convenciones-en-la-creaci%C3%B3n-de-APIs-REST)

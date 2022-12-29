@@ -29,7 +29,7 @@ class ruteador
         $colecciones = array();
         $parametros = array();
 
-        if ($es_montaje = $this->lector->es_montaje($partes_url[0])) {
+        if ($this->lector->es_montaje($partes_url[0])) {
             $montaje = array_shift($partes_url);
         } else {
             $montaje = "";

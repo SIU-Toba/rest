@@ -1,9 +1,16 @@
 # CHANGELOG
-## v 2.0.7 19/10/2020
- * Se fixea inconveniente con uso de autenticación `toba` en concomitancia con otro método
 
+## v 3.0.0 28/12/2022
+ * Cambios en generación de documentación, se hace compatible con OAS 3.0
+ * Cambio en rest_hidratador::deshidratar_fila rompe compatibilidad hacia atras
+ * Fix al identificador de operación en generación de documentación.
+ * Fixes en generación de documentación de tipos anidados (credits lleonardis)
+
+## v 2.0.7 19/10/2020
+ * Se fixea inconveniente con uso de autenticación toba en concomitancia con otro método
+ 
 ## v 2.0.6 23/09/2020
- * Agrega el parametro `schemes` a la generacion de la documentacion
+ * Agrega el parametro schemes a la generacion de la documentacion
 
 ## v 2.0.5 16/06/2020
  * Agrega la posibilidad de setear parametros del request para operar detras de un proxy
