@@ -7,13 +7,7 @@ use SIUToba\rest\http\respuesta_rest;
 use SIUToba\rest\lib\rest_error;
 
 class rest_errorTest extends TestCase
-{
-    protected function setUp(): void
-    {
-       include_once \realpath(__DIR__.'/../../src/SIUToba/rest/lib/funciones_basicas.php');
-       parent::setUp();
-    }
-     
+{     
     public function testInicializacion()
     {
         $status = 400;
