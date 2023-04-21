@@ -82,7 +82,7 @@ class rest_filtro_sql
         return $this;
     }
 
-    public function agregar_campo_flag_local($alias_qs, $sql_si, $sql_no = '', $valor)
+    public function agregar_campo_flag_local($alias_qs, $sql_si, $sql_no = '', $valor='')
     { //se piden ambas sql para poder intercambiar facil un campo local o no.
         $this->campos[$alias_qs] = array('sql_si' => $sql_si, 'sql_no' => $sql_no, 'valor' => $valor);
 
@@ -98,7 +98,7 @@ class rest_filtro_sql
      *
      * @return $this
      */
-    public function agregar_campo_local($alias_qs, $alias_sql = null, $valor)
+    public function agregar_campo_local($alias_qs, $alias_sql = null, $valor='')
     {
         if ($alias_sql === null) {
             $alias_sql = $alias_qs;
