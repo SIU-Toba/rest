@@ -167,22 +167,22 @@ class Set implements \ArrayAccess, \Countable, \IteratorAggregate
     /**
      * Array Access.
      */
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         return $this->has($offset);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->set($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->remove($offset);
     }
@@ -190,7 +190,7 @@ class Set implements \ArrayAccess, \Countable, \IteratorAggregate
     /**
      * Countable.
      */
-    public function count()
+    public function count(): int
     {
         return count($this->data);
     }
@@ -198,7 +198,7 @@ class Set implements \ArrayAccess, \Countable, \IteratorAggregate
     /**
      * IteratorAggregate.
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->data);
     }
