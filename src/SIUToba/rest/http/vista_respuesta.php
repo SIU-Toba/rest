@@ -26,23 +26,23 @@ abstract class vista_respuesta
     {
         if (headers_sent()) {
             return;
-        }    
-            $status = $this->respuesta->get_status();
-            //Send status
-            if (strpos(PHP_SAPI, 'cgi') === 0) {
-                header(sprintf('Status: %s', respuesta::getMessageForCode($status)));
-                //echo sprintf('Status: %s', self::getMessageForCode($this->status));
-            } else {
-                header(sprintf('HTTP/%s %s', '1.1', respuesta::getMessageForCode($status)));
-                //echo sprintf('HTTP/%s %s', '1.1', self::getMessageForCode($this->status));
-            }
+        }
+        
+        $status = $this->respuesta->get_status();
+        //Send status
+        if (strpos(PHP_SAPI, 'cgi') === 0) {
+            header(sprintf('Status: %s', respuesta::getMessageForCode($status)));
+            //echo sprintf('Status: %s', self::getMessageForCode($this->status));
+        } else {
+            header(sprintf('HTTP/%s %s', '1.1', respuesta::getMessageForCode($status)));
+            //echo sprintf('HTTP/%s %s', '1.1', self::getMessageForCode($this->status));
+        }
 
-            //Send headers
-            foreach ($this->respuesta->headers as $name => $value) {
-                $hValues = explode("\n", $value);
-                foreach ($hValues as $hVal) {
-                    header("$name: $hVal", false);
-                }
+        //Send headers
+        foreach ($this->respuesta->headers as $name => $value) {
+            $hValues = explode("\n", $value);
+            foreach ($hValues as $hVal) {
+                header("$name: $hVal", false);
             }
         }
     }
