@@ -38,12 +38,11 @@ abstract class vista_respuesta
             //echo sprintf('HTTP/%s %s', '1.1', self::getMessageForCode($this->status));
         }
 
-            //Send headers
-            foreach ($this->respuesta->headers as $name => $value) {
-                $hValues = explode("\n", $value);
-                foreach ($hValues as $hVal) {
-                    header("$name: $hVal", false);
-                }
+        //Send headers
+        foreach ($this->respuesta->headers as $name => $value) {
+            $hValues = explode("\n", $value);
+            foreach ($hValues as $hVal) {
+                header("$name: $hVal", false);
             }
         }
     }
