@@ -37,7 +37,7 @@ class tipo_datos_docs
 	public static function get_tipo_datos($tipo)
     {
         $tipo = preg_replace("#[\{\}\"\s]#",'', $tipo);
-        if (trim($tipo) == '') {
+        if (null === $tipo || trim($tipo) == '') {
             return;
         }
 
