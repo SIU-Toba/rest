@@ -117,7 +117,8 @@ class rest_filtro_sql
             if (isset($campo['valor'])) {
                 $valor = $campo['valor']; //es un campo local
             } else {
-                $query = trim(rest::request()->get($alias_qs));
+                $query_value = rest::request()->get($alias_qs);
+                $query = (null !== $query_value) ? trim($query_value): '';
                 $valor = ($query != '') ? $query : $campo['defecto'];
             }
             if ($valor !== null) {
@@ -179,7 +180,7 @@ class rest_filtro_sql
     {
         $get_order = rest::request()->get("order");
         $usar_default = false;
-        if (trim($get_order) == '') {
+        if (null === $get_order || trim($get_order) == '') {
             if ($default !== null) {
                 $usar_default = true;
                 $get_order = $default;

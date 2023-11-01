@@ -46,13 +46,11 @@ class annotaciones_docsTest extends TestCase
 
         $this->assertEquals(3, count($params_query));
 
-//		$param_q1 = $params_query[0];
-
         $pq = $params_query[0];
 
         // @param_query $juego string nombre del juego
-        $this->assertEquals('query', $pq['in']);
         $this->assertEquals('juego', $pq['name']);
+        $this->assertEquals('query', $pq['in']);        
         $this->assertEquals('string', $pq['schema']['type']);
         $this->assertEquals('nombre del juego', $pq['description']);
 

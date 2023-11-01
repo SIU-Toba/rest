@@ -30,6 +30,6 @@ class rest_usuario
 
     public function tiene_perfil($perfil)
     {
-        return in_array($perfil, $this->perfiles);
+        return in_array($perfil, $this->perfiles, true);
     }
 }

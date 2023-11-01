@@ -253,7 +253,7 @@ class request
         $results = array();
         foreach ($_SERVER as $key => $value) {
             $key = strtoupper($key);
-            if (strpos($key, 'X_') === 0 || strpos($key, 'HTTP_') === 0 || in_array($key, static::$special)) {
+            if (strpos($key, 'X_') === 0 || strpos($key, 'HTTP_') === 0 || in_array($key, static::$special, true)) {
                 if ($key === 'HTTP_CONTENT_TYPE' || $key === 'HTTP_CONTENT_LENGTH') {
                     continue;
                 }

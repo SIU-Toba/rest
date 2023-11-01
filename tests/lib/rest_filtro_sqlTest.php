@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\rest_error;
 use SIUToba\rest\lib\rest_filtro_sql;
 use SIUToba\rest\rest;
+use SIUToba\rest\lib\rest_error;
 
 class rest_filtro_sqlTest extends TestCase
 {

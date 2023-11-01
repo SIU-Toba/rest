@@ -39,7 +39,7 @@ class autorizacion_scopes extends proveedor_autorizacion
         // se chequea que todos los scopes requeridos estén en el arreglo de scopes del usuario
         $user_scopes_array = explode(' ', $user_scopes);
         foreach ($this->scopes as $required_scope) {
-            if (!in_array($required_scope, $user_scopes_array)) {
+            if (!in_array($required_scope, $user_scopes_array, true)) {
                 return false;
             }
         }
