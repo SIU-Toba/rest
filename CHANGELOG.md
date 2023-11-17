@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v 3.1.0 17/11/2023
+ * Eleva requerimiento minimo de PHP a 8.1
+ * Los métodos que contienen búsquedas en arreglos ahora utilizan comparación estricta, asegurese de enviar los tipos esperados.
+ * Actualización de dependencias por cuestiones de seguridad
+ * Actualizacion de casos de Test
+
 ## v 3.0.0 28/12/2022
  * Cambios en generación de documentación, se hace compatible con OAS 3.0
  * Cambio en rest_hidratador::deshidratar_fila rompe compatibilidad hacia atras
