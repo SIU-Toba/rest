@@ -164,7 +164,7 @@ class anotaciones_docs
 
         $partes_metodo = explode('_', $metodo->getName());
         $prefijo = array_shift($partes_metodo);
-        if (!in_array($prefijo, static::$metodos_validos)) {
+        if (!in_array($prefijo, static::$metodos_validos, true)) {
             $valido = false;
         }
 

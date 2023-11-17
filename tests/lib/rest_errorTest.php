@@ -7,7 +7,7 @@ use SIUToba\rest\http\respuesta_rest;
 use SIUToba\rest\lib\rest_error;
 
 class rest_errorTest extends TestCase
-{
+{     
     public function testInicializacion()
     {
         $status = 400;

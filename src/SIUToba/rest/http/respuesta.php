@@ -156,7 +156,7 @@ class respuesta
      */
     public function finalizar()
     {
-        if (in_array($this->status, array(204, 304))) {
+        if (in_array($this->status, array(204, 304), true)) {
             unset($this->headers['Content-Type']);
             unset($this->headers['Content-Length']);
             $this->set_data('');

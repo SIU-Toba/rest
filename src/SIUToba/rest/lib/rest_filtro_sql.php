@@ -82,7 +82,7 @@ class rest_filtro_sql
         return $this;
     }
 
-    public function agregar_campo_flag_local($alias_qs, $sql_si, $sql_no = '', $valor)
+    public function agregar_campo_flag_local($alias_qs, $sql_si, $sql_no = '', $valor='')
     { //se piden ambas sql para poder intercambiar facil un campo local o no.
         $this->campos[$alias_qs] = array('sql_si' => $sql_si, 'sql_no' => $sql_no, 'valor' => $valor);
 
@@ -98,7 +98,7 @@ class rest_filtro_sql
      *
      * @return $this
      */
-    public function agregar_campo_local($alias_qs, $alias_sql = null, $valor)
+    public function agregar_campo_local($alias_qs, $alias_sql = null, $valor='')
     {
         if ($alias_sql === null) {
             $alias_sql = $alias_qs;
@@ -117,7 +117,8 @@ class rest_filtro_sql
             if (isset($campo['valor'])) {
                 $valor = $campo['valor']; //es un campo local
             } else {
-                $query = trim(rest::request()->get($alias_qs));
+                $query_value = rest::request()->get($alias_qs);
+                $query = (null !== $query_value) ? trim($query_value): '';
                 $valor = ($query != '') ? $query : $campo['defecto'];
             }
             if ($valor !== null) {
@@ -179,7 +180,7 @@ class rest_filtro_sql
     {
         $get_order = rest::request()->get("order");
         $usar_default = false;
-        if (trim($get_order) == '') {
+        if (null === $get_order || trim($get_order) == '') {
             if ($default !== null) {
                 $usar_default = true;
                 $get_order = $default;

@@ -35,7 +35,7 @@ class controlador_docs
     */
     public function add_punto_partida($path)
     {
-        if (! is_array($path) && ! in_array($path, $this->api_root)) {
+        if (! is_array($path) && ! in_array($path, $this->api_root, true)) {
             $this->api_root[] = $path;
         }
     }
@@ -298,7 +298,7 @@ class controlador_docs
         foreach ($param_keys as $key) {
             if (isset($params[$key]['content'])) {
                 foreach ($params[$key]['content'] as $keycont => $contenido) {
-                    if (in_array($contenido['schema']['type'], $non_predefined_types)) {
+                    if (in_array($contenido['schema']['type'], $non_predefined_types, true)) {
                         $type = array('$ref' => "#/components/schemas/". trim($contenido['schema']['type']));
                         $params[$key]['content'][$keycont]['schema']= $type;
                     }
