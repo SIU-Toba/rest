@@ -86,9 +86,9 @@ class rest_hidratador
             }
             //pasa como viene
             if (is_array($campo)) {
-                $nueva_fila[$key] = $fila[$key]; // 'key' => array()..
+                $nueva_fila[$key] = $fila[$key] ?? null; // 'key' => array()..
             } else {
-                $nueva_fila[$campo] = $fila[$campo]; // 2 => 'campo'
+                $nueva_fila[$campo] = $fila[$campo] ?? null; // 2 => 'campo' si no existe el indice, lo maneja como nulo por BC
             }
         }
 

@@ -24,6 +24,10 @@ abstract class vista_respuesta
 
     protected function escribir_encabezados()
     {
+        if (headers_sent()) {
+            return;
+        }
+        
         $status = $this->respuesta->get_status();
         //Send status
         if (strpos(PHP_SAPI, 'cgi') === 0) {
