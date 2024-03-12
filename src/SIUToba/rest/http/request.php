@@ -295,8 +295,8 @@ class request
             }
 
             return $salida;
-        } elseif (is_string($entrada)) {
-            return utf8_decode($entrada);
+        } elseif (is_string($entrada) && false !== mb_detect_encoding($entrada, 'UTF-8', true)) {
+            return mb_convert_encoding($entrada, 'LATIN1', 'UTF-8');
         } else {
             return $entrada;
         }

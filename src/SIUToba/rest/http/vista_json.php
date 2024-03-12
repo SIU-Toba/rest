@@ -98,8 +98,8 @@ class vista_json extends vista_respuesta
         foreach ($keys_e as $key) {
             if (is_array($elements[$key])) {
                 $elements[$key] = $this->utf8_encode_fields($elements[$key]);
-            } elseif (!empty($elements[$key]) && mb_detect_encoding($elements[$key], "UTF-8", true) != "UTF-8") {
-                $elements[$key] = utf8_encode($elements[$key]);
+            } elseif (!empty($elements[$key]) && mb_detect_encoding($elements[$key], "UTF-8", true) !== false) {
+                $elements[$key] = mb_convert_encoding($elements[$key], 'UTF-8', 'LATIN1');
             }
         }
         return $elements;
