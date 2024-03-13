@@ -4,6 +4,7 @@
     "homepage": "http://toba.siu.edu.ar",
     "require": {
         "php": ">=8.1.0",
+        "ext-mbstring": "*",
         "doctrine/cache": "~1.13",
         "siu-toba/ssl-cert-utils": "1.0",
         "siu-toba/jwt-util": "~1.0.0"
