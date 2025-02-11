@@ -162,7 +162,7 @@ class rest_validador
                 break;
             case self::TIPO_INT:
                 $is_integer = is_integer($valor);
-                $all_digits = ctype_digit($valor);
+                $all_digits = ctype_digit((string)$valor);
                 if (($is_integer || $all_digits)) {
                     if (isset($options['min']) && $valor < $options['min']) {
                         return false;
@@ -190,7 +190,8 @@ class rest_validador
                 return false;
             case self::TIPO_MAIL:
                 $filter = FILTER_VALIDATE_EMAIL;
-                if (strlen($valor) > self::MAIL_MAX_LENGTH) {
+                $encoding = mb_detect_encoding($valor, "UTF-8", true);
+                if (mb_strlen($valor, $encoding) > self::MAIL_MAX_LENGTH) {
                     return false;
                 }
                 break;
@@ -216,7 +217,8 @@ class rest_validador
 
                 return false;
             case self::TIPO_LONGITUD:
-                $l = strlen($valor);   
+                $encoding = mb_detect_encoding($valor, "UTF-8", true);
+                $l = mb_strlen($valor, $encoding);
                 if (isset($options['min']) && $l < $options['min']) {
                         return false;
                 }
