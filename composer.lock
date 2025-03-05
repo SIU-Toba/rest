@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c609b2704f3756922b6f819d43c516bb",
+    "content-hash": "c79b75c226837bb5bde7cdc7fbbdbc79",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -206,16 +206,16 @@
         },
         {
             "name": "siu-toba/ssl-cert-utils",
-            "version": "v1.0",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SIU-Toba/ssl-cert-utils.git",
-                "reference": "41d21366183d843f91834b47888d5d17198ca527"
+                "reference": "47dca20e82ddfabc34f5bd0a330bbde671314d75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SIU-Toba/ssl-cert-utils/zipball/41d21366183d843f91834b47888d5d17198ca527",
-                "reference": "41d21366183d843f91834b47888d5d17198ca527",
+                "url": "https://api.github.com/repos/SIU-Toba/ssl-cert-utils/zipball/47dca20e82ddfabc34f5bd0a330bbde671314d75",
+                "reference": "47dca20e82ddfabc34f5bd0a330bbde671314d75",
                 "shasum": ""
             },
             "require": {
@@ -238,9 +238,9 @@
             "description": "Utilidades para manipular y sacar información de certificados SSL",
             "support": {
                 "issues": "https://github.com/SIU-Toba/ssl-cert-utils/issues",
-                "source": "https://github.com/SIU-Toba/ssl-cert-utils/tree/v1.0"
+                "source": "https://github.com/SIU-Toba/ssl-cert-utils/tree/v1.1"
             },
-            "time": "2016-04-12T18:08:51+00:00"
+            "time": "2020-11-09T20:29:37+00:00"
         }
     ],
     "packages-dev": [
@@ -1997,6 +1997,6 @@
         "php": ">=8.1.0",
         "ext-mbstring": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
