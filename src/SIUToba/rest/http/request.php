@@ -9,14 +9,14 @@ use SIUToba\rest\lib\rest_error;
  */
 class request
 {
-    const METHOD_HEAD = 'HEAD';
-    const METHOD_GET = 'GET';
-    const METHOD_POST = 'POST';
-    const METHOD_PUT = 'PUT';
-    const METHOD_PATCH = 'PATCH';
-    const METHOD_DELETE = 'DELETE';
-    const METHOD_OPTIONS = 'OPTIONS';
-    const METHOD_OVERRIDE = '_METHOD';
+    public const METHOD_HEAD = 'HEAD';
+    public const METHOD_GET = 'GET';
+    public const METHOD_POST = 'POST';
+    public const METHOD_PUT = 'PUT';
+    public const METHOD_PATCH = 'PATCH';
+    public const METHOD_DELETE = 'DELETE';
+    public const METHOD_OPTIONS = 'OPTIONS';
+    public const METHOD_OVERRIDE = '_METHOD';
 
     /**
      * Special-case HTTP headers that are otherwise unidentifiable as HTTP headers.
@@ -41,7 +41,7 @@ class request
 
     protected $encoding;
     protected $behind_proxy;
-    
+
     private $request_uri;
     private $host;
     private $port;
@@ -126,7 +126,8 @@ class request
      */
     public function headers($key = null, $default = null)
     {
-        return $this->get_valor_o_default($this->headers, $key, $default);
+        $keyInsensitive = strtoupper($key);
+        return $this->get_valor_o_default($this->headers, $keyInsensitive, $default);
     }
 
     /**
@@ -174,7 +175,7 @@ class request
             $this->host = $host;
         }
     }
-    
+
     /**
      * Get Port.
      *
@@ -194,7 +195,7 @@ class request
             $this->port = $port;
         }
     }
-    
+
     /**
      * Devuelve el esquema (https or http).
      *
@@ -214,7 +215,7 @@ class request
             $this->protocol = $proto;
         }
     }
-    
+
     public function get_request_uri()
     {
         if (! isset($this->request_uri)) {
@@ -229,7 +230,7 @@ class request
             $this->request_uri = $uri;
         }
     }
-    
+
     /**
     *  URL (schema + host [ + port si no es 80 ]).
     *
@@ -244,7 +245,7 @@ class request
 
         return $url;
     }
-    
+
     //----------------------------------------------------------------------------------//
     //								PROTECTED METHODS
     //----------------------------------------------------------------------------------//
