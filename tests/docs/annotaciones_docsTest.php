@@ -2,11 +2,11 @@
 
 namespace SIUToba\rest\tests\docs;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\docs\anotaciones_docs;
 
 class annotaciones_docsTest extends TestCase
-{        
+{
     /**
      * @return anotaciones_docs
      */
@@ -50,7 +50,7 @@ class annotaciones_docsTest extends TestCase
 
         // @param_query $juego string nombre del juego
         $this->assertEquals('juego', $pq['name']);
-        $this->assertEquals('query', $pq['in']);        
+        $this->assertEquals('query', $pq['in']);
         $this->assertEquals('string', $pq['schema']['type']);
         $this->assertEquals('nombre del juego', $pq['description']);
 
@@ -59,8 +59,8 @@ class annotaciones_docsTest extends TestCase
 
         //@param_body $limit integer Limitar a esta cantidad de registros
         $params_body1 = $params_body[0];
-		$this->assertTrue(is_array($params_body1['content']['*/*']['schema']));
-		$this->assertArrayHasKey('type',$params_body1['content']['*/*']['schema']);
+        $this->assertTrue(is_array($params_body1['content']['*/*']['schema']));
+        $this->assertArrayHasKey('type', $params_body1['content']['*/*']['schema']);
         $this->assertEquals('integer', $params_body1['content']['*/*']['schema']['type']);
         $this->assertEquals('Limitar a esta cantidad de registros', $params_body1['description']);
     }

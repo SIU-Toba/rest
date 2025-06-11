@@ -4,7 +4,7 @@ namespace SIUToba\rest\lib;
 
 class ruteador
 {
-    const SUFIJO_COLECCION = '_list';
+    public const SUFIJO_COLECCION = '_list';
 
     /**
      * @var lector_recursos_archivo

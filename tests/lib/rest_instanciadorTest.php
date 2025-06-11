@@ -4,7 +4,7 @@ namespace SIUToba\rest\tests\lib;
 
 use ClassA;
 use SIUToba\rest\lib\rest_instanciador;
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class rest_instanciadorTest extends TestCase
 {

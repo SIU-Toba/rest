@@ -27,7 +27,7 @@ class respuesta
     protected $data;
 
     protected $encoding;
-    
+
     /**
      * @var string Verison de la API
      */
@@ -142,11 +142,11 @@ class respuesta
 
         return $this;
     }
-    
+
     public function set_api_version($api_version)
     {
         $this->api_version = $api_version;
-        
+
         // Agrego la version de la API a los headers
         $this->add_headers(array('API-Version' => $this->api_version));
     }

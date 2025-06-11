@@ -1,14 +1,14 @@
 <?php
 
 
-class recurso_c {
+class recurso_c
+{
+    public function get_list($id_a)
+    {
+    }
 
-	function get_list($id_a)
-	{
-	}
-
-	function get($id_a, $id_c)
-	{
-	}
+    public function get($id_a, $id_c)
+    {
+    }
 
 }

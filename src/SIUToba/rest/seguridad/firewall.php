@@ -65,7 +65,7 @@ class firewall
                     $auth instanceof autenticacion\autenticacion_digest_http ||
                     $auth->atiende_pedido($request)) {
                     $authentication = $auth;
-                    
+
                     //Chequeo si la autenticacion recupera usuario o solo entro aca
                     //por el reuso de clase que hace la autenticacion de Toba
                     if (null !== $authentication->get_usuario($request)) {
@@ -79,9 +79,9 @@ class firewall
                 throw new rest_error(401, 'No se pudo cargar un autenticador para el pedido');
             }
         }
-        
+
         $usuario = $authentication->get_usuario($request);
-        
+
         if (!$this->authorization->tiene_acceso($usuario, $ruta)) {
             if (null === $usuario) {
                 throw new rest_error_autenticacion($authentication, $authentication->get_ultimo_error());

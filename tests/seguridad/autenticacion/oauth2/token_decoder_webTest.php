@@ -8,7 +8,7 @@
 
 namespace SIUToba\rest\tests\seguridad\autenticacion\oauth2;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\seguridad\autenticacion\oauth2\oauth_token_decoder_web;
 
 class token_decoder_webTest extends TestCase
@@ -16,11 +16,11 @@ class token_decoder_webTest extends TestCase
     public function testDecode()
     {
         //        /**
-//         * @var \PHPUnit_Framework_MockObject_MockObject
-//         */
-//        $guzzle = $this->getMockBuilder('GuzzleHttp\Client')
-//            ->getMock();
-//        $guzzle->method('get')->willReturn();
+        //         * @var \PHPUnit_Framework_MockObject_MockObject
+        //         */
+        //        $guzzle = $this->getMockBuilder('GuzzleHttp\Client')
+        //            ->getMock();
+        //        $guzzle->method('get')->willReturn();
 
         return $this->assertTrue(true); //hacer mas portable para que pase el travis.
 

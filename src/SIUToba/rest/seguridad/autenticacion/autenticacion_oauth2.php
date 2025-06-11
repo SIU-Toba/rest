@@ -46,7 +46,7 @@ class autenticacion_oauth2 extends proveedor_autenticacion
         $well_formed_header = preg_match('/Bearer (.+)/i', $auth_header, $result);
 
         $token = $result[1];
-        
+
         $info = $this->decoder->decode($token);
 
         if ($info === null) {

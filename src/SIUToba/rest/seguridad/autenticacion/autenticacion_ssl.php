@@ -30,11 +30,11 @@ class autenticacion_ssl extends proveedor_autenticacion
             $mensaje = '';
             if (!$cert_valido) {
                 $mensaje = "El certificado presentado por el cliente no se puede verificar contra la CA definida en el Servidor Web (en apache la CA es la variable SSLCACertificateFile)";
-            } else if (! $hay_CA) {
+            } elseif (! $hay_CA) {
                 $mensaje = "No se definió una CA en el Servidor Web (en apache la CA es la variable SSLCACertificateFile)";
-            } else if (! $hay_vto) {
+            } elseif (! $hay_vto) {
                 $mensaje = "El certificado del cliente no tiene fecha de vencimiento";
-            } else if (! $hay_serial) {
+            } elseif (! $hay_serial) {
                 $mensaje = "El certificado del cliente no tiene serial";
             }
 
@@ -72,7 +72,7 @@ class autenticacion_ssl extends proveedor_autenticacion
         return $certUtils->getFingerprint();
     }
 
-    function es_valido($usuario, $certificado)
+    public function es_valido($usuario, $certificado)
     {
         //Calculo el fingerprint del certificado enviado por el usuario
         $fingerprint_cert = $this->calcularFingerprint($certificado);
@@ -84,9 +84,9 @@ class autenticacion_ssl extends proveedor_autenticacion
         return hash_equals($fingerprint_local, $fingerprint_cert);
     }
 
-    function get_usuario_huella($usuario)
+    public function get_usuario_huella($usuario)
     {
-       // $usuarios_ini = toba_modelo_rest::get_ini_usuarios($this->modelo_proyecto);
+        // $usuarios_ini = toba_modelo_rest::get_ini_usuarios($this->modelo_proyecto);
         foreach ($this->validador_ssl->get_passwords() as $key => $u) {
             if ($key === $usuario) {
                 if (isset($u['fingerprint'])) {
@@ -96,7 +96,7 @@ class autenticacion_ssl extends proveedor_autenticacion
                 }
             }
         }
-        return NULL;
+        return null;
     }
 
     /**

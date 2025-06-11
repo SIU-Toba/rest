@@ -8,7 +8,7 @@
 
 namespace SIUToba\rest\tests\http;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\http\respuesta_rest;
 use SIUToba\rest\http\vista_json;
 

@@ -2,7 +2,7 @@
 
 namespace SIUToba\rest\lib;
 
-use \SIUToba\rest\docs\tipo_datos_docs;
+use SIUToba\rest\docs\tipo_datos_docs;
 
 class modelo_recursos
 {
@@ -35,10 +35,10 @@ class modelo_recursos
     protected function getProperty($campo, $def)
     {
         if (isset($def['_compuesto']) && ! empty($def['_compuesto'])) {
-			$aux = $this->getPropertiesCompuesto($def['_compuesto']);
+            $aux = $this->getPropertiesCompuesto($def['_compuesto']);
             $def = array('type' => 'object', 'properties' => $aux);
         }
-		
+
         $prop = [];
         foreach($def as $k => $campo_def) {
             if (false === \strpos($k, '_')) {           //Obtengo propiedades != _compuesto y _mapeo
@@ -48,57 +48,57 @@ class modelo_recursos
                         break;
                     case 'items':
                         if (! is_array($campo_def)) {
-                            $prop[$k] = tipo_datos_docs::get_tipo_datos($campo_def); 
-                        } else{
-                            $definicion = (isset($campo_def['$ref'])) ? '$ref:'.$campo_def['$ref'] : current($campo_def); 
-                            $prop[$k] = tipo_datos_docs::get_tipo_datos($definicion); 
+                            $prop[$k] = tipo_datos_docs::get_tipo_datos($campo_def);
+                        } else {
+                            $definicion = (isset($campo_def['$ref'])) ? '$ref:'.$campo_def['$ref'] : current($campo_def);
+                            $prop[$k] = tipo_datos_docs::get_tipo_datos($definicion);
                         }
                         break;
                     default:
-                        $prop[$k] = $campo_def;    
+                        $prop[$k] = $campo_def;
                 }
-             //   $prop[$k] = ($k != 'type') ? $campo_def: tipo_datos_docs::get_tipo_formato($campo_def);
+                //   $prop[$k] = ($k != 'type') ? $campo_def: tipo_datos_docs::get_tipo_formato($campo_def);
             } elseif (false !== \strpos($k, '_mapeo')) {      //Busco posibles mapeos de nombres
-            //    $prop['discriminator'] = array('propertyName' => $campo, 'mapping' => $campo_def);
+                //    $prop['discriminator'] = array('propertyName' => $campo, 'mapping' => $campo_def);
             }
         }
         return array($campo => $prop);
     }
 
-	private function getPropertiesCompuesto($def)
-	{
-		$prop = array();
-		foreach($def as $campo => $campo_def) {
-			$prop = array_merge($prop, $this->getProperty($campo, $campo_def));
+    private function getPropertiesCompuesto($def)
+    {
+        $prop = array();
+        foreach($def as $campo => $campo_def) {
+            $prop = array_merge($prop, $this->getProperty($campo, $campo_def));
         }
-		return $prop;
-	}
-	
+        return $prop;
+    }
+
     protected function getSchema($id, $modelo_in)
     {
         $required = array();
         $properties = array();
-		$mapeos = array();
+        $mapeos = array();
 
         foreach ($modelo_in as $campo => $def) {
             $prop = $this->getProperty($campo, $def);
             if (isset($prop[$campo]['required'])) {
                 $required[] = $campo;
             }
-			if (isset($prop[$campo]['discriminator'])) {
-				$mapeos[] = $prop[$campo]['discriminator'];
-			}
+            if (isset($prop[$campo]['discriminator'])) {
+                $mapeos[] = $prop[$campo]['discriminator'];
+            }
             $properties = array_merge($properties, $prop);
         }
 
         $nuevo = array(
-			'type' => 'object',
+            'type' => 'object',
             'properties' => $properties,
             'nullable' => empty($required)
         );
-		if (! empty($required)) {
-			$nuevo['required'] = array_values($required);
-		}
-		return $nuevo;
+        if (! empty($required)) {
+            $nuevo['required'] = array_values($required);
+        }
+        return $nuevo;
     }
 }

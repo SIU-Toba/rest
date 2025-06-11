@@ -46,7 +46,7 @@ class controlador_docs
      * @param array $settings Array asociativo conteniendo las opciones
      * ['titulo' => '', 'version' => '', 'url_logo' => '',..]
      */
-    public function set_config($settings=array())
+    public function set_config($settings = array())
     {
         $this->settings = \array_merge($this->settings, $settings);
     }
@@ -136,27 +136,27 @@ class controlador_docs
 
             //Vuelvo a separar el nombre sin alias para obtener el metodo que escucha
             list($prefijo_metodo, $partes_nombre) = $this->separar_prefijo_nombre($nombre_metodo, $es_coleccion);
-            
+
             //Obtengo los query parameters
             $params_query = $reflexion->get_parametros_metodo($metodo, 'query');
-            
+
             //Parametros del metodo pero con con mayor detalle
             $partes_path = array_merge($exploded_path, $partes_nombre);
             list($api_path, $params_path) = $this->get_parametros_path($prefijo_montaje, $metodo['parametros'], $partes_path);
             if ($alias != '') {
                 $api_path = $api_path . '/' . $alias;
             }
-            
+
             //Obtengo los param body
             $params_body = $reflexion->get_parametros_metodo($metodo, 'body');
             if (! empty($params_body)) {                                        //Agrego los schemas para los tipos locales
                 $params_body = $this->add_tipos_en_modelo($params_body, $tipos_propios);
                 $operation['requestBody'] = $params_body;
             }
-            
+
             $operation['operationId'] = "$nombre_clase:{$metodo['nombre']}";
             $operation['parameters'] = array_merge($params_path, $params_query);
-            
+
             //Reuno todo para crear la info de la operacion
             $method = strtolower($prefijo_metodo);
             $doc_api[$api_path][$method] = $this->get_operacion(
@@ -300,7 +300,7 @@ class controlador_docs
                 foreach ($params[$key]['content'] as $keycont => $contenido) {
                     if (in_array($contenido['schema']['type'], $non_predefined_types, true)) {
                         $type = array('$ref' => "#/components/schemas/". trim($contenido['schema']['type']));
-                        $params[$key]['content'][$keycont]['schema']= $type;
+                        $params[$key]['content'][$keycont]['schema'] = $type;
                     }
                 }
             }
@@ -334,7 +334,7 @@ class controlador_docs
                 //"security" => [],
                 //"servers" => []
         );
-        
+
         if (! empty($resumen)) {
             $data["summary"] = $resumen;
         }
@@ -351,11 +351,11 @@ class controlador_docs
             //$data["x-since"] = $since;
         }
         $data["responses"] = $respuestas;
-        
+
         return $data;
     }
 
-    protected function get_parametro($nombre, $parte, $requerido=true)
+    protected function get_parametro($nombre, $parte, $requerido = true)
     {
         $data = array(
             'name' => $nombre,
@@ -387,14 +387,14 @@ class controlador_docs
         return $data;
     }
 
-    protected function get_response($code, $headers, $descripcion, $default=false)
+    protected function get_response($code, $headers, $descripcion, $default = false)
     {
         $codigo = ($default) ? 'default' : $code;
         $data = array(
              $codigo => [
                         "description" => $descripcion,
                         "headers" => [$headers],
-                        "content"=> []/*,
+                        "content" => []/*,
                         "links"=> [
                             "operationId" => "",
                             "parameters" => [],
@@ -466,7 +466,7 @@ class controlador_docs
         }
         return [$api_path, $params_path];
     }
-    
+
     protected function add_extension_logo($list)
     {
         //Agrega el logo si esta presente

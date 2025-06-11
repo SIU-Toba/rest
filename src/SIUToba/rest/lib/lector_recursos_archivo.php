@@ -36,7 +36,7 @@ class lector_recursos_archivo
      */
     public function get_recurso($path, $montaje = '')
     {
-        $prefijo_montaje = (!empty($montaje))? $montaje.DIRECTORY_SEPARATOR: '';
+        $prefijo_montaje = (!empty($montaje)) ? $montaje.DIRECTORY_SEPARATOR : '';
 
         //Busco del mas especifico al mas general
         while (!empty($path)) {
@@ -92,7 +92,7 @@ class lector_recursos_archivo
                 return $file;
             }
             if ($file = $this->obtener_archivo($como_carpeta_archivo)) {
-    //            echo $file . "- $directorio - Path:$path - Name: $name\n";
+                //            echo $file . "- $directorio - Path:$path - Name: $name\n";
                 return $file;
             }
         }

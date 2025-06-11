@@ -1,9 +1,9 @@
 <?php
+
 class recurso_f
 {
-	function get($id_f)
-	{
+    public function get($id_f)
+    {
 
-	}
+    }
 }
-?>
