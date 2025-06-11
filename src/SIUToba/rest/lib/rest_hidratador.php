@@ -38,7 +38,7 @@ class rest_hidratador
      */
     public static function deshidratar_fila($data, $spec_hidratar, $damn_thing = array())
     {
-	$nueva_fila = array();
+        $nueva_fila = array();
         foreach ($spec_hidratar as $key => $campo) {
             if (!is_array($campo)) { //si no proveen todos los campos no los incluyo.
                 if (isset($data[(string) $campo])) {

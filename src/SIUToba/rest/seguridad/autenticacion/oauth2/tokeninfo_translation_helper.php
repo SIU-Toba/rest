@@ -1,4 +1,5 @@
 <?php
+
 namespace SIUToba\rest\seguridad\autenticacion\oauth2;
 
 /**

@@ -54,7 +54,7 @@ abstract class proveedor_autenticacion
      * Indica si la petición/headers debe manejarse con este mecanismo de autenticación.
      *
      * @param  request $request la petición
-     * 
+     *
      * @return boolean true si este mecanismo atiende la petición de autenticación
      */
     abstract public function atiende_pedido(request $request);

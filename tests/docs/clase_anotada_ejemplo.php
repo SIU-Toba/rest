@@ -31,7 +31,7 @@ class clase_anotada_ejemplo
      * @param_body $limit integer Limitar a esta cantidad de registros
      * @responses        200  array {"$ref": "Persona"} descripcion
      * @responses        404 No se pudo encontrar a la persona
-     * @responses        400 
+     * @responses        400
      */
     public function get($id_persona)
     {

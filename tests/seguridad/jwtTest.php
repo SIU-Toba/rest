@@ -2,7 +2,7 @@
 
 namespace SIUToba\rest\tests\seguridad;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\seguridad\firewall;
 use SIU\JWT\Decoder\SimetricDecoder;
 use SIUToba\rest\seguridad\autenticacion\validador_jwt;

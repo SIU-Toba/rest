@@ -2,7 +2,7 @@
 
 namespace SIUToba\rest\tests\lib;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\lector_recursos_archivo;
 use SIUToba\rest\lib\rest_instanciador;
 use SIUToba\rest\lib\ruteador;
@@ -113,7 +113,7 @@ class ruteador_ejemploTest extends TestCase
 
         $this->assertEquals($this->BASE_DIR[0] . '/montaje/d/e/recurso_e.php', $this->instanciador->archivo);
         $this->assertEquals('get_list', $this->instanciador->accion);
-        $this->assertEquals(array('id_d'), $this->instanciador->parametros);        
+        $this->assertEquals(array('id_d'), $this->instanciador->parametros);
     }
 
     public function testAliases()
@@ -134,7 +134,7 @@ class ruteador_ejemploTest extends TestCase
         $this->assertEquals($this->BASE_DIR[0] . '/d_e/recurso_d_e.php', $this->instanciador->archivo);
         $this->assertEquals('get', $this->instanciador->accion);
         $this->assertEquals(array('id-de'), $this->instanciador->parametros);
-    }    
+    }
 
     public function testGetOtroDir()
     {

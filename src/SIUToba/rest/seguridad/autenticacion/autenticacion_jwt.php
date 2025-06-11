@@ -7,7 +7,6 @@ use SIUToba\rest\http\respuesta_rest;
 use SIUToba\rest\seguridad\proveedor_autenticacion;
 use SIUToba\rest\seguridad\rest_usuario;
 
-
 class autenticacion_jwt extends proveedor_autenticacion
 {
     protected $validador_jwt;

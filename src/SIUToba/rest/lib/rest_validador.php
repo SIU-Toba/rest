@@ -1,4 +1,5 @@
 <?php
+
 namespace SIUToba\rest\lib;
 
 class rest_validador
@@ -19,21 +20,21 @@ class rest_validador
         'campos_no_permitidos' => "Se encontraron campos no permitidos: %s.",
 
     );
-    const TIPO_INT = 'int';
-    const TIPO_NUMERIC = 'numerico';
-    const TIPO_ALPHA = 'alpha';
-    const TIPO_ALPHANUM = 'alphanum';
-    const TIPO_DATE = 'date'; //Parametros: format -> http://php.net/manual/en/datetime.createfromformat.php
-    const TIPO_TIME = 'time'; //Parametros: format -> http://php.net/manual/en/datetime.createfromformat.php
-    const TIPO_LONGITUD = 'longitud'; //Parametros: format -> min, max
-    const OBLIGATORIO = 'obligatorio';
-    const TIPO_TEXTO = 'texto';
-    const TIPO_CUSTOM = 'custom';
-    const TIPO_MAIL = 'mail';
-    const TIPO_ENUM = 'enum'; //Parametros: array(opc1, opc2 ..)
-    const TIPO_ARREGLO = 'arreglo';
+    public const TIPO_INT = 'int';
+    public const TIPO_NUMERIC = 'numerico';
+    public const TIPO_ALPHA = 'alpha';
+    public const TIPO_ALPHANUM = 'alphanum';
+    public const TIPO_DATE = 'date'; //Parametros: format -> http://php.net/manual/en/datetime.createfromformat.php
+    public const TIPO_TIME = 'time'; //Parametros: format -> http://php.net/manual/en/datetime.createfromformat.php
+    public const TIPO_LONGITUD = 'longitud'; //Parametros: format -> min, max
+    public const OBLIGATORIO = 'obligatorio';
+    public const TIPO_TEXTO = 'texto';
+    public const TIPO_CUSTOM = 'custom';
+    public const TIPO_MAIL = 'mail';
+    public const TIPO_ENUM = 'enum'; //Parametros: array(opc1, opc2 ..)
+    public const TIPO_ARREGLO = 'arreglo';
 
-    const MAIL_MAX_LENGTH = 127;
+    public const MAIL_MAX_LENGTH = 127;
 
     /**
      * Todos los campos en los datos tienen que estar en las reglas (con un array vacio al menos)
@@ -84,14 +85,14 @@ class rest_validador
             $valor_campo = (isset($data[$nombre_campo])) ? $data[$nombre_campo] : null;
             unset($data[$nombre_campo]);
 
-            if (is_array($spec_campo) && isset($spec_campo['_compuesto'])) {        //Es un objeto con reglas propias                
+            if (is_array($spec_campo) && isset($spec_campo['_compuesto'])) {        //Es un objeto con reglas propias
                 $result = self::validar_recursivo($valor_campo, $spec_campo['_compuesto'], $relajar_ocultos);
             } else {
                 $result = self::aplicar_reglas($reglas, $nombre_campo, $valor_campo);
             }
             if (is_array($result) && ! empty($result)) {
-                $errores = array_merge_recursive($errores, $result);    
-            }            
+                $errores = array_merge_recursive($errores, $result);
+            }
         }
 
         if (!empty($data)) {
@@ -162,7 +163,7 @@ class rest_validador
                 break;
             case self::TIPO_INT:
                 $is_integer = is_integer($valor);
-                $all_digits = ctype_digit($valor);
+                $all_digits = ctype_digit((string)$valor);
                 if (($is_integer || $all_digits)) {
                     if (isset($options['min']) && $valor < $options['min']) {
                         return false;
@@ -190,7 +191,8 @@ class rest_validador
                 return false;
             case self::TIPO_MAIL:
                 $filter = FILTER_VALIDATE_EMAIL;
-                if (strlen($valor) > self::MAIL_MAX_LENGTH) {
+                $encoding = mb_detect_encoding($valor, "UTF-8", true);
+                if (mb_strlen($valor, $encoding) > self::MAIL_MAX_LENGTH) {
                     return false;
                 }
                 break;
@@ -216,12 +218,13 @@ class rest_validador
 
                 return false;
             case self::TIPO_LONGITUD:
-                $l = strlen($valor);   
+                $encoding = mb_detect_encoding($valor, "UTF-8", true);
+                $l = mb_strlen($valor, $encoding);
                 if (isset($options['min']) && $l < $options['min']) {
-                        return false;
+                    return false;
                 }
                 if (isset($options['max']) && $l > $options['max']) {
-                        return false;
+                    return false;
                 }
 
                 return true;
@@ -239,7 +242,7 @@ class rest_validador
 
                     return true;
                 }
-                return false;                
+                return false;
             case self::TIPO_CUSTOM:
                 $filter = FILTER_VALIDATE_REGEXP;
                 $format = $options['format'];

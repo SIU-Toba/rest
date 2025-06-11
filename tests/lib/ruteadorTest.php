@@ -2,7 +2,7 @@
 
 namespace SIUToba\rest\tests\lib;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\ruteador;
 
 class ruteadorTest extends TestCase
@@ -169,8 +169,8 @@ class ruteadorTest extends TestCase
         $this->instanciador->expects($this->exactly(1))
             ->method('existe_metodo')
             ->will($this->onConsecutiveCalls(true));
-//            array('get($alias)', true),
-//            array('get_list__alias', true)
+        //            array('get($alias)', true),
+        //            array('get_list__alias', true)
 
         $rec = $this->ruteador->buscar_controlador('GET', $path);
 
@@ -193,8 +193,8 @@ class ruteadorTest extends TestCase
         $this->instanciador->expects($this->exactly(1))
             ->method('existe_metodo')
             ->will($this->onConsecutiveCalls(true));
-//            array('post_nieto($abc)', false),
-//            array('post_nieto_list__abc', true)
+        //            array('post_nieto($abc)', false),
+        //            array('post_nieto_list__abc', true)
 
         $rec = $this->ruteador->buscar_controlador('POST', $path);
 

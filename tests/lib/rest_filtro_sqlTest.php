@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\rest_error;
 use SIUToba\rest\lib\rest_filtro_sql;
 use SIUToba\rest\rest;
-use SIUToba\rest\lib\rest_error;
 
 class rest_filtro_sqlTest extends TestCase
 {
@@ -28,8 +27,8 @@ class rest_filtro_sqlTest extends TestCase
      */
     public function testParametroIncorrecto()
     {
-		$this->expectException(rest_error::class);
-		
+        $this->expectException(rest_error::class);
+
         $param = "nombre";
         $this->filtro->agregar_campo($param);
         $this->agregar_parametro_request($param, 'no_existe;pepe');
@@ -110,7 +109,7 @@ class rest_filtro_sqlTest extends TestCase
     {
         $this->filtro->agregar_campo('nombre');
         $this->filtro->agregar_campo('apellido');
-//        $this->agregar_parametro_request('order', '+apellido,-"and=1=1');
+        //        $this->agregar_parametro_request('order', '+apellido,-"and=1=1');
 
         $this->assertEquals("", trim($this->filtro->get_sql_order_by()));
     }
@@ -120,8 +119,8 @@ class rest_filtro_sqlTest extends TestCase
      */
     public function testOrderByInvalido()
     {
-		$this->expectException(rest_error::class);
-		
+        $this->expectException(rest_error::class);
+
         $this->filtro->agregar_campo('nombre');
         $this->filtro->agregar_campo('apellido');
 
@@ -135,8 +134,8 @@ class rest_filtro_sqlTest extends TestCase
      */
     public function testLimitError()
     {
-		$this->expectException(rest_error::class);
-		
+        $this->expectException(rest_error::class);
+
         $this->request->expects($this->exactly(2))
             ->method('get')
             ->with($this->logicalOr($this->equalTo('limit'), $this->equalTo('page')))

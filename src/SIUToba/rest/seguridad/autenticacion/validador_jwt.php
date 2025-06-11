@@ -29,5 +29,5 @@ abstract class validador_jwt
         return $this->get_usuario_jwt($data);
     }
 
-    abstract function get_usuario_jwt($data);
+    abstract public function get_usuario_jwt($data);
 }

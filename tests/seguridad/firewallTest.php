@@ -6,8 +6,6 @@ use PHPUnit\Framework\TestCase;
 use SIUToba\rest\seguridad\autenticacion\rest_error_autenticacion;
 use SIUToba\rest\seguridad\autorizacion\rest_error_autorizacion;
 use SIUToba\rest\seguridad\firewall;
-use SIUToba\rest\seguridad\autenticacion\rest_error_autenticacion;
-use SIUToba\rest\seguridad\autorizacion\rest_error_autorizacion;
 
 class firewallTest extends TestCase
 {
@@ -22,12 +20,12 @@ class firewallTest extends TestCase
 
     protected function get_instancia_ruta($pattern = '#.*#')
     {
-        $closureMaldita = function(){ return $this->autenticador;};
+        $closureMaldita = function () { return $this->autenticador;};
 
         $this->autenticador = $this->getMockBuilder('SIUToba\rest\seguridad\proveedor_autenticacion')
             ->disableOriginalConstructor()
-            ->setMethods(['__invoke'])                        
-            ->getMockForAbstractClass();        
+            ->setMethods(['__invoke'])
+            ->getMockForAbstractClass();
         $this->autorizador = $this->getMockBuilder('SIUToba\rest\seguridad\proveedor_autorizacion')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
@@ -84,7 +82,7 @@ class firewallTest extends TestCase
      */
     public function atestAutenticarError()
     {
-		$this->expectException(rest_error_autenticacion::class);
+        $this->expectException(rest_error_autenticacion::class);
         $f = $this->get_instancia_manejar(null, false);
         $usuario = $f->manejar('/', null);
         $this->assertEquals(null, $usuario);
@@ -95,7 +93,7 @@ class firewallTest extends TestCase
      */
     public function testAutorizarError()
     {
-		$this->expectException(rest_error_autorizacion::class);
+        $this->expectException(rest_error_autorizacion::class);
         $f = $this->get_instancia_manejar('usuario', false);
         $usuario = $f->manejar('/', null);
         $this->assertEquals(null, $usuario);

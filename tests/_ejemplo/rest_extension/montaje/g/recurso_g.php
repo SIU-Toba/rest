@@ -1,14 +1,14 @@
 <?php
+
 class recurso_g
 {
-	function get_list()
-	{
-	
-	}
+    public function get_list()
+    {
 
-	function post_list()
-	{
-		
-	}
+    }
+
+    public function post_list()
+    {
+
+    }
 }
-?>
