@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v 3.2.0 11/06/2025
+ * Agrega la extension `mb_string` como dependencia requerida
+ * Actualización de dependencias por cuestiones de seguridad
+ * Mejora compatibilidad con PHP 8.3
+ * El tratamiento de los headers de entrada es case-insensitive
+ * Elimina codigo legacy que actuaba como filler en versiones previas
+
 ## v 3.1.0 17/11/2023
  * Eleva requerimiento minimo de PHP a 8.1
  * Los métodos que contienen búsquedas en arreglos ahora utilizan comparación estricta, asegurese de enviar los tipos esperados.
