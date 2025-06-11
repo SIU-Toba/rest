@@ -2,7 +2,7 @@
 
 namespace SIUToba\rest\tests\lib;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use SIUToba\rest\lib\rest_hidratador;
 
 class rest_hidratadorTest extends TestCase
@@ -39,10 +39,10 @@ class rest_hidratadorTest extends TestCase
         $datos = array('a' => 10, 'n' => 'xx', 'b' => 2, 'z' => 4);
         $obj = rest_hidratador::hidratar_fila($campos, $datos);
 
-//        (
-//        [a] => 10
-//        [b] => 2
-//        )
+        //        (
+        //        [a] => 10
+        //        [b] => 2
+        //        )
 
         $this->assertEquals(2, count($obj));
         $this->assertEquals(2, $obj['b']);

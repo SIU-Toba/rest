@@ -29,7 +29,7 @@ class respuesta_restTest extends TestCase
      */
     public function testGetNotFound()
     {
-		$this->expectException(rest_error::class);
+        $this->expectException(rest_error::class);
         $data = false;
         $r = new respuesta_rest();
         $r->get($data);
@@ -40,7 +40,7 @@ class respuesta_restTest extends TestCase
      */
     public function testNotFound()
     {
-		$this->expectException(rest_error::class);
+        $this->expectException(rest_error::class);
         $r = new respuesta_rest();
         $r->not_found("mje");
     }

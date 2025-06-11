@@ -82,7 +82,7 @@ class rest_filtro_sql
         return $this;
     }
 
-    public function agregar_campo_flag_local($alias_qs, $sql_si, $sql_no = '', $valor='')
+    public function agregar_campo_flag_local($alias_qs, $sql_si, $sql_no = '', $valor = '')
     { //se piden ambas sql para poder intercambiar facil un campo local o no.
         $this->campos[$alias_qs] = array('sql_si' => $sql_si, 'sql_no' => $sql_no, 'valor' => $valor);
 
@@ -98,7 +98,7 @@ class rest_filtro_sql
      *
      * @return $this
      */
-    public function agregar_campo_local($alias_qs, $alias_sql = null, $valor='')
+    public function agregar_campo_local($alias_qs, $alias_sql = null, $valor = '')
     {
         if ($alias_sql === null) {
             $alias_sql = $alias_qs;
@@ -118,7 +118,7 @@ class rest_filtro_sql
                 $valor = $campo['valor']; //es un campo local
             } else {
                 $query_value = rest::request()->get($alias_qs);
-                $query = (null !== $query_value) ? trim($query_value): '';
+                $query = (null !== $query_value) ? trim($query_value) : '';
                 $valor = ($query != '') ? $query : $campo['defecto'];
             }
             if ($valor !== null) {
@@ -265,7 +265,7 @@ class rest_filtro_sql
                 return $campo_sql.' BETWEEN '.$this->quote($valor).' AND '.$this->quote($valor2);
             case 'es_mayor_que':
                 return $campo_sql.' > '.$this->quote($valor);
-            case 'desde';
+            case 'desde':
             case 'es_mayor_igual_que':
                 return $campo_sql.' >= '.$this->quote($valor);
             case 'es_menor_que':

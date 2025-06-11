@@ -13,7 +13,7 @@ class respuestaTest extends TestCase
      */
     public function testFinalizarError()
     {
-		$this->expectException(rest_error_interno::class);
+        $this->expectException(rest_error_interno::class);
         $r = new respuesta();
         $r->finalizar(); //no se seteo la respuesta
     }

@@ -2,26 +2,25 @@
 
 class recurso_a
 {
-
-    function get_list()
+    public function get_list()
     {
 
     }
 
-    function get_list__alias()
+    public function get_list__alias()
     {
 
     }
 
 
-	function delete($id)
-	{
+    public function delete($id)
+    {
 
-	}
+    }
 
-	function get_b_list($id_a)
-	{
-	}
+    public function get_b_list($id_a)
+    {
+    }
 
 
 }

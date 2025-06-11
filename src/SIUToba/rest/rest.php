@@ -108,7 +108,7 @@ class rest
     public function __construct($settings = array())
     {
         self::$instancia = $this;
-//		$this->autoload();
+        //		$this->autoload();
 
         $this->container = new Set();
         $this->container['settings'] = array_merge(static::get_default_settings(), $settings);
@@ -164,14 +164,15 @@ class rest
         $this->container->singleton('lector_recursos', function ($c) {
             return new lector_recursos_archivo(
                 $c['settings']['path_controladores'],
-                $c['settings']['prefijo_controladores']);
+                $c['settings']['prefijo_controladores']
+            );
         });
 
         $this->container->singleton('controlador_documentacion', function ($c) {
-			$url = $c['request']->get_url() . $c['settings']['url_api'];
+            $url = $c['request']->get_url() . $c['settings']['url_api'];
             return new controlador_docs(
                 $c['settings']['path_controladores'],
-				$url               
+                $url
             );
         });
 
@@ -315,16 +316,16 @@ class rest
         throw new rest_error_interno("Este controlador no está configurado para manejar esta URL. La url es: '$uri', la url de la API es '$url_api'");
     }
 
-//	protected function autoload()
-//	{
-//		include_once 'bootstrap.php';
-////		if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-////			require 'vendor/autoload.php';
-////		} else {
-////			die("Falta correr 'composer install' en php/lib/rest");
-////		}
-//		bootstrap::registerAutoloader();
-//	}
+    //	protected function autoload()
+    //	{
+    //		include_once 'bootstrap.php';
+    ////		if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    ////			require 'vendor/autoload.php';
+    ////		} else {
+    ////			die("Falta correr 'composer install' en php/lib/rest");
+    ////		}
+    //		bootstrap::registerAutoloader();
+    //	}
 
     public function config($clave)
     {

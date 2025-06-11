@@ -40,13 +40,13 @@ class rest_validadorTest extends TestCase
      */
     public function testLongitudError()
     {
-		$this->expectException(rest_error::class);
+        $this->expectException(rest_error::class);
         $regla = array(
             'campo' => array('_validar' => array(rest_validador::TIPO_LONGITUD => array('min' => 1, 'max' => 2))),
         );
         $dato = array('campo' => '123');
         rest_validador::validar($dato, $regla);
-        $this->assertTrue(false);                 
+        $this->assertTrue(false);
     }
 
     /**
@@ -54,7 +54,7 @@ class rest_validadorTest extends TestCase
      */
     public function testLongitudError2()
     {
-		$this->expectException(rest_error::class);
+        $this->expectException(rest_error::class);
         $regla = array(
             'campo' => array('_validar' => array(rest_validador::TIPO_LONGITUD => array('min' => 2))),
         );
@@ -80,7 +80,7 @@ class rest_validadorTest extends TestCase
      */
     public function testLongitudError3()
     {
-		$this->expectException(rest_error::class);
+        $this->expectException(rest_error::class);
         $regla = array(
             'campo' => array('_validar' => array(rest_validador::TIPO_ARREGLO => array('min' => 2, 'max' => 3)))
         );

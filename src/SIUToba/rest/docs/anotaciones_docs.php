@@ -4,19 +4,19 @@ namespace SIUToba\rest\docs;
 
 use ReflectionClass;
 use SIUToba\rest\lib\rest_instanciador;
-use \SIUToba\rest\docs\tipo_datos_docs;
+use SIUToba\rest\docs\tipo_datos_docs;
 
 class anotaciones_docs
 {
     protected static $metodos_validos = array('get', 'put', 'post', 'delete');
-    
+
     /**
      * @var \ReflectionClass
      */
     protected $reflexion;
 
     protected $anotaciones_clase;
-    
+
     /**
      * La clase no puede tener namespaces (esta pensada para las del modelo).
      *
@@ -206,13 +206,13 @@ class anotaciones_docs
                 $api_parameter['in'] = $type;
                 $api_parameter['schema'] = $tipo_dato;
                 break;
-        /*	case 'path':
-                $api_parameter['in'] = $type;*/
+                /*	case 'path':
+                        $api_parameter['in'] = $type;*/
             case 'body':
                 $api_parameter['content'] = array('*/*' => ['schema' => $tipo_dato]);
                 break;
         }
-        
+
         $api_parameter['description'] = $matches[4] ?: '[sin descripcion]';
         if (!empty($matches[3])) {
             $modificadores = $matches[3];
@@ -250,7 +250,7 @@ class anotaciones_docs
 
         return '';
     }
-     
+
     public function get_metodo_deprecado($metodo)
     {
         if (isset($metodo['anotaciones']['deprecated'])) {
@@ -259,7 +259,7 @@ class anotaciones_docs
 
         return '';
     }
-    
+
     public function get_respuestas_metodo($metodo)
     {
         $respuestas = array();
