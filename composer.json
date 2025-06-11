@@ -7,7 +7,7 @@
         "ext-mbstring": "*",
         "doctrine/cache": "~2.2.0",
         "siu-toba/ssl-cert-utils": "~1.2",
-        "siu-toba/jwt-util": "dev-feature/upgrade8.3"
+        "siu-toba/jwt-util": "~1.1"
     },
     "autoload": {
         "psr-4": {
