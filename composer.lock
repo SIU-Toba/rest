@@ -102,16 +102,16 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v6.11.1",
+            "version": "v7.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "d1e91ecf8c598d073d0995afa8cd5c75c6e19e66"
+                "reference": "28aa0694bcfdfa5e2959c394d5a1ee7a5083629e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/d1e91ecf8c598d073d0995afa8cd5c75c6e19e66",
-                "reference": "d1e91ecf8c598d073d0995afa8cd5c75c6e19e66",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/28aa0694bcfdfa5e2959c394d5a1ee7a5083629e",
+                "reference": "28aa0694bcfdfa5e2959c394d5a1ee7a5083629e",
                 "shasum": ""
             },
             "require": {
@@ -159,26 +159,26 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v6.11.1"
+                "source": "https://github.com/firebase/php-jwt/tree/v7.0.3"
             },
-            "time": "2025-04-09T20:32:01+00:00"
+            "time": "2026-02-25T22:16:40+00:00"
         },
         {
             "name": "siu-toba/jwt-util",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SIU-Toba/jwt-util.git",
-                "reference": "3365a677191e334f1888fde34501e0eb47963dd7"
+                "reference": "170bbc083fff871e57c28d235ce70ccbc15c1d0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SIU-Toba/jwt-util/zipball/3365a677191e334f1888fde34501e0eb47963dd7",
-                "reference": "3365a677191e334f1888fde34501e0eb47963dd7",
+                "url": "https://api.github.com/repos/SIU-Toba/jwt-util/zipball/170bbc083fff871e57c28d235ce70ccbc15c1d0e",
+                "reference": "170bbc083fff871e57c28d235ce70ccbc15c1d0e",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "~6.11",
+                "firebase/php-jwt": "~7.0",
                 "php": ">=8.1.0"
             },
             "require-dev": {
@@ -201,9 +201,9 @@
             "homepage": "http://www.siu.edu.ar",
             "support": {
                 "issues": "https://github.com/SIU-Toba/jwt-util/issues",
-                "source": "https://github.com/SIU-Toba/jwt-util/tree/v2.0.0"
+                "source": "https://github.com/SIU-Toba/jwt-util/tree/v2.1.0"
             },
-            "time": "2025-06-11T19:16:16+00:00"
+            "time": "2026-02-23T21:10:18+00:00"
         },
         {
             "name": "siu-toba/ssl-cert-utils",
