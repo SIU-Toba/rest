@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v 3.3.0 10/03/2026
+ * Actualización de dependencias por cuestiones de seguridad
+
 ## v 3.2.0 11/06/2025
  * Agrega la extension `mb_string` como dependencia requerida
  * Actualización de dependencias por cuestiones de seguridad
