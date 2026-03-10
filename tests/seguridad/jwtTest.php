@@ -5,6 +5,7 @@ namespace SIUToba\rest\tests\seguridad;
 use PHPUnit\Framework\TestCase;
 use SIUToba\rest\seguridad\firewall;
 use SIU\JWT\Decoder\SimetricDecoder;
+use SIU\JWT\Encoder\SimetricEncoder;
 use SIUToba\rest\seguridad\autenticacion\validador_jwt;
 use SIU\JWT\Util;
 
@@ -22,7 +23,7 @@ class jwtTest extends TestCase
     {
         $validador = new ValidarJWT();
 
-        $decoder = new SimetricDecoder(Util::ALG_HS512, 'test');
+        $decoder = new SimetricDecoder(Util::ALG_HS256, 'testquerequiere512bitsbytesdeinformacion');
 
         $validador->set_decoder($decoder);
 
@@ -33,12 +34,12 @@ class jwtTest extends TestCase
     {
         $f = $this->get_instancia();
 
-        // token para usuario uid=123456
-        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEyMzQ1NiwibmFtZSI6Im15IHVzZXIgbmFtZSJ9.RZcDtMfrzoVEISsVYsVz11-rZ87rWqS7RHYctQnpZKDt8m8YsVZysh9Hu0OpDnPT-8JjHbWS_Xkz6Am11UAulQ';
+        // token para usuario=[123456]
+        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.WzEyMzQ1Nl0.3QoSh0UdQMVYa2T8bdFPk5SuTAJyD-hbJJ-ATJxkkDI';
 
         $usuario = $f->get_usuario($token);
 
-        $this->assertEquals($usuario->uid, 123456);
+        $this->assertEquals(current($usuario), 123456);
     }
 
 
