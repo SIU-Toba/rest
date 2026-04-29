@@ -44,7 +44,12 @@ class modelo_recursos
             if (false === \strpos($k, '_')) {           //Obtengo propiedades != _compuesto y _mapeo
                 switch ($k) {
                     case 'type':
-                        $prop = array_merge($prop, tipo_datos_docs::get_tipo_formato($campo_def));
+                        if (! is_array($campo_def)) {
+                            $prop = array_merge($prop, tipo_datos_docs::get_tipo_formato($campo_def));
+                        } else {
+                            $definicion = (isset($campo_def['$ref'])) ? '$ref:'.$campo_def['$ref'] : current($campo_def);
+                            $prop = tipo_datos_docs::get_tipo_datos($definicion);
+                        }
                         break;
                     case 'items':
                         if (! is_array($campo_def)) {
