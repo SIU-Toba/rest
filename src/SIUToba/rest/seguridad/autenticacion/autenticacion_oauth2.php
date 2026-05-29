@@ -39,7 +39,7 @@ class autenticacion_oauth2 extends proveedor_autenticacion
      *
      * @return rest_usuario el usuario logueado o null si es anonimo
      */
-    public function get_usuario(request $request = null)
+    public function get_usuario(?request $request = null)
     {
         $auth_header = $request->headers('HTTP_AUTHORIZATION', null);
 

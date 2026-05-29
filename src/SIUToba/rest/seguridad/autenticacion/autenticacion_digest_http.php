@@ -24,7 +24,7 @@ class autenticacion_digest_http extends proveedor_autenticacion
         $this->passwords = $pu;
     }
 
-    public function get_usuario(request $request = null)
+    public function get_usuario(?request $request = null)
     {
         if (isset($_SERVER['PHP_AUTH_DIGEST']) &&
             $data = $this->http_digest_parse($_SERVER['PHP_AUTH_DIGEST'])

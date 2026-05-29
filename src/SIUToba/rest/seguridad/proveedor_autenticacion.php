@@ -21,7 +21,7 @@ abstract class proveedor_autenticacion
      *
      * @return rest_usuario el usuario logueado o null si es anonimo
      */
-    abstract public function get_usuario(request $request = null);
+    abstract public function get_usuario(?request $request = null);
 
     /**
      * Obtiene el último error de autenticación. Si no hubo ninguno devuelve un string vacío

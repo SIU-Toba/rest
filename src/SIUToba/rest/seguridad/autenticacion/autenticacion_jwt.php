@@ -20,7 +20,7 @@ class autenticacion_jwt extends proveedor_autenticacion
         $this->mensaje = "Autenticación cancelada, falta información";
     }
 
-    public function get_usuario(request $request = null)
+    public function get_usuario(?request $request = null)
     {
         $auth_header = $request->headers('HTTP_AUTHORIZATION', null);
 
