@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: andres
@@ -9,7 +10,8 @@
 namespace SIUToba\rest\seguridad\autenticacion\oauth2;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class oauth_token_decoder_web extends oauth_token_decoder
 {
@@ -44,21 +46,28 @@ class oauth_token_decoder_web extends oauth_token_decoder
      */
     public function decode($token)
     {
-        if ($this->cache->contains($this->get_cache_key_for_token($token))) {
-            return $this->cache->fetch($token);
+        $cache_key = $this->get_cache_key_for_token($token);
+
+        //Intenta recuperar la info del token (cacheada u original)
+        $valor_cacheado =  $this->cache->get($cache_key, function (ItemInterface $item) use ($token) {
+            try {
+                $item->expiresAfter(3600);
+                $res = $this->guzzle_client->get("?access_token=$token");
+            } catch (GuzzleException $e) {
+                // si falló el cliente por alguna razón (500, 400, etc) se retorna nulo
+                return;
+            }
+
+            $tokeninfo = $this->tokeninfo_translation_helper->translate_token_info($res->json());
+            return $tokeninfo;
+        });
+
+        //Si hubo error capturado, liquido la entrada para que no cachee null
+        if (null === $valor_cacheado) {
+            $this->cache->delete($cache_key);
         }
 
-        try {
-            $res = $this->guzzle_client->get("?access_token=$token");
-        } catch (ClientException $e) {
-            // si falló el cliente por alguna razón (500, 400, etc) se retorna nulo
-            return;
-        }
-
-        $tokeninfo = $this->tokeninfo_translation_helper->translate_token_info($res->json());
-        $this->cache->save($token, $tokeninfo);
-
-        return $tokeninfo;
+        return $valor_cacheado;
     }
 
     /**
