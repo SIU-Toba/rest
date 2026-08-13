@@ -20,7 +20,7 @@ class autenticacion_ssl extends proveedor_autenticacion
         $this->validador_ssl = $pu;
     }
 
-    public function get_usuario(request $request = null)
+    public function get_usuario(?request $request = null)
     {
         $cert_valido = (isset($_SERVER['SSL_CLIENT_VERIFY']) && $_SERVER['SSL_CLIENT_VERIFY'] == 'SUCCESS'); //Se presenta certif. y esta verificado
         $hay_serial = isset($_SERVER['SSL_CLIENT_M_SERIAL']);           //Tiene serial el cert?

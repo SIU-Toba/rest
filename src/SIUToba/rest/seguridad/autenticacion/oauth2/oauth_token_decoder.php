@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: andres
@@ -8,16 +9,16 @@
 
 namespace SIUToba\rest\seguridad\autenticacion\oauth2;
 
-use Doctrine\Common\Cache\Cache;
+use Symfony\Contracts\Cache\CacheInterface;
 
 abstract class oauth_token_decoder
 {
     /**
-     * @var Cache
+     * @var CacheInterface
      */
     protected $cache;
 
-    public function set_cache_manager(Cache $cache)
+    public function set_cache_manager(CacheInterface $cache)
     {
         $this->cache = $cache;
     }

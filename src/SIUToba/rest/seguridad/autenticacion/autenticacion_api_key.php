@@ -21,7 +21,7 @@ class autenticacion_api_key extends proveedor_autenticacion
         $this->api_keys = $pu;
     }
 
-    public function get_usuario(request $request = null)
+    public function get_usuario(?request $request = null)
     {
         $api_key = $request->get('api_key', '');
         $username = $this->api_keys->get_usuario_api_key($api_key);

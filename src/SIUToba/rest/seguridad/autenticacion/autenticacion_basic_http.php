@@ -19,7 +19,7 @@ class autenticacion_basic_http extends proveedor_autenticacion
         $this->validador_usuarios = $pu;
     }
 
-    public function get_usuario(request $request = null)
+    public function get_usuario(?request $request = null)
     {
         if (isset($_SERVER['PHP_AUTH_USER'])) {
             $password = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : null;
