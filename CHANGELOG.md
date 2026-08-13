@@ -1,7 +1,13 @@
 # CHANGELOG
 
-## v 3.3.0 10/03/2026
- * Actualización de dependencias por cuestiones de seguridad
+## v 4.1.0 10/03/2026
+ * Se cambia `doctrine/cache` por `symfony/cache` como dependencia
+ * Ajusta mensaje de `rest_validador` para chequeo de Enumerados
+ * Ajuste de encabezados de metodos por compatibilidad PHP
+ * Fix en la generación de la documentación para campos referenciados
+
+## v 4.0.0 10/03/2026
+ * Actualización de dependencias por cuestiones de seguridad (Atencion!!: BC break)
 
 ## v 3.2.0 11/06/2025
  * Agrega la extension `mb_string` como dependencia requerida
